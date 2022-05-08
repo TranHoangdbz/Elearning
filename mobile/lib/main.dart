@@ -1,7 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
-import 'package:uit_elearning/routes/pages.dart';
-import 'package:uit_elearning/routes/routes.dart';
+
+import '../routes/pages.dart';
+import '../routes/routes.dart';
 
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
