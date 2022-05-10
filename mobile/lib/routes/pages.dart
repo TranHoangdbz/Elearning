@@ -8,6 +8,7 @@ abstract class Pages {
     GetPage(
       name: Routes.home,
       page: () => HomeScreen(),
+      binding: HomeBinding(),
     ),
   ];
 }
