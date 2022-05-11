@@ -1,8 +1,9 @@
+import ExamPage from './pages/ExamPage'
 
 function App() {
   return (
     <div>
-      <h1>Welcome</h1>
+      <ExamPage/>
     </div>
   );
 }
