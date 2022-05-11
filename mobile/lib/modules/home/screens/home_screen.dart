@@ -11,15 +11,17 @@ class HomeScreen extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      body: Obx(() => ListView.builder(
-            itemCount: _controller.courses.length,
-            itemBuilder: (context, index) {
-              return Text(
-                'Course: ${_controller.courses[index].name}',
-                style: const TextStyle(color: Colors.black),
-              );
-            },
-          )),
+      body: Obx(
+        () => ListView.builder(
+          itemCount: _controller.courses.length,
+          itemBuilder: (context, index) {
+            return Text(
+              'Course: ${_controller.courses[index].name}',
+              style: const TextStyle(color: Colors.black),
+            );
+          },
+        ),
+      ),
     );
   }
 }

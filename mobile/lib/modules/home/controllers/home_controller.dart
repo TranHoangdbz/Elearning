@@ -13,8 +13,6 @@ class HomeController extends GetxController {
 
   void initCourses() async {
     await DataService.instance.loadCourseList();
-    for (Course item in DataService.instance.courseList) {
-      courses.add(item);
-    }
+    courses.value = DataService.instance.courseList;
   }
 }
