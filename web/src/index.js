@@ -1,4 +1,6 @@
 import React from "react";
+import { BrowserRouter, Routes, Route } from "react-router-dom";
+
 import { Provider } from "react-redux";
 import { configureStore } from "@reduxjs/toolkit";
 import rootReducer from "./reducers";
@@ -6,6 +8,7 @@ import { createRoot } from "react-dom/client";
 
 import App from "./App";
 import GlobalStyles from "./assets/styles";
+import ForgotNumberPage from "./features/forgotPassword/pages/sendCode";
 
 const store = configureStore({
     reducer: rootReducer,
@@ -15,7 +18,15 @@ const root = createRoot(container); // createRoot(container!) if you use TypeScr
 root.render(
     <Provider store={store}>
         <GlobalStyles>
-            <App />
+            <BrowserRouter>
+                <Routes>
+                    <Route path="/" element={<App />} />
+                    <Route
+                        path="forgot-password"
+                        element={<ForgotNumberPage />}
+                    />
+                </Routes>
+            </BrowserRouter>
         </GlobalStyles>
     </Provider>
 );
