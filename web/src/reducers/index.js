@@ -1,8 +1,8 @@
 import { combineReducers } from 'redux';
-import examReducer from './examReducer';
+import counter from '../features/counter/counterSlice'
 
 const rootReducer = combineReducers({
-  exam: examReducer
+  counter:counter,
 });
 
 export default rootReducer;

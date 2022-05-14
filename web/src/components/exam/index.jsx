@@ -1,6 +1,6 @@
-import styles from './examCpn.module.scss';
+import styles from './exam.module.scss';
 
-function ExamCpn() {
+function Exam() {
     return (
         <div className={`${styles.examStyle}`}>
             This is Exam Component with SCSS
@@ -8,4 +8,4 @@ function ExamCpn() {
     )
 }
 
-export default ExamCpn
+export default Exam

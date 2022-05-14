@@ -1,4 +1,4 @@
-import ExamPage from './pages/ExamPage'
+import ExamPage from './features/counter';
 
 function App() {
   return (
