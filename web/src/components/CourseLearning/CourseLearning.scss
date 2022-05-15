@@ -1,3 +1,104 @@
-.container{
+.container {
     background-color: azure;
+}
+
+.layout-right {
+    padding-left: 25px;
+
+    .name-course {
+        margin: 0 25px;
+        font-size: 18px;
+        font-family: 'Montserrat';
+        line-height: 22px;
+        font-weight: 700;
+        display: flex;
+        align-items: center;
+    }
+    
+
+    .students,
+    .rating,
+    .view {
+        font-family: 'Montserrat';
+        font-style: normal;
+        font-weight: 500;
+        font-size: 14px;
+        line-height: 20px;
+        display: flex;
+        align-items: center;
+    }
+    .students{
+        font-weight: 600;
+    }
+
+    .enroll {
+        font-style: normal;
+        font-weight: 800;
+        font-size: 12px;
+        line-height: 15px;
+        color: #8E32C7;
+    }
+
+    .name {
+        font-family: 'Montserrat';
+        font-style: normal;
+        font-weight: 600;
+        font-size: 12px;
+        line-height: 15px;
+    }
+
+    .major {
+        font-family: 'Montserrat';
+        font-style: normal;
+        font-weight: 300;
+        font-size: 12px;
+        line-height: 15px;
+    }
+
+    .description {
+        height: 70px;
+        overflow-y: auto;
+        font-family: 'Montserrat';
+        font-style: normal;
+        font-weight: 500;
+        font-size: 12px;
+        line-height: 15px;
+    }
+
+
+    .list-course {
+        .course {
+            margin-bottom: 36px;
+            position: relative;
+            background-color: rgba(186, 187, 196);
+            padding: 17px 28px;
+            cursor: not-allowed;
+            div {
+                font-style: normal;
+                font-weight: 500;
+                font-size: 13px;
+                line-height: 15px;
+            }
+
+            .layout-lock{
+                position: absolute;
+                top: 50%;
+                left: 50%;
+                transform: translateY(-50%);
+                color: rgba(0, 0, 0, 0.36);;
+            }
+        }
+        .unclock.course{
+            background-color: #040E53;
+            color: white;
+            cursor: pointer;
+            .layout-lock{
+                display: none;
+            }
+        }
+
+        .unclock.course:hover{
+            opacity: .8;
+        }
+    }
 }
