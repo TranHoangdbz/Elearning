@@ -41,17 +41,9 @@ function Overview(props) {
                     <div className='btn-send'>Send</div>
                 </div>
                 <div className='chat-user'>
-                    <CommentCard
-                        componentChild={false}
-                    ></CommentCard>
-                    <CommentCard
-                        componentChild={<CommentCard
-                            componentChild={<CommentCard></CommentCard>}
-                        ></CommentCard>}
-                    ></CommentCard>
-                    <CommentCard
-                        componentChild={<CommentCard></CommentCard>}
-                    ></CommentCard>
+                    <CommentCard componentChild={false}></CommentCard>
+                    <CommentCard componentChild={<CommentCard componentChild={<CommentCard></CommentCard>}></CommentCard>}></CommentCard>
+                    <CommentCard componentChild={<CommentCard></CommentCard>}></CommentCard>
                 </div>
             </div>
         </div>
