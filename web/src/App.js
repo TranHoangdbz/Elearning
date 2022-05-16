@@ -1,5 +1,8 @@
 import { ThemeProvider, createTheme } from '@mui/material/styles';
-import ExamPage from "./features/counter";
+
+import { BrowserRouter, Routes, Route } from "react-router-dom";
+
+import ForgotNumberPage from './features/forgotPassword';
 
 const theme = createTheme({
     typography: {
@@ -12,7 +15,14 @@ function App() {
     return (
         <ThemeProvider theme={theme}>
             <div>
-                <ExamPage />
+            <BrowserRouter>
+                <Routes>
+                    <Route
+                        path="forgot-password"
+                        element={<ForgotNumberPage />}
+                    />
+                </Routes>
+            </BrowserRouter>
             </div>
         </ThemeProvider>
     );
