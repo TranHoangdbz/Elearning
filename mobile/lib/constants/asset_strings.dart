@@ -1,6 +1,8 @@
 class PNGAssetString {
   PNGAssetString._();
   static const String path = 'assets/png';
+  static const String facebook = '$path/facebook.png';
+  static const String google = '$path/google.png';
 }
 
 class JPGAssetString {
@@ -16,4 +18,5 @@ class GIFAssetString {
 class SVGAssetString {
   SVGAssetString._();
   static const String path = 'assets/svg';
+  static const String logo = '$path/logo.svg';
 }
