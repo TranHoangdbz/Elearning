@@ -1,8 +1,9 @@
 import './CourseLearning.scss';
 import { Container, Grid, Avatar } from '@mui/material'
 import StarIcon from '@mui/icons-material/Star';
-import LockIcon from '@mui/icons-material/Lock';
 import CardCourse from './components/CardCourse';
+
+import LayoutLeftCourseLearning from './components/LayoutLeftCourseLearning';
 
 const mockCourses = [
     {
@@ -68,28 +69,7 @@ function CourseLearning() {
             <Grid spacing={1} container>
                 <Grid lg={8}>
                     {/* Layout left */}
-                    <div className="video-container">
-                        <iframe
-                            width="100%" height="515"
-                            src="https://www.youtube.com/embed/SlPhMPnQ58k"
-                            title="YouTube video player"
-                            frameborder="0"
-                            allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
-                            allowfullscreen
-                        >
-                        </iframe>
-                        <div className="ask-answer">
-                            <div>
-                                Bài giảng này khúc kia là sao đấy ạ
-                            </div>
-                            <div>
-                                Bài giảng này khúc kia là sao đấy ạ
-                            </div>
-                            <div>
-                                Bài giảng này khúc kia là sao đấy ạ
-                            </div>
-                        </div>
-                    </div>
+                    <LayoutLeftCourseLearning></LayoutLeftCourseLearning>
                 </Grid>
                 <Grid lg={4}>
                     {/* Layout right */}
