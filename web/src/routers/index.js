@@ -1,23 +1,38 @@
 import { Route, Routes, Navigate } from "react-router-dom";
-// import routes from "../routes.js";
-import React from "react";
-import { useSelector } from "react-redux";
+import routes from "../routes";
 
-const CourseLearning = React.lazy(() => import("../components/CourseLearning/CourseLearning"))
+import React from "react";
+
+// import page
+const ExamPage = React.lazy(() => import("../components/exam"));
+
+// waiting
+const loading = (
+    <div>
+        <h1>Loading...</h1>
+    </div>
+);
 
 const Routers = () => {
     return (
-        <React.Suspense>
+        <React.Suspense fallback={loading}>
             <Routes>
-                <Route 
-                    path="/hoc-khoa-hoc" 
-                    name="Học khoá học" 
-                    element={<CourseLearning />} 
-                />
+                <Route path="/exam" name="Example" element={<ExamPage />} />
+                <Route index name="Example" element={<Navigate to="exam" />} />
+                {routes.publicRoute.map((route, idx) => {
+                    return (
+                        route.element && (
+                            <Route
+                                key={idx}
+                                path={route.path}
+                                element={route.element}
+                            />
+                        )
+                    );
+                })}
             </Routes>
         </React.Suspense>
-    )
-}
+    );
+};
 
 export default Routers;
-
