@@ -196,11 +196,11 @@
             background: #040E53;
             border-radius: 6px;
             color: white;
-            padding: 10px 15px;
+            padding: 15px 20px;
             box-shadow: rgba(0, 0, 0, 0.1) 0px 10px 15px -3px, rgba(0, 0, 0, 0.05) 0px 4px 6px -2px;
         }
 
-        .btn-back:hover{
+        .btn-back:hover {
             opacity: .9;
             cursor: pointer;
         }
@@ -246,6 +246,18 @@
             align-items: center;
             padding-top: 22px;
             padding-bottom: 22px;
+        }
+
+        .dot {
+            padding: 4px;
+            margin: 0 10px;
+            border-radius: 50%;
+            background: #C4C4C4;
+            border: 1px solid rgba(0, 0, 0, 0.24);  
+        }
+
+        .dot.active{
+            background: #352020;
         }
     }
 
