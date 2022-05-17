@@ -67,7 +67,7 @@ function Quizz(props) {
             <div style={{ fontFamily: "'Montserrat', san-serif" }} className='description1'>Score a lession’s quizz with an accuracy of at least 70% to unlock the next lession.
                 You cannot go back to previous question once you move to another one.
             </div>
-            <div>
+            <div style={{marginTop: '15px'}}>
                 <div style={{ paddingLeft: '20px', paddingRight: '20px', display: 'flex', justifyContent: 'space-between', height: '50px', alignItems: 'center', backgroundColor: '#040E53', color: 'white' }}>
                     <div style={{ fontFamily: "'Montserrat', san-serif", fontWeight: '500', fontSize: '12px', lineHeight: '15px' }}>1. A summary about .NET</div>
                     <div style={{ fontFamily: "'Montserrat', san-serif", fontWeight: '500', fontSize: '12px', lineHeight: '15px' }}>7 question</div>
@@ -116,7 +116,7 @@ function Quizz(props) {
                         </div>
                     </div>
                 </div>
-                <div style={{ display: 'flex', justifyContent: 'center', backgroundColor: 'rgba(4, 14, 83, 0.04)'}}>
+                <div style={{ display: 'flex', justifyContent: 'center', backgroundColor: 'rgba(4, 14, 83, 0.04)', paddingTop: '20px'}}>
                     {
                         questions.map((value, index) => {
 
@@ -133,7 +133,7 @@ function Quizz(props) {
                         })
                     }
                 </div>
-                <div style={{ padding: '30px', display: 'flex', justifyContent: 'space-between', backgroundColor: 'rgba(4, 14, 83, 0.04)' }}>
+                <div style={{ padding: '30px', paddingTop:'0', display: 'flex', justifyContent: 'space-between', backgroundColor: 'rgba(4, 14, 83, 0.04)' }}>
                     {
                         activeStep == 0 ? (<div></div>) : (
                             <div onClick={handleClickBack} className='btn-back'>
