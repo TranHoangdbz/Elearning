@@ -1,5 +1,5 @@
 import React from 'react';
-import '../CourseLearning.scss'
+import './CourseLearning.scss'
 import OverviewAndQuizz from './OverviewAndQuizz';
 
 function LayoutLeftCourseLearning(props) {
