@@ -22,8 +22,8 @@ class AuthenticationProvider {
         IOWebSocketChannel channel;
         try {
           // Create connection.
-          channel =
-              IOWebSocketChannel.connect('ws://172.30.158.35:32/signup$email');
+          channel = IOWebSocketChannel.connect(
+              '${AppStrings.protocol}://${AppStrings.host}:${AppStrings.port}/signup$email');
 
           // Data that will be sended to Node.js
           String signUpData =
@@ -57,8 +57,8 @@ class AuthenticationProvider {
       IOWebSocketChannel channel;
       try {
         // Create connection.
-        channel =
-            IOWebSocketChannel.connect('ws://172.30.158.35:32/login$email');
+        channel = IOWebSocketChannel.connect(
+            '${AppStrings.protocol}://${AppStrings.host}:${AppStrings.port}/login$email');
 
         // Data that will be sended to Node.js
         String login =
@@ -87,8 +87,8 @@ class AuthenticationProvider {
       IOWebSocketChannel channel;
       try {
         // Create connection.
-        channel =
-            IOWebSocketChannel.connect('ws://172.30.158.35:32/login$email');
+        channel = IOWebSocketChannel.connect(
+            '${AppStrings.protocol}://${AppStrings.host}:${AppStrings.port}/login$email');
 
         // Data that will be sended to Node.js
         String login =
