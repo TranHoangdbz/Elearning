@@ -32,10 +32,9 @@ class CustomDialog extends StatelessWidget {
             if (icon != null) icon!,
             Padding(
               padding: const EdgeInsets.fromLTRB(24, 16, 24, 24),
-              child: Text(
-                content,
-                style: TextStyles.textStyleOnBackgroundColor13w700,
-              ),
+              child: Text(content,
+                  style: TextStyles.textStyleOnBackgroundColor13w700,
+                  textAlign: TextAlign.center),
             ),
             CustomElevatedButton(
                 primary: AppColors.primaryColor,

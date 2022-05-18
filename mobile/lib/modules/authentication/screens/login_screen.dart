@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_facebook_auth/flutter_facebook_auth.dart';
 import 'package:get/get.dart';
 import 'package:uit_elearning/constants/asset_strings.dart';
 import 'package:uit_elearning/constants/text_styles.dart';
@@ -147,7 +148,9 @@ class LoginScreen extends StatelessWidget {
                               CustomOutlinedButton(
                                 label: 'Continue with Facebook',
                                 icon: Image.asset(PNGAssetString.facebook),
-                                onPressed: () {},
+                                onPressed: () {
+                                  _controller.handleLoginWithFacebook();
+                                },
                               ),
                               const SizedBox(
                                 height: 12,

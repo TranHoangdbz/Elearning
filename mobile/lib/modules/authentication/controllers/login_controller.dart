@@ -28,6 +28,10 @@ class LoginController extends GetxController {
     }
   }
 
+  void handleLoginWithFacebook() async {
+    await AuthenticationService.instance.loginWithFacebook();
+  }
+
   bool validateInput(String email, String password) {
     bool isEmailValid =
         RegExp(r"^[a-zA-Z0-9.a-zA-Z0-9.!#$%&'*+-/=?^_`{|}~]+@[a-zA-Z0-9]+\.[a-zA-Z]+")

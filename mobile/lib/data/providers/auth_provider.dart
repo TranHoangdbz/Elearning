@@ -1,4 +1,5 @@
 import 'dart:convert';
+import 'package:flutter_facebook_auth/flutter_facebook_auth.dart';
 import 'package:uit_elearning/constants/app_strings.dart';
 import 'package:web_socket_channel/io.dart';
 
@@ -104,6 +105,39 @@ class AuthenticationProvider {
       }
     } else {
       print("Email or password is empty");
+    }
+  }
+
+  loginWithFacebook({
+    required Function(Map<String, dynamic>) onResponse,
+  }) async {
+    String authKey = AppStrings.authKey;
+    final LoginResult result = await FacebookAuth.instance.login();
+    if (result.status == LoginStatus.success) {
+      final userData = await FacebookAuth.instance.getUserData();
+
+      IOWebSocketChannel channel;
+      try {
+        channel = IOWebSocketChannel.connect(
+            '${AppStrings.protocol}://${AppStrings.host}:${AppStrings.port}/login${userData['email']}');
+        String login =
+            "{'auth':'$authKey','cmd':'signInWithFacebook','email':'${userData['email']}','token':'${result.accessToken!.token}','fullName':'${userData['name']}'}";
+        channel.sink.add(login);
+        channel.stream.listen((event) async {
+          var data = json.decode(event);
+          channel.sink.close();
+          return onResponse(data);
+        });
+      } catch (e) {
+        print("Error on connecting to websocket: " + e.toString());
+      }
+    } else {
+      Map<String, dynamic> data = {
+        'error': true,
+        'message': result.message,
+        'result': null,
+      };
+      onResponse(data);
     }
   }
 }

@@ -54,6 +54,10 @@ class AuthenticationService {
     );
   }
 
+  loginWithFacebook() {
+    _authProvider.loginWithFacebook(onResponse: authenticate);
+  }
+
   signOut() async {
     SharedPreferences prefs = await SharedPreferences.getInstance();
     await prefs.setBool('authenticated', false);
