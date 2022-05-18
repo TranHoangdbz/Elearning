@@ -1,17 +1,17 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
-import 'package:uit_elearning/constants/asset_strings.dart';
-import 'package:uit_elearning/constants/text_styles.dart';
 import 'package:uit_elearning/global_widgets/custom_elevated_button.dart';
 import 'package:uit_elearning/global_widgets/custom_icon_button.dart';
-import 'package:uit_elearning/global_widgets/custom_outlined_button.dart';
 import 'package:uit_elearning/global_widgets/custom_text_field.dart';
+import 'package:uit_elearning/modules/authentication/controllers/sign_up_controller.dart';
 
 import '../../../constants/app_colors.dart';
 import '../../../global_widgets/logo_widget.dart';
 
 class SignUpScreen extends StatelessWidget {
-  const SignUpScreen({Key? key}) : super(key: key);
+  SignUpScreen({Key? key}) : super(key: key);
+
+  final _controller = Get.find<SignUpController>();
 
   @override
   Widget build(BuildContext context) {
@@ -73,50 +73,81 @@ class SignUpScreen extends StatelessWidget {
                               const SizedBox(
                                 height: 24,
                               ),
-                              const CustomTextField(
-                                label: 'EMAIL',
-                                hintText: 'Enter your email',
-                                keyboardType: TextInputType.emailAddress,
-                              ),
+                              Obx(() {
+                                return CustomTextField(
+                                  label: 'EMAIL',
+                                  hintText: 'Enter your email',
+                                  keyboardType: TextInputType.emailAddress,
+                                  textController:
+                                      _controller.emailTextController,
+                                  errorText: _controller.emailErrorText.value,
+                                );
+                              }),
                               const SizedBox(
                                 height: 24,
                               ),
-                              const CustomTextField(
-                                label: 'FULL NAME',
-                                hintText: 'Enter your name',
-                                keyboardType: TextInputType.name,
-                              ),
+                              Obx(() {
+                                return CustomTextField(
+                                  label: 'FULL NAME',
+                                  hintText: 'Enter your name',
+                                  keyboardType: TextInputType.name,
+                                  textController:
+                                      _controller.fullNameTextControler,
+                                  errorText:
+                                      _controller.fullNameErrorText.value,
+                                );
+                              }),
                               const SizedBox(
                                 height: 24,
                               ),
-                              const CustomTextField(
-                                label: 'PHONE NUMBER',
-                                hintText: 'Enter your phone number',
-                                keyboardType: TextInputType.phone,
-                              ),
+                              Obx(() {
+                                return CustomTextField(
+                                  label: 'PHONE NUMBER',
+                                  hintText: 'Enter your phone number',
+                                  keyboardType: TextInputType.phone,
+                                  textController:
+                                      _controller.phoneNumberTextController,
+                                  errorText:
+                                      _controller.phoneNumberErrorText.value,
+                                );
+                              }),
                               const SizedBox(
                                 height: 24,
                               ),
-                              const CustomTextField(
-                                label: 'PASSWORD',
-                                hintText: 'Enter password',
-                                keyboardType: TextInputType.visiblePassword,
-                                password: true,
-                              ),
+                              Obx(() {
+                                return CustomTextField(
+                                  label: 'PASSWORD',
+                                  hintText: 'Enter password',
+                                  keyboardType: TextInputType.visiblePassword,
+                                  password: true,
+                                  textController:
+                                      _controller.passwordTextController,
+                                  errorText:
+                                      _controller.passwordErrorText.value,
+                                );
+                              }),
                               const SizedBox(
                                 height: 24,
                               ),
-                              const CustomTextField(
-                                label: 'CONFIRM PASSWORD',
-                                hintText: 'Enter password again',
-                                keyboardType: TextInputType.visiblePassword,
-                                password: true,
-                              ),
+                              Obx(() {
+                                return CustomTextField(
+                                  label: 'CONFIRM PASSWORD',
+                                  hintText: 'Enter password again',
+                                  keyboardType: TextInputType.visiblePassword,
+                                  password: true,
+                                  textController:
+                                      _controller.confirmPasswordTextController,
+                                  errorText: _controller
+                                      .confirmPasswordErrorText.value,
+                                );
+                              }),
                               const SizedBox(
                                 height: 24,
                               ),
                               CustomElevatedButton(
-                                onPressed: () {},
+                                onPressed: () {
+                                  _controller.handleSignUp();
+                                },
                                 primary: AppColors.primaryColor,
                                 onPrimary: AppColors.onPrimaryColor,
                                 label: 'Sign up and login',

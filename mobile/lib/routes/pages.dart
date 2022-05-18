@@ -1,4 +1,8 @@
 import 'package:get/get.dart';
+import 'package:uit_elearning/modules/authentication/controllers/authentication_binding.dart';
+import 'package:uit_elearning/modules/authentication/controllers/authentication_controller.dart';
+import 'package:uit_elearning/modules/authentication/controllers/login_binding.dart';
+import 'package:uit_elearning/modules/authentication/controllers/sign_up_binding.dart';
 import 'package:uit_elearning/modules/authentication/screens/authentication_screen.dart';
 import 'package:uit_elearning/modules/authentication/screens/forget_password_screen.dart';
 import 'package:uit_elearning/modules/authentication/screens/login_screen.dart';
@@ -25,15 +29,18 @@ abstract class Pages {
     ),
     GetPage(
       name: Routes.auth,
-      page: () => const AuthenticationScreen(),
+      page: () => AuthenticationScreen(),
+      binding: AuthenticationBinding(),
     ),
     GetPage(
       name: Routes.login,
-      page: () => const LoginScreen(),
+      page: () => LoginScreen(),
+      binding: LoginBinding(),
     ),
     GetPage(
       name: Routes.signUp,
-      page: () => const SignUpScreen(),
+      page: () => SignUpScreen(),
+      binding: SignUpBinding(),
     ),
     GetPage(
       name: Routes.forgetPassword,

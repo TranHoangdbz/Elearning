@@ -2,16 +2,19 @@ import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:uit_elearning/constants/asset_strings.dart';
 import 'package:uit_elearning/constants/text_styles.dart';
+import 'package:uit_elearning/global_widgets/custom_dialog.dart';
 import 'package:uit_elearning/global_widgets/custom_elevated_button.dart';
 import 'package:uit_elearning/global_widgets/custom_icon_button.dart';
 import 'package:uit_elearning/global_widgets/custom_outlined_button.dart';
 import 'package:uit_elearning/global_widgets/custom_text_field.dart';
+import 'package:uit_elearning/modules/authentication/controllers/login_controller.dart';
 
 import '../../../constants/app_colors.dart';
 import '../../../global_widgets/logo_widget.dart';
 
 class LoginScreen extends StatelessWidget {
-  const LoginScreen({Key? key}) : super(key: key);
+  LoginScreen({Key? key}) : super(key: key);
+  final _controller = Get.find<LoginController>();
 
   @override
   Widget build(BuildContext context) {
@@ -73,24 +76,37 @@ class LoginScreen extends StatelessWidget {
                               const SizedBox(
                                 height: 24,
                               ),
-                              const CustomTextField(
-                                label: 'EMAIL/PHONE NUMBER',
-                                hintText: 'Enter your email/phone number',
-                              ),
+                              Obx(() {
+                                return CustomTextField(
+                                  label: 'EMAIL/PHONE NUMBER',
+                                  hintText: 'Enter your email/phone number',
+                                  textController:
+                                      _controller.emailTextController,
+                                  errorText: _controller.emailErrorText.value,
+                                );
+                              }),
                               const SizedBox(
                                 height: 24,
                               ),
-                              const CustomTextField(
-                                label: 'PASSWORD',
-                                hintText: 'Enter password',
-                                keyboardType: TextInputType.visiblePassword,
-                                password: true,
-                              ),
+                              Obx(() {
+                                return CustomTextField(
+                                  label: 'PASSWORD',
+                                  hintText: 'Enter password',
+                                  keyboardType: TextInputType.visiblePassword,
+                                  password: true,
+                                  textController:
+                                      _controller.passwordTextController,
+                                  errorText:
+                                      _controller.passwordErrorText.value,
+                                );
+                              }),
                               const SizedBox(
                                 height: 24,
                               ),
                               CustomElevatedButton(
-                                onPressed: () {},
+                                onPressed: () {
+                                  _controller.handleLogin();
+                                },
                                 primary: AppColors.primaryColor,
                                 onPrimary: AppColors.onPrimaryColor,
                                 label: 'Login',

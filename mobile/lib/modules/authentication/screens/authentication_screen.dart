@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
+import 'package:uit_elearning/modules/authentication/controllers/authentication_controller.dart';
 import 'package:uit_elearning/routes/routes.dart';
 
 import '../../../constants/app_colors.dart';
@@ -9,7 +10,9 @@ import '../../../global_widgets/custom_text_button.dart';
 import '../../../global_widgets/logo_widget.dart';
 
 class AuthenticationScreen extends StatelessWidget {
-  const AuthenticationScreen({Key? key}) : super(key: key);
+  AuthenticationScreen({Key? key}) : super(key: key);
+
+  final _controller = Get.find<AuthenticationController>();
 
   @override
   Widget build(BuildContext context) {
@@ -18,47 +21,60 @@ class AuthenticationScreen extends StatelessWidget {
         color: AppColors.primaryColor,
         child: Padding(
           padding: const EdgeInsets.symmetric(vertical: 64, horizontal: 24),
-          child: Column(
-            children: [
-              const LogoWidget(),
-              Expanded(
-                child: Center(
-                  child: Text(
-                    'Welcome',
-                    style: TextStyles.textStyleSecondaryLightColor36w800,
+          child: Obx(() {
+            return Column(
+              children: [
+                const LogoWidget(),
+                Expanded(
+                  child: Center(
+                    child: Text(
+                      'Welcome',
+                      style: TextStyles.textStyleSecondaryLightColor36w800,
+                    ),
                   ),
                 ),
-              ),
-              CustomElevatedButton(
-                label: 'Login',
-                onPressed: () {
-                  Get.toNamed(Routes.login);
-                },
-              ),
-              Padding(
-                padding: const EdgeInsets.symmetric(vertical: 8),
-                child: CustomTextButton(
-                  label: 'Forget password?',
+                if (_controller.quickAuthenticated.value)
+                  CustomElevatedButton(
+                    label: _controller.quickLoginTitle.value!,
+                    onPressed: () {
+                      _controller.quickLogin();
+                    },
+                  ),
+                if (_controller.quickAuthenticated.value)
+                  const SizedBox(
+                    height: 16,
+                  ),
+                CustomElevatedButton(
+                  label: _controller.normalLoginTitle.value,
                   onPressed: () {
-                    Get.toNamed(Routes.forgetPassword);
+                    Get.toNamed(Routes.login);
                   },
                 ),
-              ),
-              Text(
-                'Or',
-                style: TextStyles.textStyleOnPrimaryColor12w300,
-              ),
-              Padding(
-                padding: const EdgeInsets.symmetric(vertical: 8),
-                child: CustomTextButton(
-                  label: 'Sign up',
-                  onPressed: () {
-                    Get.toNamed(Routes.signUp);
-                  },
+                Padding(
+                  padding: const EdgeInsets.symmetric(vertical: 8),
+                  child: CustomTextButton(
+                    label: 'Forget password?',
+                    onPressed: () {
+                      Get.toNamed(Routes.forgetPassword);
+                    },
+                  ),
                 ),
-              ),
-            ],
-          ),
+                Text(
+                  'Or',
+                  style: TextStyles.textStyleOnPrimaryColor12w300,
+                ),
+                Padding(
+                  padding: const EdgeInsets.symmetric(vertical: 8),
+                  child: CustomTextButton(
+                    label: 'Sign up',
+                    onPressed: () {
+                      Get.toNamed(Routes.signUp);
+                    },
+                  ),
+                ),
+              ],
+            );
+          }),
         ),
       ),
     );
