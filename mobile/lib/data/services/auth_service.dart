@@ -20,8 +20,11 @@ class AuthenticationService {
     required String email,
     required String password,
     required String confirmPassword,
-    String fullName = '',
-    String phoneNumber = '',
+    String? fullName,
+    String? phoneNumber,
+    String? profilePicture,
+    List<Object>? takenCourses,
+    List<Object>? currentCourses,
   }) {
     _authProvider.signUp(
       email: email,
@@ -29,6 +32,9 @@ class AuthenticationService {
       confirmPassword: confirmPassword,
       fullName: fullName,
       phoneNumber: phoneNumber,
+      profilePicture: profilePicture,
+      takenCourses: takenCourses,
+      currentCourses: currentCourses,
       onResponse: authenticate,
     );
   }
@@ -83,8 +89,14 @@ class AuthenticationService {
       await prefs.setBool('authenticated', true);
       await prefs.setString('userEmail', currentUser!.email);
       await prefs.setString('userHash', currentUser!.password);
-      await prefs.setString('userFullName', currentUser!.fullName);
-      await prefs.setString('userPhoneNumber', currentUser!.phoneNumber);
+      await prefs.setString('userFullName', currentUser!.fullName ?? '');
+      await prefs.setString('userPhoneNumber', currentUser!.phoneNumber ?? '');
+      await prefs.setString(
+          'userProfilePicture', currentUser!.profilePicture ?? '');
+      await prefs.setString(
+          'userTakenCourses', currentUser!.takenCourses.toString());
+      await prefs.setString(
+          'userCurrentCourses', currentUser!.currentCourses.toString());
       Get.offAllNamed(Routes.home);
     } else {
       currentUser = null;

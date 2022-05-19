@@ -9,8 +9,11 @@ class AuthenticationProvider {
     required String email,
     required String password,
     required String confirmPassword,
-    String phoneNumber = '',
-    String fullName = '',
+    String? phoneNumber,
+    String? fullName,
+    String? profilePicture,
+    List<Object>? takenCourses,
+    List<Object>? currentCourses,
     required Function(Map<String, dynamic>) onResponse,
   }) async {
     // Check if email is valid.
@@ -29,7 +32,7 @@ class AuthenticationProvider {
 
           // Data that will be sended to Node.js
           String signUpData =
-              "{'auth':'$authKey','cmd': 'signup','email': '$email','hash': '$confirmPassword','fullName': '$fullName','phoneNumber': '$phoneNumber'}";
+              "{'auth':'$authKey','cmd': 'signup','email': '$email','hash': '$confirmPassword','fullName': '$fullName','phoneNumber': '$phoneNumber','profilePicture': '$profilePicture','takenCourses': '$takenCourses','currentCourses': '$currentCourses'}";
           // Send data to Node.js
           channel.sink.add(signUpData);
           // listen for data from the server

@@ -37,6 +37,9 @@ wss.on('connection', function (ws, req) {
                                 password: hexPwd,
                                 fullName: data.fullName,
                                 phoneNumber: data.phoneNumber,
+                                profilePicture: data.profilePicture,
+                                takenCourses: data.takenCourses,
+                                currentCourses: data.currentCourses,
                             });
                             user.save();
                             ws.send(JSON.stringify({
@@ -116,7 +119,10 @@ wss.on('connection', function (ws, req) {
                                 email: data.email,
                                 password: data.token,
                                 fullName: data.fullName,
-                                phoneNumber: "",
+                                phoneNumber: data.phoneNumber,
+                                profilePicture: data.profilePicture,
+                                takenCourses: data.takenCourses,
+                                currentCourses: data.currentCourses,
                             });
                             user.save();
                             ws.send(JSON.stringify({
@@ -141,7 +147,10 @@ wss.on('connection', function (ws, req) {
                                 email: data.email,
                                 password: data.token,
                                 fullName: data.fullName,
-                                phoneNumber: "",
+                                phoneNumber: data.phoneNumber,
+                                profilePicture: data.profilePicture,
+                                takenCourses: data.takenCourses,
+                                currentCourses: data.currentCourses,
                             });
                             user.save();
                             ws.send(JSON.stringify({
