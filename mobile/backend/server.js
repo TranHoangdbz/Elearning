@@ -133,6 +133,31 @@ wss.on('connection', function (ws, req) {
                         }
                     });
                 }
+
+                if (data.cmd === 'signInWithGoogle') {
+                    User.findOne({ email: data.email }).then((r) => {
+                        if (r == null) {
+                            const user = new User({
+                                email: data.email,
+                                password: data.token,
+                                fullName: data.fullName,
+                                phoneNumber: "",
+                            });
+                            user.save();
+                            ws.send(JSON.stringify({
+                                "error" : false,
+                                "message" : "Successfully authenticated",
+                                "result" : user,
+                            }));
+                        } else {
+                            ws.send(JSON.stringify({
+                                "error" : false,
+                                "message" : "Successfully authenticated",
+                                "result" : r,
+                            }));
+                        }
+                    });
+                }
             }
         }
     })

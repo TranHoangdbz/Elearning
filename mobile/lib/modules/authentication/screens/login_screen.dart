@@ -158,7 +158,9 @@ class LoginScreen extends StatelessWidget {
                               CustomOutlinedButton(
                                 label: 'Continue with Google',
                                 icon: Image.asset(PNGAssetString.google),
-                                onPressed: () {},
+                                onPressed: () {
+                                  _controller.handleLoginWithGoogle();
+                                },
                               ),
                               const SizedBox(
                                 height: 24,

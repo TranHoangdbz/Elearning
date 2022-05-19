@@ -1,5 +1,6 @@
 import 'dart:convert';
 import 'package:flutter_facebook_auth/flutter_facebook_auth.dart';
+import 'package:google_sign_in/google_sign_in.dart';
 import 'package:uit_elearning/constants/app_strings.dart';
 import 'package:web_socket_channel/io.dart';
 
@@ -38,13 +39,28 @@ class AuthenticationProvider {
             return onResponse(data);
           });
         } catch (e) {
-          print("Error on connecting to websocket: " + e.toString());
+          Map<String, dynamic> data = {
+            'error': true,
+            'message': 'Sign in failed',
+            'result': null,
+          };
+          onResponse(data);
         }
       } else {
-        print("Password is invalid");
+        Map<String, dynamic> data = {
+          'error': true,
+          'message': 'Password is invalid',
+          'result': null,
+        };
+        onResponse(data);
       }
     } else {
-      print("Email is invalid");
+      Map<String, dynamic> data = {
+        'error': true,
+        'message': 'Email is invalid',
+        'result': null,
+      };
+      onResponse(data);
     }
   }
 
@@ -71,10 +87,20 @@ class AuthenticationProvider {
           return onResponse(data);
         });
       } catch (e) {
-        print("Error on connecting to websocket: " + e.toString());
+        Map<String, dynamic> data = {
+          'error': true,
+          'message': 'Sign in failed',
+          'result': null,
+        };
+        onResponse(data);
       }
     } else {
-      print("Email or password is empty");
+      Map<String, dynamic> data = {
+        'error': true,
+        'message': 'Email or password is empty',
+        'result': null,
+      };
+      onResponse(data);
     }
   }
 
@@ -101,10 +127,20 @@ class AuthenticationProvider {
           return onResponse(data);
         });
       } catch (e) {
-        print("Error on connecting to websocket: " + e.toString());
+        Map<String, dynamic> data = {
+          'error': true,
+          'message': 'Sign in failed',
+          'result': null,
+        };
+        onResponse(data);
       }
     } else {
-      print("Email or password is empty");
+      Map<String, dynamic> data = {
+        'error': true,
+        'message': 'Email or password is empty',
+        'result': null,
+      };
+      onResponse(data);
     }
   }
 
@@ -129,12 +165,61 @@ class AuthenticationProvider {
           return onResponse(data);
         });
       } catch (e) {
-        print("Error on connecting to websocket: " + e.toString());
+        Map<String, dynamic> data = {
+          'error': true,
+          'message': 'Sign in failed',
+          'result': null,
+        };
+        onResponse(data);
       }
     } else {
       Map<String, dynamic> data = {
         'error': true,
         'message': result.message,
+        'result': null,
+      };
+      onResponse(data);
+    }
+  }
+
+  loginWithGoogle({
+    required Function(Map<String, dynamic>) onResponse,
+  }) async {
+    String authKey = AppStrings.authKey;
+
+    GoogleSignIn googleSignIn = GoogleSignIn();
+
+    await googleSignIn.signOut();
+
+    GoogleSignInAccount? user = await googleSignIn.signIn();
+
+    if (user != null) {
+      GoogleSignInAuthentication auth = await user.authentication;
+
+      IOWebSocketChannel channel;
+      try {
+        channel = IOWebSocketChannel.connect(
+            '${AppStrings.protocol}://${AppStrings.host}:${AppStrings.port}/login${user.email}');
+        String login =
+            "{'auth':'$authKey','cmd':'signInWithGoogle','email':'${user.email}','token':'${auth.accessToken}','fullName':'${user.displayName}'}";
+        channel.sink.add(login);
+        channel.stream.listen((event) async {
+          var data = json.decode(event);
+          channel.sink.close();
+          return onResponse(data);
+        });
+      } catch (e) {
+        Map<String, dynamic> data = {
+          'error': true,
+          'message': 'Sign in failed',
+          'result': null,
+        };
+        onResponse(data);
+      }
+    } else {
+      Map<String, dynamic> data = {
+        'error': true,
+        'message': 'Sign in failed',
         'result': null,
       };
       onResponse(data);

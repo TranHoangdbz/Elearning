@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
+import 'package:google_sign_in/google_sign_in.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:uit_elearning/constants/app_colors.dart';
 import 'package:uit_elearning/data/models/user.dart';
@@ -58,9 +59,20 @@ class AuthenticationService {
     _authProvider.loginWithFacebook(onResponse: authenticate);
   }
 
+  loginWithGoogle() {
+    _authProvider.loginWithGoogle(onResponse: authenticate);
+  }
+
   signOut() async {
     SharedPreferences prefs = await SharedPreferences.getInstance();
     await prefs.setBool('authenticated', false);
+
+    GoogleSignIn googleSignIn = GoogleSignIn();
+
+    if (await googleSignIn.isSignedIn()) {
+      await googleSignIn.signOut();
+    }
+
     Get.offNamed(Routes.auth);
   }
 
