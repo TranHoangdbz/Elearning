@@ -1,7 +1,7 @@
 .editLesson{
-    position: fixed;
+
     width: 100%;
-    height: 100vh;
+    height: 120vh;
     top: 0;
     left: 0;
     background-color: gray;
@@ -13,7 +13,8 @@
     position: relative;
     padding: 20px;
     width: 100%;
-    max-width: 1000px;
+    height: auto;
+    max-width: 1400px;
     background-color: #fff;
 }
 .header__right{
@@ -31,4 +32,51 @@
     margin-top: 10px;
     margin-bottom: 10px;
     font-weight: 600;
+    font-size: larger;
+}
+
+.edit__body .editcourse__video{
+    display: flex;
+    justify-content: space-between;
+}
+.edit__body .editcourse__video .video_components{
+    flex: 1;
+}
+.video_components ~ .video_components {
+    margin-left: 20px;
+}
+
+.edit__body .editcourse__video .video_components .video_header{
+    display: flex;
+}
+.edit__body .editcourse__video .video_components .video_header .btnn_select{
+    margin-left: auto;
+    margin-right: 2px;
+    padding: 5px;
+    font-size: 16px;
+    color: #fff;
+    background-color: #1A5276;
+    border-radius: 10px;
+    border-style: none;
+    box-shadow: 2px 2px 3px #99A3A4;
+}
+.edit__body .editcourse__video .video_components .video_body{
+    margin-top: 10px;
+    background-color: #99A3A4;
+    height: 280px;
+    border-radius: 10px;
+    border-style: none;
+   
+}
+.edit__body .btn_save{
+    margin-top: 20px;
+
+    float: right;
+    padding: 10px;
+    font-size: 16px;
+    color: #fff;
+    background-color: #1A5276;
+    border-radius: 10px;
+    border-style: none;
+    box-shadow: 2px 2px 2px #99A3A4;
 }

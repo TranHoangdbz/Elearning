@@ -40,6 +40,7 @@ const EditCourses = () => {
                 <FormControl sx={{ m: 1, minWidth: 120 }} size="small">
                     <InputLabel id="demo-select-small">Course</InputLabel>
                     <Select
+                        style={{width: 250, fontSize: 14,}}
                         labelId="demo-select-small"
                         id="demo-select-small"
                         value={course}
@@ -50,11 +51,40 @@ const EditCourses = () => {
                         <MenuItem style={{ fontSize: 14, fontFamily: "monospace" }} value="">
                         <em>None</em>
                         </MenuItem>
-                        <MenuItem style={{ fontSize: 14, fontFamily: "monospace" }} value={10}>Ten</MenuItem>
-                        <MenuItem style={{ fontSize: 14, fontFamily: "monospace" }} value={20}>Twenty</MenuItem>
-                        <MenuItem style={{ fontSize: 14, fontFamily: "monospace" }} value={30}>Thirty</MenuItem>
+                        <MenuItem style={{ fontSize: 14, fontFamily: "monospace" }} value={10}>Front end course</MenuItem>
+                        <MenuItem style={{ fontSize: 14, fontFamily: "monospace" }} value={20}>HTML - CSS zero to hero</MenuItem>
+                        <MenuItem style={{ fontSize: 14, fontFamily: "monospace" }} value={30}>React Native beginer</MenuItem>
                     </Select>
                 </FormControl>
+                <div className="editcourse__video">
+                    <div className="video_components">
+                        <div className="video_header">
+                            <p className="title">Thumbnail</p>
+                            <button className="btnn_select">
+                                Select Image
+                            </button>
+                        </div>
+                        <div className="video_body">
+
+                        </div>
+                    </div>
+                    <div className="video_components">
+                        <div className="video_header">
+                            <p className="title">Video</p>
+                            <button className="btnn_select">
+                                Select Video
+                            </button>
+                        </div>
+                        <div className="video_body">
+
+                        </div>
+                        
+                    </div>
+                    
+                </div>
+                <button className="btn_save">
+                            Save all
+                </button>
             </div>
         </div>
     </div>
