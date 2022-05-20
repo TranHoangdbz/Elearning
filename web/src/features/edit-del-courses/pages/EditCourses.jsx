@@ -1,10 +1,10 @@
-import React from 'react';
+import React  from 'react';
 import './editcourse.css';
 import CancelOutlinedIcon from '@mui/icons-material/CancelOutlined';
 import { TextField, FormControl, Select, InputLabel, MenuItem } from '@mui/material';
 const EditCourses = () => {
     const [course, setCourse] = React.useState('');
-
+    const [popup, setPopup] = React.useState(true);
     const handleChange = (event) => {
         setCourse(event.target.value);
     };
@@ -82,10 +82,31 @@ const EditCourses = () => {
                     </div>
                     
                 </div>
-                <button className="btn_save">
-                            Save all
+                <button className="btn_save"
+                    onClick={()=> setPopup(true)}    
+                >
+                    Save all
                 </button>
             </div>
+            {popup && (
+                <div className='overlay'>
+                    <div  className='popup'>
+                        <div className='header'>
+                            <h2 className='header__title'>Confirm action</h2>
+                            <button className='header__right' onClick={()=> setPopup(false)}> <CancelOutlinedIcon color="secondary" fontSize="large"/> </button>
+                        </div>
+                        <p>This is confirm message we will pass into the model</p>
+                        <div className='footer'>
+                            <div className='footer__left'></div>
+                            <div className='footer__right'>
+                                <button className='btn__cancel' onClick={()=> setPopup(false)}> Cancel </button>
+                                <button className='btn__ok' onClick={()=> setPopup(false)}> Ok </button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            )}
+            
         </div>
     </div>
   );
