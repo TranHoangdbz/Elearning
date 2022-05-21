@@ -17,4 +17,7 @@ app.use(express.json())
 const coursesRouter = require('./routes/courses')
 app.use('/courses', coursesRouter)
 
+const lessonRouter = require('./routes/lesson')
+app.use('/lesson', lessonRouter)
+
 app.listen(PORT, () => console.log('Server Started'))
