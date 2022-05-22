@@ -20,5 +20,3 @@ app.use('/courses', coursesRouter)
 app.use('/users', usersRouter)
 
 app.listen(PORT, () => console.log('Server Started'))
-
-//DATABASE_URL=mongodb+srv://admin:admin@uit-elearning.uqfe4.mongodb.net/myFirstDatabase?retryWrites=true&w=majority
