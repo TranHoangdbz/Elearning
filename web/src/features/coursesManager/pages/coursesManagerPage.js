@@ -1,5 +1,5 @@
 import { Box, Grid, List, ListItem } from "@mui/material";
-import SearchField from "../components/searchField";
+import Header from "../components/header";
 import SideMenu from "../components/sideMenu";
 
 function CoursesManagerPage() {
@@ -13,7 +13,7 @@ function CoursesManagerPage() {
           <Box>
             <List>
               <ListItem sx={{ padding: "0px 0px" }}>
-                <SearchField />
+                <Header />
               </ListItem>
               <ListItem>
                 <h3>Data</h3>
