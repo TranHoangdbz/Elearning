@@ -21,6 +21,17 @@ const Routers = () => {
                 <Route path="/editcourses" name="EditCourses" element={<EditCourses />} />
                 <Route path="/exam" name="Example" element={<ExamPage />} />
                 <Route index name="Example" element={<Navigate to="exam" />} />
+                {routes.managerRoute.map((route, idx) => {
+                    return (
+                        route.element && (
+                            <Route
+                                key={idx}
+                                path={route.path}
+                                element={route.element}
+                            />
+                        )
+                    );
+                })}
                 {routes.publicRoute.map((route, idx) => {
                     return (
                         route.element && (
@@ -32,7 +43,6 @@ const Routers = () => {
                         )
                     );
                 })}
-                
             </Routes>
         </React.Suspense>
     );

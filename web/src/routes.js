@@ -1,6 +1,7 @@
 import React from "react";
 
 const Counter = React.lazy(() => import("./features/counter"));
+const CoursesManagerPage = React.lazy(() => import("./features/coursesManager"))
 
 const publicRoute = [
     {
@@ -14,7 +15,13 @@ const commonRoute = [];
 
 const protectedRoute = [];
 
-const managerRoute = [];
+const managerRoute = [
+    {
+        path: "/coursesmanager",
+        name: "CoursesManager",
+        element: <CoursesManagerPage />
+    }
+];
 
 const routes = {
     publicRoute,
