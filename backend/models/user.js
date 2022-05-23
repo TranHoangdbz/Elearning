@@ -32,10 +32,10 @@ const User = new Schema(
             type: String,
             default: 'https://res.cloudinary.com/shanectteam/image/upload/v1634874318/user_zjvzyj.png',
         },
-        // verified: {
-        //     type: Boolean,
-        //     default: false,
-        // },
+        verified: {
+            type: Boolean,
+            default: false,
+        },
     }, { timestamps: true, collection: 'users' }
 );
 
