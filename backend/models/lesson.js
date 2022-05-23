@@ -1,17 +1,19 @@
-const mongoose = require('mongoose')
+const mongoose = require("mongoose");
 
 const lessonSchema = new mongoose.Schema({
-    name: {
-        type: String,
-        required: true
+  name: {
+    type: String,
+    required: true,
+  },
+  description: String,
+  video: String,
+  lessonVolume: Number,
+  quizz: [
+    {
+      type: mongoose.Schema.Types.ObjectId,
+      ref: "Quizz",
     },
-    description: String,
-    video: String,
-    lessonVolume: Number,
-    Quizz: [{
-        type: mongoose.Schema.Types.ObjectId,
-        ref: 'quizz'
-    }]
-})
+  ],
+});
 
-module.exports = mongoose.model('lesson', lessonSchema)
+module.exports = mongoose.model("lesson", lessonSchema);
