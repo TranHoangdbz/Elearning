@@ -1,35 +1,62 @@
 const { Router } = require("express");
 const { default: mongoose } = require("mongoose");
+const cloudinary = require('../cloudinary');
+const fs = require('fs');
+const upload = require('../multer');
 const Course = require("../models/course");
 const lesson = require("../models/lesson");
 const Quizz = require("../models/quizz");
 const router = Router();
 
-router.patch("/update/:lessonId", async (req, res) => {
+router.patch("/update/:lessonId", upload.array('file'), async (req, res) => {
   const lessonId = req.params.lessonId;
-  const { name, description, video, lessonVolume } = req.body;
+  const files = req.files;
+  const { name, description, video, cloudId, lessonVolume } = req.body;
+  let newVideoUrl = '';
+  let newCloudId = '';
 
-  lesson
-    .findById(lessonId, function (err, doc) {
-      if (err) {
-        res.status(500).json({ error: err.message });
-        return;
-      }
+  if (files.length > 0) {
+    const { path } = files[0]
 
-      doc.name = name;
-      doc.description = description;
-      doc.video = video;
-      doc.lessonVolume = lessonVolume;
-
-      doc
-        .save()
-        .then((result) => {
-          res.status(200).send(result);
-        })
-        .catch((err) => {
-          res.status(500).json({ error: err.message });
-        });
+    const newPath = await cloudinary.uploader.upload(path, {
+      resource_type: 'auto',
+    }).catch(error => {
+      console.log(error)
+      res.status(400).json({
+        error
+      })
     })
+    fs.unlinkSync(path)
+    newVideoUrl = newPath.url;
+    newCloudId = newPath.public_id;
+  }
+
+  lesson.findById(lessonId, function (err, doc) {
+    if (err) {
+      res.status(500).json({ error: err.message });
+      return;
+    }
+
+    doc.name = name;
+    doc.description = description;
+    doc.lessonVolume = lessonVolume;
+
+    if (newVideoUrl !== '') {
+      doc.video = newVideoUrl;
+      doc.cloudId = newCloudId;
+      await cloudinary.uploader.destroy(cloudId, function (result) {
+        console.log(result);
+      })
+    }
+    
+    doc.save()
+      .then((result) => {
+        res.status(200).send(result);
+      })
+      .catch((err) => {
+        res.status(500).json({ error: err.message });
+      });
+  })
     .catch((err) => {
       res.status(500).json({ error: err.message });
     });
