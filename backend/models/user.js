@@ -26,8 +26,8 @@ const User = new Schema(
             required: true,
             trim: true,
         },
-        takenCourses: [{ type: Schema.Types.ObjectId, ref: 'Course' }],
-        currentCourses: [{ type: Schema.Types.ObjectId, ref: 'Course' }],
+        takenCourses: [{ type: Schema.Types.ObjectId, ref: 'Course', default: [] }],
+        currentCourses: [{ type: Schema.Types.ObjectId, ref: 'Course', default: [] }],
         profilePicture: {
             type: String,
             default: 'https://res.cloudinary.com/shanectteam/image/upload/v1634874318/user_zjvzyj.png',
