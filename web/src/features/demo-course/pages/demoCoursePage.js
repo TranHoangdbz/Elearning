@@ -2,7 +2,9 @@ import {Stack} from '@mui/material'
 
 const DemoCourse = () => {
  return (
-     <Stack></Stack>
+     <Stack>
+         Thien 
+     </Stack>
  )
 }
 export default DemoCourse;

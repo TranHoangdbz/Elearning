@@ -1,4 +1,4 @@
-import DemoCourse from "./pages/DemoCoursePage"
+import DemoCourse from "./pages/demoCoursePage"
 
 
 function DemoCoursePage() {

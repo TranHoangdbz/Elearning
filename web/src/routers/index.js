@@ -5,6 +5,8 @@ import React from "react";
 
 // import page
 const ExamPage = React.lazy(() => import("../components/exam"));
+const DemoCourse = React.lazy(() => import("../features/demo-course"));
+
 
 // waiting
 const loading = (
@@ -17,7 +19,7 @@ const Routers = () => {
     return (
         <React.Suspense fallback={loading}>
             <Routes>
-                <Route path="/exam" name="Example" element={<ExamPage />} />
+                <Route path="/exam" name="Example" element={<DemoCourse />} />
                 <Route index name="Example" element={<Navigate to="exam" />} />
                 {routes.publicRoute.map((route, idx) => {
                     return (
