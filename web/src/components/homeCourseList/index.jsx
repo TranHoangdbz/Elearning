@@ -10,6 +10,8 @@ import CardContent from '@mui/material/CardContent';
 import CardMedia from '@mui/material/CardMedia';
 import { CardActionArea } from '@mui/material';
 
+import { FaAngleLeft, FaAngleRight } from 'react-icons/fa'
+
 import SwiperCore, { Virtual, Navigation, Pagination } from 'swiper';
 import { Swiper, SwiperSlide } from 'swiper/react';
 
@@ -452,20 +454,6 @@ const HomeCourseList = () => {
     const appendNumber = useRef(listCourse.length);
     const prependNumber = useRef(1);
 
-    const prepend = () => {
-        setSlides([
-            `Slide ${prependNumber.current - 2}`,
-            `Slide ${prependNumber.current - 1}`,
-            ...slides,
-        ]);
-        prependNumber.current = prependNumber.current - 2;
-        swiperRef.slideTo(swiperRef.activeIndex + 2, 0);
-    };
-
-    const append = () => {
-        setSlides([...slides, 'Slide ' + ++appendNumber.current]);
-    };
-
     const slideTo = (index) => {
         swiperRef.slideTo(index - 1, 0);
     };
@@ -509,25 +497,27 @@ const HomeCourseList = () => {
                         alignSelf: 'center',
                         boxShadow: '0px 0px 3.93162px 0.982906px rgba(0, 0, 0, 0.25)',
                     }}
-                    onClick={() => prepend()}
                 >
-                    <ArrowCircleLeftOutlinedIcon sx={{
+                    <FaAngleLeft sx={{
                         width: '31.45px',
                         height: '31.45px',
-                    }} />
+                    }}
+                        className="typeOfFilm__container__content__prev"
+                    />
                 </IconButton>
                 <Swiper
+                    navigation={{
+                        nextEl: '.typeOfFilm__container__content__next',
+                        prevEl: '.typeOfFilm__container__content__prev'
+                    }}
+                    className="typeOfFilm__container__content__swiper"
                     slidesPerView={4}
                     spaceBetween={20}
                     slidesPerGroup={4}
                     loop={true}
                     loopFillGroupWithBlank={true}
-                    pagination={{
-                        clickable: true,
-                    }}
                     style={{ height: '300px' }}
-                    navigation={true}
-                    modules={[Pagination, Navigation]}
+                    modules={[Navigation]}
                 >
                     {slides.map((item) => (
                         <SwiperSlide key={item.id}>
@@ -633,12 +623,13 @@ const HomeCourseList = () => {
                     alignSelf: 'center',
                     boxShadow: '0px 0px 3.93162px 0.982906px rgba(0, 0, 0, 0.25)',
                 }}
-                    onClick={() => append()}
                 >
-                    <ArrowCircleRightOutlinedIcon sx={{
+                    <FaAngleRight sx={{
                         width: '31.45px',
                         height: '31.45px'
-                    }} />
+                    }}
+                        className="typeOfFilm__container__content__next"
+                    />
                 </IconButton>
             </Stack>
 
@@ -676,25 +667,27 @@ const HomeCourseList = () => {
                         alignSelf: 'center',
                         boxShadow: '0px 0px 3.93162px 0.982906px rgba(0, 0, 0, 0.25)',
                     }}
-                    onClick={() => prepend()}
                 >
-                    <ArrowCircleLeftOutlinedIcon sx={{
+                    <FaAngleLeft sx={{
                         width: '31.45px',
                         height: '31.45px',
-                    }} />
+                    }}
+                        className="typeOfFilm__container__content__prev1"
+                    />
                 </IconButton>
                 <Swiper
+                    navigation={{
+                        nextEl: '.typeOfFilm__container__content__next1',
+                        prevEl: '.typeOfFilm__container__content__prev1'
+                    }}
+                    className="typeOfFilm__container__content__swiper"
                     slidesPerView={4}
                     spaceBetween={20}
                     slidesPerGroup={4}
                     loop={true}
                     loopFillGroupWithBlank={true}
-                    pagination={{
-                        clickable: true,
-                    }}
                     style={{ height: '300px' }}
-                    navigation={true}
-                    modules={[Pagination, Navigation]}
+                    modules={[Navigation]}
                 >
                     {slides.map((item) => (
                         <SwiperSlide key={item.id}>
@@ -800,12 +793,13 @@ const HomeCourseList = () => {
                     alignSelf: 'center',
                     boxShadow: '0px 0px 3.93162px 0.982906px rgba(0, 0, 0, 0.25)',
                 }}
-                    onClick={() => append()}
                 >
-                    <ArrowCircleRightOutlinedIcon sx={{
+                    <FaAngleRight sx={{
                         width: '31.45px',
                         height: '31.45px'
-                    }} />
+                    }}
+                        className="typeOfFilm__container__content__next1"
+                    />
                 </IconButton>
             </Stack>
 
@@ -843,25 +837,27 @@ const HomeCourseList = () => {
                         alignSelf: 'center',
                         boxShadow: '0px 0px 3.93162px 0.982906px rgba(0, 0, 0, 0.25)',
                     }}
-                    onClick={() => prepend()}
                 >
-                    <ArrowCircleLeftOutlinedIcon sx={{
+                    <FaAngleLeft sx={{
                         width: '31.45px',
                         height: '31.45px',
-                    }} />
+                    }}
+                        className="typeOfFilm__container__content__prev2"
+                    />
                 </IconButton>
                 <Swiper
+                    navigation={{
+                        nextEl: '.typeOfFilm__container__content__next2',
+                        prevEl: '.typeOfFilm__container__content__prev2'
+                    }}
+                    className="typeOfFilm__container__content__swiper"
                     slidesPerView={4}
                     spaceBetween={20}
                     slidesPerGroup={4}
                     loop={true}
                     loopFillGroupWithBlank={true}
-                    pagination={{
-                        clickable: true,
-                    }}
                     style={{ height: '300px' }}
-                    navigation={true}
-                    modules={[Pagination, Navigation]}
+                    modules={[Navigation]}
                 >
                     {slides.map((item) => (
                         <SwiperSlide key={item.id}>
@@ -967,12 +963,13 @@ const HomeCourseList = () => {
                     alignSelf: 'center',
                     boxShadow: '0px 0px 3.93162px 0.982906px rgba(0, 0, 0, 0.25)',
                 }}
-                    onClick={() => append()}
                 >
-                    <ArrowCircleRightOutlinedIcon sx={{
+                    <FaAngleRight sx={{
                         width: '31.45px',
                         height: '31.45px'
-                    }} />
+                    }}
+                        className="typeOfFilm__container__content__next2"
+                    />
                 </IconButton>
             </Stack>
 
@@ -1010,25 +1007,27 @@ const HomeCourseList = () => {
                         alignSelf: 'center',
                         boxShadow: '0px 0px 3.93162px 0.982906px rgba(0, 0, 0, 0.25)',
                     }}
-                    onClick={() => prepend()}
                 >
-                    <ArrowCircleLeftOutlinedIcon sx={{
+                    <FaAngleLeft sx={{
                         width: '31.45px',
                         height: '31.45px',
-                    }} />
+                    }}
+                        className="typeOfFilm__container__content__prev3"
+                    />
                 </IconButton>
                 <Swiper
+                    navigation={{
+                        nextEl: '.typeOfFilm__container__content__next3',
+                        prevEl: '.typeOfFilm__container__content__prev3'
+                    }}
+                    className="typeOfFilm__container__content__swiper"
                     slidesPerView={4}
                     spaceBetween={20}
                     slidesPerGroup={4}
                     loop={true}
                     loopFillGroupWithBlank={true}
-                    pagination={{
-                        clickable: true,
-                    }}
                     style={{ height: '300px' }}
-                    navigation={true}
-                    modules={[Pagination, Navigation]}
+                    modules={[Navigation]}
                 >
                     {slides.map((item) => (
                         <SwiperSlide key={item.id}>
@@ -1134,12 +1133,13 @@ const HomeCourseList = () => {
                     alignSelf: 'center',
                     boxShadow: '0px 0px 3.93162px 0.982906px rgba(0, 0, 0, 0.25)',
                 }}
-                    onClick={() => append()}
                 >
-                    <ArrowCircleRightOutlinedIcon sx={{
+                    <FaAngleRight sx={{
                         width: '31.45px',
                         height: '31.45px'
-                    }} />
+                    }}
+                        className="typeOfFilm__container__content__next3"
+                    />
                 </IconButton>
             </Stack>
 
@@ -1177,25 +1177,27 @@ const HomeCourseList = () => {
                         alignSelf: 'center',
                         boxShadow: '0px 0px 3.93162px 0.982906px rgba(0, 0, 0, 0.25)',
                     }}
-                    onClick={() => prepend()}
                 >
-                    <ArrowCircleLeftOutlinedIcon sx={{
+                    <FaAngleLeft sx={{
                         width: '31.45px',
                         height: '31.45px',
-                    }} />
+                    }}
+                        className="typeOfFilm__container__content__prev4"
+                    />
                 </IconButton>
                 <Swiper
+                    navigation={{
+                        nextEl: '.typeOfFilm__container__content__next4',
+                        prevEl: '.typeOfFilm__container__content__prev4'
+                    }}
+                    className="typeOfFilm__container__content__swiper"
                     slidesPerView={4}
                     spaceBetween={20}
                     slidesPerGroup={4}
                     loop={true}
                     loopFillGroupWithBlank={true}
-                    pagination={{
-                        clickable: true,
-                    }}
                     style={{ height: '300px' }}
-                    navigation={true}
-                    modules={[Pagination, Navigation]}
+                    modules={[Navigation]}
                 >
                     {slides.map((item) => (
                         <SwiperSlide key={item.id}>
@@ -1301,12 +1303,13 @@ const HomeCourseList = () => {
                     alignSelf: 'center',
                     boxShadow: '0px 0px 3.93162px 0.982906px rgba(0, 0, 0, 0.25)',
                 }}
-                    onClick={() => append()}
                 >
-                    <ArrowCircleRightOutlinedIcon sx={{
+                    <FaAngleRight sx={{
                         width: '31.45px',
                         height: '31.45px'
-                    }} />
+                    }}
+                        className="typeOfFilm__container__content__next4"
+                    />
                 </IconButton>
             </Stack>
 
