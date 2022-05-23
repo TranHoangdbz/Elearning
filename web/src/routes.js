@@ -1,12 +1,13 @@
 import React from "react";
 
-const Counter = React.lazy(() => import("./features/counter"));
+
+const DemoCourse = React.lazy(() => import("./features/demo-course"));
 
 const publicRoute = [
     {
-        path: "/counter",
-        name: "Counter",
-        element: <Counter />,
+        path: "/demo/:id",
+        name: "Demo Course",
+        element: <DemoCourse />,
     },
 ];
 
