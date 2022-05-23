@@ -1,4 +1,5 @@
 import { Box, Grid, List, ListItem } from "@mui/material";
+import CoursesTable from "../components/coursesTable";
 import Header from "../components/header";
 import SideMenu from "../components/sideMenu";
 
@@ -16,7 +17,7 @@ function CoursesManagerPage() {
                 <Header />
               </ListItem>
               <ListItem>
-                <h3>Data</h3>
+                <CoursesTable />
               </ListItem>
             </List>
           </Box>
