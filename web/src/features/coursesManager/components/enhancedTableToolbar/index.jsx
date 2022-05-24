@@ -1,12 +1,21 @@
 import { Box, Button, InputBase, Stack, Typography } from "@mui/material";
+import { useNavigate } from "react-router-dom";
 import styles from "./enhancedTableToolbar.module.scss";
 
 function EnhancedTableToolbar({ numSelected }) {
+  const navigate = useNavigate();
+  
   return (
     <Box>
       <Stack direction="row" justifyContent="space-between">
         <Typography variant="h5">Danh sách khóa học</Typography>
-        <Button className={`${styles.button}`} variant="contained">
+        <Button
+          className={`${styles.button}`}
+          variant="contained"
+          onClick={() => {
+            navigate("/coursesmanager/addcourse");
+          }}
+        >
           Thêm khóa học
         </Button>
       </Stack>

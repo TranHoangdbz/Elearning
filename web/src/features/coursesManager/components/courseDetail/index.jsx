@@ -103,9 +103,11 @@ function CourseDetail() {
             <Typography>{`${courseData.lessons.length} lessons`}</Typography>
           </Stack>
           <Button
-            onClick={() => console.log(courseData.lessons)}
             className={`${styles.addbutton}`}
             variant="contained"
+            onClick={() => {
+              navigate("/coursesmanager/addcourse");
+            }}
           >
             Thêm bài học
           </Button>
