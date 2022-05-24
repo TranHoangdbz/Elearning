@@ -47,7 +47,6 @@ const questions = [
 ];
 
 function Quizz(props) {
-
     const [activeStep, setActiveStep] = React.useState(0);
     const handleClickBack = () => {
         if (activeStep > 0) {
