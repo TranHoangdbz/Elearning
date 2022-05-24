@@ -21,7 +21,7 @@ root.render(
                     <Route path="/" element={<App />} />
                     <Route
                         path="forgot-password"
-                        element={<ForgotNumberPage />}
+                        // element={<ForgotNumberPage />}
                     />
                 </Routes>
             </BrowserRouter>
