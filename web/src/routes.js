@@ -1,7 +1,6 @@
 import React from "react";
-const CourseLearningPage = React.lazy(()=>import("./features/courseLearning"));
 
-const Counter = React.lazy(() => import("./features/counter"));
+const CourseLearningPage = React.lazy(()=>import("./features/courseLearning"));
 const ForgotPasswordPage = React.lazy(() => import("./features/forgotPassword"))
 const ResetPasswordPage = React.lazy(() => import("./features/resetPassword"))
 
@@ -10,11 +9,6 @@ const publicRoute = [
         path: "/course-learning",
         name: "Course Learning",
         element: <CourseLearningPage />,
-    },
-    {
-        path: "/counter",
-        name: "Counter",
-        element: <Counter />,
     },
     {
         path: "/forgot-password",
