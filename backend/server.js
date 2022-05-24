@@ -1,12 +1,12 @@
-require('dotenv').config()
+// require('dotenv').config()
 
 const express = require('express')
 const app = express();
 const mongoose = require('mongoose')
 
-const PORT = 32
+const PORT = 5000
 
-mongoose.connect(process.env.DATABASE_URL)
+mongoose.connect("mongodb+srv://admin:admin@uit-elearning.uqfe4.mongodb.net/myFirstDatabase?retryWrites=true&w=majority")
 const db = mongoose.connection
 
 db.on('error', (error) => console.error(error))
