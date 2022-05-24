@@ -8,6 +8,8 @@ const ExamPage = React.lazy(() => import("../components/exam"));
 const EditCourses = React.lazy(() => import("../features/edit-del-courses/pages/EditCourses"));
 
 const HomeCoursePage = React.lazy(() => import("../components/homeCourseList"))
+const DemoCourse = React.lazy(() => import("../features/demo-course"));
+
 
 // waiting
 const loading = (
@@ -21,7 +23,7 @@ const Routers = () => {
         <React.Suspense fallback={loading}>
             <Routes>
                 <Route path="/editcourses" name="EditCourses" element={<EditCourses />} />
-                <Route path="/exam" name="Example" element={<ExamPage />} />
+                {/* <Route path="/exam" name="Example" element={<DemoCourse />} />   */}
                 <Route index name="Example" element={<Navigate to="exam" />} />
                 {/* <Route path="/exam" name="Example" element={<ExamPage />} />
                 <Route index name="Example" element={<Navigate to="exam" />} /> */}
