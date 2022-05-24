@@ -1,7 +1,11 @@
-import React, { useState } from "react";
-import { Card, Box, Button, Link, Divider, Avatar } from "@mui/material";
+import React from "react";
+import { Card, Box, Button } from "@mui/material";
+import { useFormik } from "formik";
+import * as yup from "yup";
 import AuthPageLayout from "./AuthPageLayout";
 import CTextField from "./components/CTextField";
+import { register } from "./auth";
+import { saveToken } from "./localStorage";
 
 const cardStyle = {
   boxShadow: "0px 4px 8px rgba(0, 0, 0, 0.25)",
@@ -31,12 +35,58 @@ const submitButtonStyle = {
   marginBottom: "18px",
 };
 
+const initialValues = {
+  fullName: "",
+  email: "",
+  phoneNumber: "",
+  password: "",
+  confirmPassword: "",
+};
+
+const phoneRegExp =
+  /^((\\+[1-9]{1,4}[ \\-]*)|(\\([0-9]{2,3}\\)[ \\-]*)|([0-9]{2,4})[ \\-]*)*?[0-9]{3,4}?[ \\-]*[0-9]{3,4}?$/;
+
+const validationSchema = yup.object({
+  email: yup
+    .string("Enter your email")
+    .email("Enter a valid email")
+    .required("Email is required"),
+  fullName: yup
+    .string("Enter your full name")
+    .required("Full name is required"),
+  phoneNumber: yup
+    .string()
+    .matches(phoneRegExp, "Phone number is not valid")
+    .required("Phone number is required"),
+  password: yup
+    .string("Enter your password")
+    .min(8, "Password should be of minimum 8 characters length")
+    .required("Password is required"),
+  confirmPassword: yup
+    .string()
+    .required("Confirm password is required")
+    .when("password", {
+      is: (val) => (val && val.length > 0 ? true : false),
+      then: yup
+        .string()
+        .oneOf([yup.ref("password")], "Confirm password is invalid"),
+    }),
+});
+
 function SignUpPage() {
-  const [email, setEmail] = useState(null);
-  const [fullName, setFullname] = useState(null);
-  const [phoneNumber, setPhoneNumber] = useState(null);
-  const [password, setPassword] = useState(null);
-  const [confirmPassword, setConfirmPassword] = useState(null);
+  const formik = useFormik({
+    initialValues,
+    validationSchema: validationSchema,
+    onSubmit: (values) => {
+      const { email, fullName, phoneNumber, password } = values;
+      register(email, fullName, phoneNumber, password)
+        .then((result) => {
+          alert("Check your email to verify account");
+        })
+        .catch(({ response }) => alert(response.data.msg));
+      // console.log({ email, fullName, phoneNumber, password });
+    },
+  });
 
   return (
     <AuthPageLayout isSignIn={false}>
@@ -48,46 +98,71 @@ function SignUpPage() {
               display: "flex",
               flexDirection: "column",
             }}
+            onSubmit={formik.handleSubmit}
           >
             <CTextField
+              id="email"
               label="Email"
-              value={email}
-              onChange={(e) => setEmail(e.target.value)}
-              id="email-textfield"
+              value={formik.values.email}
+              onChange={formik.handleChange}
+              error={formik.touched.email && Boolean(formik.errors.email)}
+              helperText={formik.touched.email && formik.errors.email}
               sx={{ marginBottom: "18px" }}
             ></CTextField>
             <CTextField
               label="Full name"
-              value={fullName}
-              onChange={(e) => setFullname(e.target.value)}
+              value={formik.values.fullName}
+              onChange={formik.handleChange}
+              error={formik.touched.fullName && Boolean(formik.errors.fullName)}
+              helperText={formik.touched.fullName && formik.errors.fullName}
               type="text"
-              id="fullname-textfield"
+              id="fullName"
               sx={{ marginBottom: "18px" }}
             ></CTextField>
             <CTextField
               label="Phone number"
-              value={phoneNumber}
-              onChange={(e) => setPhoneNumber(e.target.value)}
-              id="phonenumber-textfield"
+              value={formik.values.phoneNumber}
+              onChange={formik.handleChange}
+              error={
+                formik.touched.phoneNumber && Boolean(formik.errors.phoneNumber)
+              }
+              helperText={
+                formik.touched.phoneNumber && formik.errors.phoneNumber
+              }
+              id="phoneNumber"
               sx={{ marginBottom: "18px" }}
             ></CTextField>
             <CTextField
               label="Password"
-              value={password}
-              onChange={(e) => setPassword(e.target.value)}
+              value={formik.values.password}
+              onChange={formik.handleChange}
+              error={formik.touched.password && Boolean(formik.errors.password)}
+              helperText={formik.touched.password && formik.errors.password}
               type="password"
-              id="password-textfield"
+              id="password"
               sx={{ marginBottom: "18px" }}
             ></CTextField>
             <CTextField
               label="Confirm password"
-              value={confirmPassword}
-              onChange={(e) => setConfirmPassword(e.target.value)}
+              value={formik.values.confirmPassword}
+              onChange={formik.handleChange}
+              error={
+                formik.touched.confirmPassword &&
+                Boolean(formik.errors.confirmPassword)
+              }
+              helperText={
+                formik.touched.confirmPassword && formik.errors.confirmPassword
+              }
               type="password"
-              id="confirm-password-textfield"
+              id="confirmPassword"
               sx={{ marginBottom: "18px" }}
             ></CTextField>
-            <Button type="submit" variant="contained" sx={submitButtonStyle}>
+            <Button
+              type="submit"
+              variant="contained"
+              sx={submitButtonStyle}
+              onClick={() => console.log(formik.values)}
+            >
               Sign Up and Login
             </Button>
           </form>
