@@ -46,7 +46,7 @@ const CInputBase = styled(InputBase)(({ theme }) => ({
 }));
 
 function CTextField(props) {
-  const { label, id, sx, type, inputProps } = props;
+  const { label, id, sx, type, inputProps, onChange, helperText, error } = props;
   const [showPassword, setShowPassword] = useState(false);
   const [inputType, setInputType] = useState("text");
   useEffect(() => {
@@ -80,10 +80,12 @@ function CTextField(props) {
       </InputLabel>
       <CInputBase
         id={id}
-        {...inputProps}
+        onChange={onChange}
         endAdornment={adornment}
         type={inputType}
+        {...inputProps}
       />
+      {helperText && error && <p style={{ color: "red", fontSize: "12px" }}>{helperText}</p>}
     </FormControl>
   );
 }
