@@ -21,8 +21,13 @@ router.get('/:id', getCourse,  (req, res) => {
 // Creating one
 
 router.post('/', async (req, res) => {
+    console.log("req.body", req.body);
     const course = new Course({
-      name: req.body.name,
+        courseName: req.body.courseName,
+        description: req.body.description,
+        teacherID: req.body.teacherID,
+        discussion: [],
+        rating: []
     })
     try {
       const newCourse = await course.save()
@@ -55,8 +60,7 @@ router.delete('/:id', getCourse, async (req, res) => {
     } catch (err) {
       res.status(500).json({ message: err.message })
     }
-  })
-
+})
 
 async function getCourse(req, res, next) {
     let course
