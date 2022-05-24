@@ -7,6 +7,7 @@ const lessonSchema = new mongoose.Schema({
   },
   description: String,
   video: String,
+  cloudId: String, //public_id of file in cloudinary
   lessonVolume: Number,
   quizz: [
     {
