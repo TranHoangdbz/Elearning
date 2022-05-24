@@ -67,7 +67,7 @@ class CourseItem extends StatelessWidget {
                                 style: TextStyles.textStylePrimaryColor12w300,
                               ),
                               const SizedBox(
-                                width: 32,
+                                width: 12,
                               ),
                               const Icon(
                                 Icons.circle,
