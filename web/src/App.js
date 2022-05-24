@@ -1,5 +1,8 @@
 import { ThemeProvider, createTheme } from '@mui/material/styles';
 import ExamPage from "./features/counter";
+import { ThemeProvider, createTheme } from "@mui/material/styles";
+import { BrowserRouter } from "react-router-dom";
+import Routers from "./routers";
 
 const theme = createTheme({
     typography: {
@@ -14,6 +17,9 @@ function App() {
             <div>
                 <ExamPage />
             </div>
+            <BrowserRouter>
+                <Routers />
+            </BrowserRouter>
         </ThemeProvider>
     );
 }

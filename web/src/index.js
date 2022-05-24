@@ -1,5 +1,7 @@
 import React from "react";
 import { BrowserRouter, Routes, Route } from "react-router-dom";
+import App from "./App";
+import GlobalStyles from "./assets/styles";
 
 import { Provider } from "react-redux";
 import { configureStore } from "@reduxjs/toolkit";
@@ -27,6 +29,7 @@ root.render(
                     />
                 </Routes>
             </BrowserRouter>
+            <App />
         </GlobalStyles>
     </Provider>
 );

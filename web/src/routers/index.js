@@ -14,6 +14,7 @@ const Routers = () => {
     return (
         <React.Suspense fallback={loading}>
             <Routes>
+                <Route index name="Example" element={<Navigate to="exam" />} />
                 {routes.publicRoute.map((route, idx) => {
                     return (
                         route.element && (
