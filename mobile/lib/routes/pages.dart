@@ -1,6 +1,6 @@
 import 'package:get/get.dart';
 import 'package:uit_elearning/modules/authentication/controllers/authentication_binding.dart';
-import 'package:uit_elearning/modules/authentication/controllers/authentication_controller.dart';
+import 'package:uit_elearning/modules/authentication/controllers/forget_password_binding.dart';
 import 'package:uit_elearning/modules/authentication/controllers/login_binding.dart';
 import 'package:uit_elearning/modules/authentication/controllers/sign_up_binding.dart';
 import 'package:uit_elearning/modules/authentication/screens/authentication_screen.dart';
@@ -9,7 +9,6 @@ import 'package:uit_elearning/modules/authentication/screens/login_screen.dart';
 import 'package:uit_elearning/modules/authentication/screens/sign_up_screen.dart';
 import 'package:uit_elearning/modules/home/controllers/home_binding.dart';
 import 'package:uit_elearning/modules/splash/controllers/splash_binding.dart';
-import 'package:uit_elearning/modules/splash/controllers/splash_controller.dart';
 import 'package:uit_elearning/modules/splash/screens/splash_screen.dart';
 
 import '../modules/home/screens/home_screen.dart';
@@ -44,7 +43,8 @@ abstract class Pages {
     ),
     GetPage(
       name: Routes.forgetPassword,
-      page: () => const ForgetPassword(),
+      page: () => ForgetPassword(),
+      binding: ForgetPasswordBinding(),
     ),
   ];
 }

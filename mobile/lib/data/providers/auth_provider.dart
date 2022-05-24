@@ -228,4 +228,30 @@ class AuthenticationProvider {
       onResponse(data);
     }
   }
+
+  resetPassword({
+    required String dest,
+    required Function(Map<String, dynamic>) onResponse,
+  }) async {
+    String authKey = AppStrings.authKey;
+    IOWebSocketChannel channel;
+    try {
+      channel = IOWebSocketChannel.connect(
+          '${AppStrings.protocol}://${AppStrings.host}:${AppStrings.port}/reset$dest');
+      String login = "{'auth':'$authKey','cmd':'resetPassword','dest':'$dest'}";
+      channel.sink.add(login);
+      channel.stream.listen((event) async {
+        var data = json.decode(event);
+        channel.sink.close();
+        return onResponse(data);
+      });
+    } catch (e) {
+      Map<String, dynamic> data = {
+        'error': true,
+        'message': 'Send reset password failed',
+        'result': null,
+      };
+      onResponse(data);
+    }
+  }
 }

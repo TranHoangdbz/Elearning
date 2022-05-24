@@ -1,3 +1,4 @@
+import 'package:dio/dio.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:google_sign_in/google_sign_in.dart';
@@ -80,6 +81,60 @@ class AuthenticationService {
     }
 
     Get.offNamed(Routes.auth);
+  }
+
+  resetPassword(String dest) {
+    _authProvider.resetPassword(dest: dest, onResponse: sendResetPassowrd);
+  }
+
+  Future sendResetPassowrd(Map<String, dynamic> data) async {
+    if (data["error"]) {
+      showDialog(
+        context: Get.context!,
+        builder: (context) {
+          return CustomDialog(
+            content: data["message"],
+            icon: const Icon(
+              Icons.error,
+              color: AppColors.redColor,
+              size: 48,
+            ),
+          );
+        },
+      );
+    } else {
+      // const serviceId = 'service_kyd2w0r';
+      // const templateId = 'template_pf3a7wd';
+      // const userId = 'XAwu7ISgZJFzfLd0U';
+
+      // const url = 'https://api.emailjs.com/api/v1.0/email/send';
+      // final response = await Dio().post(url, data: {
+      //   'service_id': serviceId,
+      //   'template_id': templateId,
+      //   'user_id': userId,
+      //   'template_params': {
+      //     'message': 'Alo',
+      //     'to_name': 'Lam Truong',
+      //     'to_email': 'lamtruoq@gmail.com',
+      //   }
+      // });
+
+      // print(response);
+      showDialog(
+        context: Get.context!,
+        builder: (context) {
+          return const CustomDialog(
+            content:
+                "A new password has been sent to your email/phone number, please check",
+            icon: Icon(
+              Icons.check_circle_rounded,
+              color: AppColors.greenColor,
+              size: 48,
+            ),
+          );
+        },
+      );
+    }
   }
 
   authenticate(Map<String, dynamic> data) async {

@@ -167,6 +167,50 @@ wss.on('connection', function (ws, req) {
                         }
                     });
                 }
+
+                if (data.cmd === 'resetPassword') {
+                    User.findOne({ email: data.dest }).then((r) => {
+                        var rPassword = Math.random().toString(36).slice(-8);
+
+                        if (r == null) {
+                            User.findOne({ phoneNumber: data.dest }).then((r1) => {
+                                if (r1 == null) {
+                                    ws.send(JSON.stringify({
+                                        "error" : true,
+                                        "message" : "Email/phone number doesn't exists",
+                                        "result" : null,
+                                    }));
+                                } else {
+                                    const hash = crypto.createHash("md5")
+                                    let hexPwd = hash.update(rPassword).digest('hex');
+                                    r1.password = hexPwd
+                                    r1.save();
+                                    ws.send(JSON.stringify({
+                                        "error" : false,
+                                        "message" : "Reset password successfully",
+                                        "result" : {
+                                            "destType": "phoneNumber",
+                                            "password": rPassword,
+                                        },
+                                    }));
+                                }
+                            });
+                        } else {
+                            const hash = crypto.createHash("md5")
+                            let hexPwd = hash.update(rPassword).digest('hex');
+                            r.password = hexPwd
+                            r.save();
+                            ws.send(JSON.stringify({
+                                "error" : false,
+                                "message" : "Reset password successfully",
+                                "result" : {
+                                    "destType": "email",
+                                    "password": rPassword,
+                                },
+                            }));
+                        }
+                    });
+                }
             }
         }
     })
