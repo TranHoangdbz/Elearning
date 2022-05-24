@@ -122,6 +122,7 @@ const userController = {
                 text: 'Your text is here',
                 html: content,
             };
+            
             transporter.sendMail(mainOptions, function (err, info) {
                 if (err) {
                     return res.status(500).json({ msg: err.message });
@@ -129,7 +130,7 @@ const userController = {
                     return res.status(200).json({ msg: 'success' });
                 }
             });
-    
+
             return res.json({ user: newUser });
         } catch (err) {
             return res.status(500).json({ message: err.message });
