@@ -1,6 +1,6 @@
 .button {
-  background-color: var(--primaryColor);
-  color: var(--onPrimaryColor);
+  background-color: var(--primaryColor) !important;
+  color: var(--onPrimaryColor) !important;
 }
 
 .input {
