@@ -1,5 +1,5 @@
 import React from 'react';
-import '../CourseLearning.scss'
+import './CourseLearning.scss'
 import Test from './test'
 import LockIcon from '@mui/icons-material/Lock';
 import { Checkbox, FormControlLabel } from '@mui/material'

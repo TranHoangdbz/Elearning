@@ -1,29 +1,21 @@
-// import ExamPage from './pages/ExamPage'
-
-// function App() {
-//   return (
-//     <div>
-//       <ExamPage/>
-//     </div>
-//   );
-// }
-
-// export default App;
-
-import React, {Component} from 'react';
-import {BrowserRouter} from 'react-router-dom';
+import { ThemeProvider, createTheme } from "@mui/material/styles";
+import { BrowserRouter } from "react-router-dom";
 import Routers from "./routers";
 
+const theme = createTheme({
+    typography: {
+        fontFamily: ["Montserrat", "cursive"].join(","),
+    },
+});
 
-class App extends Component {
-
-  render() {
+function App() {
     return (
-      <BrowserRouter>
-        <Routers/>
-      </BrowserRouter>
+        <ThemeProvider theme={theme}>
+            <BrowserRouter>
+                <Routers />
+            </BrowserRouter>
+        </ThemeProvider>
     );
-  }
 }
 
 export default App;

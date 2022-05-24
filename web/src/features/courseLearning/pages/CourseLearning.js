@@ -1,9 +1,9 @@
-import './CourseLearning.scss';
+import '../components/CourseLearning.scss';
 import { Container, Grid, Avatar } from '@mui/material'
 import StarIcon from '@mui/icons-material/Star';
-import CardCourse from './components/CardCourse';
+import CardCourse from '../components/CardCourse';
 
-import LayoutLeftCourseLearning from './components/LayoutLeftCourseLearning';
+import LayoutLeftCourseLearning from '../components/LayoutLeftCourseLearning';
 
 const mockCourses = [
     {

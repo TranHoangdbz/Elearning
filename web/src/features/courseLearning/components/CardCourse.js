@@ -1,5 +1,5 @@
 import React from 'react';
-import '../CourseLearning.scss'
+import './CourseLearning.scss'
 import LockIcon from '@mui/icons-material/Lock';
 function CardCourse(props) {
     const handleClickCourse = () => {
