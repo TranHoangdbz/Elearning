@@ -4,7 +4,7 @@ import CoursesTable from "../components/coursesTable";
 import Header from "../components/header";
 import SideMenu from "../components/sideMenu";
 
-function CoursesManagerPage() {
+function CoursesManagerPage({ route }) {
   return (
     <Box>
       <Grid container>
@@ -18,8 +18,8 @@ function CoursesManagerPage() {
                 <Header />
               </ListItem>
               <ListItem>
-                <CoursesTable />
-                {/* <CourseDetail /> */}
+                {route === "courseslist" ? <CoursesTable /> : null}
+                {route === "coursedetail" ? <CourseDetail /> : null}
               </ListItem>
             </List>
           </Box>

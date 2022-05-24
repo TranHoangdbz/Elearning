@@ -1,9 +1,7 @@
 import CoursesManagerPage from "./pages/coursesManagerPage";
 
-function BasePage() {
-    return(
-        <CoursesManagerPage></CoursesManagerPage>
-    )
+function BasePage({ route }) {
+  return <CoursesManagerPage route={route}></CoursesManagerPage>;
 }
 
-export default BasePage
+export default BasePage;

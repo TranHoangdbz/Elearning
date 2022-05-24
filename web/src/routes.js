@@ -17,10 +17,15 @@ const protectedRoute = [];
 
 const managerRoute = [
     {
-        path: "/coursesmanager",
-        name: "CoursesManager",
-        element: <CoursesManagerPage />
-    }
+        path: "/coursesmanager/courseslist",
+        name: "CoursesList",
+        element: <CoursesManagerPage route="courseslist" />
+    },
+    {
+        path: "/coursesmanager/coursedetail/:id",
+        name: "CourseDetail",
+        element: <CoursesManagerPage route={"coursedetail"} />
+    },
 ];
 
 const routes = {

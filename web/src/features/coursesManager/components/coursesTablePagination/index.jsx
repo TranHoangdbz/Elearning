@@ -1,5 +1,4 @@
 import { TablePagination } from "@mui/material";
-import styles from "./coursesTablePagination.module.scss";
 
 function CoursesTablePagination({
   rowCount,
@@ -10,7 +9,7 @@ function CoursesTablePagination({
 }) {
   return (
     <TablePagination
-      rowsPerPageOptions={[5, 10]}
+      rowsPerPageOptions={[10]}
       component="div"
       count={rowCount}
       page={page}

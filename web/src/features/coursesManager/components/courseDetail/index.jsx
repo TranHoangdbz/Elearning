@@ -12,11 +12,26 @@ import {
 } from "@mui/material";
 import { Box } from "@mui/system";
 import React from "react";
+import { useSelector } from "react-redux";
+import { useNavigate } from "react-router-dom";
 import styles from "./courseDetail.module.scss";
 
-const list = [1, 2, 3, 4, 5, 6, 7];
-
 function CourseDetail() {
+  const navigate = useNavigate();
+
+  const url = window.location.pathname;
+  const path = url.split("/").filter((x) => x);
+
+  const courseIndex = useSelector(
+    (state) => state.coursesManager.data
+  ).findIndex((object) => {
+    return object.id === path[2];
+  });
+
+  const courseData = useSelector((state) => state.coursesManager.data)[
+    courseIndex
+  ];
+
   const [anchorEl, setAnchorEl] = React.useState(null);
 
   const open = Boolean(anchorEl);
@@ -41,6 +56,9 @@ function CourseDetail() {
             className={`${styles.backbutton}`}
             variant="text"
             startIcon={<ArrowBack />}
+            onClick={() => {
+              navigate("/coursesmanager/courseslist");
+            }}
           >
             Courses list
           </Button>
@@ -62,22 +80,15 @@ function CourseDetail() {
           </Box>
         </Stack>
         <Typography variant="h4" fontWeight="bold">
-          Đây là tên của khóa học
+          {courseData.courseName}
         </Typography>
-        <Typography width="67%">
-          Đây là mô tả ngắn về khóa học ngắn thôi chứ không phải ngắn lắm, từ
-          100 đến 300 ký tự là oke, chiếm 8/12 col của content nha nghe hông,
-          tức là cái cục bên kia chiếm 4 phần ó :3
-        </Typography>
+        <Typography width="67%">{courseData.description}</Typography>
         <Stack padding="12px 0px" spacing="4px">
           <Typography variant="h5" fontWeight="bold">
             Thumbnail
           </Typography>
           <div className={`${styles.thumbnail}`}>
-            <img
-              alt="thumbnail"
-              src="https://images.unsplash.com/photo-1551963831-b3b1ca40c98e"
-            />
+            <img alt="thumbnail" src={courseData.courseImage} />
           </div>
         </Stack>
         <Stack
@@ -89,24 +100,25 @@ function CourseDetail() {
             <Typography variant="h5" fontWeight="bold">
               Course content
             </Typography>
-            <Typography>35 lessons</Typography>
+            <Typography>{`${courseData.lessons.length} lessons`}</Typography>
           </Stack>
-          <Button className={`${styles.addbutton}`} variant="contained">
+          <Button
+            onClick={() => console.log(courseData.lessons)}
+            className={`${styles.addbutton}`}
+            variant="contained"
+          >
             Thêm bài học
           </Button>
         </Stack>
         <Stack direction="row" spacing="12px">
           <div className={`${styles.demo}`}>
-            <img
-              alt="demo"
-              src="https://images.unsplash.com/photo-1589118949245-7d38baf380d6"
-            />
+            <img alt="demo" src={courseData.courseImage} />
           </div>
           <List
             className={`${styles.list}`}
             sx={{ margin: "0px", padding: "0px" }}
           >
-            {list.map((item) => {
+            {courseData.lessons.map((item) => {
               return (
                 <ListItem>
                   <Paper className={`${styles.listitem}`} elevation={3}>
@@ -114,7 +126,7 @@ function CourseDetail() {
                       <img
                         alt="listitemiamge"
                         className={`${styles.listitemimage}`}
-                        src="https://images.unsplash.com/photo-1551963831-b3b1ca40c98e"
+                        src={item.video}
                       />
 
                       <Stack
@@ -123,7 +135,7 @@ function CourseDetail() {
                         justifyContent="space-evenly"
                       >
                         <Typography fontWeight="bold">
-                          1. Chương số mấy, tên gì ai biết?
+                          {`${item.lessonVolume}. ${item.name}`}
                         </Typography>
                         <Typography>12:25</Typography>
                       </Stack>

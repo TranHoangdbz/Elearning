@@ -7,7 +7,7 @@ import {
   TableHead,
   TableRow,
 } from "@mui/material";
-import styles from "./coursesTableContainer.module.scss";
+import { useNavigate } from "react-router-dom";
 
 const tableHeadCells = [
   {
@@ -51,6 +51,7 @@ function CoursesTableContainer({
   handleRowClick,
   isSelected,
 }) {
+  const navigate = useNavigate();
   const emptyRows =
     page > 0 ? Math.max(0, (1 + page) * rowsPerPage - rowData.length) : 0;
 
@@ -61,8 +62,8 @@ function CoursesTableContainer({
           <TableRow>
             <TableCell padding="checkbox">
               <Checkbox
-                indeterminate={numSelected > 0 && numSelected < rowData.lenght}
-                checked={rowData.lenght > 0 && numSelected === rowData.lenght}
+                indeterminate={numSelected > 0 && numSelected < rowData.length}
+                checked={rowData.length > 0 && numSelected === rowData.length}
                 onChange={handleSelectAllClick}
               />
             </TableCell>
@@ -76,32 +77,35 @@ function CoursesTableContainer({
         <TableBody>
           {rowData
             .slice(page * rowsPerPage, page * rowsPerPage + rowsPerPage)
-            .map((item) => {
-              const isItemSelected = isSelected(item.stt)
+            .map((item, index) => {
+              const isItemSelected = isSelected(item.id);
 
               return (
                 <TableRow
-                  key={item.stt}
+                  key={item.id}
                   hover
-                  onClick={(e) => handleRowClick(e, item.stt)}
-                  role="checkbox"
-                  aria-checked={isItemSelected}
+                  onClick={() => {
+                    navigate("/coursesmanager/coursedetail/" + item.id);
+                  }}
                 >
                   <TableCell padding="checkbox">
-                    <Checkbox />
+                    <Checkbox
+                      checked={isItemSelected}
+                      onClick={(e) => handleRowClick(e, item.id)}
+                    />
                   </TableCell>
-                  <TableCell>{item.stt}</TableCell>
+                  <TableCell>{page * rowsPerPage + index + 1}</TableCell>
                   <TableCell>{item.id}</TableCell>
                   <TableCell
-                    key={item.stt}
+                    key={item.id}
                     component="th"
                     scope="row"
                     sx={{ width: "500px" }}
                   >
-                    {item.name}
+                    {item.courseName}
                   </TableCell>
-                  <TableCell>{item.lessonCount}</TableCell>
-                  <TableCell>{item.participantCount}</TableCell>
+                  <TableCell>{item.lessons.length}</TableCell>
+                  <TableCell>{"0"}</TableCell>
                   <TableCell align="right">
                     {item.isCompleted ? "Đã hoàn thành" : "Chưa hoàn thành"}
                   </TableCell>
@@ -111,10 +115,10 @@ function CoursesTableContainer({
           {emptyRows > 0 && (
             <TableRow
               style={{
-                height: 53 * emptyRows,
+                height: 45.51 * emptyRows,
               }}
             >
-              <TableCell colSpan={6} />
+              <TableCell colSpan={7} />
             </TableRow>
           )}
         </TableBody>

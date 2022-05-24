@@ -19,9 +19,11 @@ function EnhancedTableToolbar({ numSelected }) {
         <Typography variant="h6">Nhập bất kỳ để tìm kiếm</Typography>
         <InputBase className={`${styles.input}`} />
       </Stack>
-      {numSelected > 0 ? (
-        <Typography variant="h6">Đã chọn {numSelected} khóa học</Typography>
-      ) : null}
+      <Box height="12px">
+        {numSelected > 0 ? (
+          <Typography variant="h6">Đã chọn {numSelected} khóa học</Typography>
+        ) : null}
+      </Box>
     </Box>
   );
 }
