@@ -1,11 +1,14 @@
 require('dotenv').config()
 
 const express = require('express');
+var cors = require('cors')
 const app = express();
 const mongoose = require('mongoose');
 const passport = require('passport');
 const GoogleStrategy = require('passport-google-oauth20').Strategy;
 const User = require('./models/user');
+
+app.use(cors());
 
 const PORT = 32
 
