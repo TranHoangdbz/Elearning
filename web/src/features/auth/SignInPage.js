@@ -1,7 +1,12 @@
 import { Card, Box, Button, Link, Divider, Avatar } from "@mui/material";
-import React, { useState } from "react";
+import React from "react";
+import { useFormik } from "formik";
+import { useNavigate } from "react-router-dom";
+import * as yup from "yup";
 import AuthPageLayout from "./AuthPageLayout";
 import CTextField from "./components/CTextField";
+import { signin } from "./auth";
+import { saveToken } from "./localStorage";
 
 const facebook = require("../../assets/images/facebook.png");
 const google = require("../../assets/images/google.png");
@@ -55,9 +60,40 @@ const forgotPasswordStyle = {
   justifyContent: "center",
 };
 
+const initialValues = {
+  email: "",
+  password: "",
+};
+
+const validationSchema = yup.object({
+  email: yup
+    .string("Enter your email")
+    .email("Enter a valid email")
+    .required("Email is required"),
+  password: yup
+    .string("Enter your password")
+    .min(8, "Password should be of minimum 8 characters length")
+    .required("Password is required"),
+});
+
 function SignInPage() {
-  const [email, setEmail] = useState(null);
-  const [password, setPassword] = useState(null);
+  const navigate = useNavigate();
+
+  const formik = useFormik({
+    initialValues,
+    validationSchema: validationSchema,
+    onSubmit: (values) => {
+      const { email, password } = values;
+      signin(email, password).then(({data}) => {
+        console.log(data);
+        if (data && data.token) {
+          saveToken(data.token);
+          navigate("/exam");
+        }
+      }).catch(({response}) => alert(response.data.message));
+      // console.log({ email, password });
+    },
+  });
 
   return (
     <AuthPageLayout isSignIn>
@@ -69,20 +105,25 @@ function SignInPage() {
               display: "flex",
               flexDirection: "column",
             }}
+            onSubmit={formik.handleSubmit}
           >
             <CTextField
+              id="email"
               label="Email"
-              value={email}
-              onChange={(e) => setEmail(e.target.value)}
-              id="email-textfield"
+              value={formik.values.email}
+              onChange={formik.handleChange}
+              error={formik.touched.email && Boolean(formik.errors.email)}
+              helperText={formik.touched.email && formik.errors.email}
               sx={{ marginBottom: "18px" }}
             ></CTextField>
             <CTextField
               label="Password"
-              value={password}
-              onChange={(e) => setPassword(e.target.value)}
+              value={formik.values.password}
+              onChange={formik.handleChange}
+              error={formik.touched.password && Boolean(formik.errors.password)}
+              helperText={formik.touched.password && formik.errors.password}
               type="password"
-              id="password-textfield"
+              id="password"
               sx={{ marginBottom: "18px" }}
             ></CTextField>
             <Button type="submit" variant="contained" sx={submitButtonStyle}>
