@@ -77,6 +77,8 @@ function CoursesTable() {
         selected.slice(selectedIndex + 1)
       );
     }
+
+    setSelected(newSelected);
   };
 
   const isSelected = (stt) => selected.indexOf(stt) !== -1;

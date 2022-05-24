@@ -4,16 +4,31 @@ import {
   IconButton,
   List,
   ListItem,
+  Menu,
+  MenuItem,
   Paper,
   Stack,
   Typography,
 } from "@mui/material";
 import { Box } from "@mui/system";
+import React from "react";
 import styles from "./courseDetail.module.scss";
 
 const list = [1, 2, 3, 4, 5, 6, 7];
 
 function CourseDetail() {
+  const [anchorEl, setAnchorEl] = React.useState(null);
+
+  const open = Boolean(anchorEl);
+
+  const handleClick = (e) => {
+    setAnchorEl(e.currentTarget);
+  };
+
+  const handleClose = () => {
+    setAnchorEl(null);
+  };
+
   return (
     <Paper className={`${styles.coursedetail}`} elevation={3}>
       <Stack direction="column" spacing="8px">
@@ -60,7 +75,7 @@ function CourseDetail() {
           </Typography>
           <div className={`${styles.thumbnail}`}>
             <img
-              className={{}}
+              alt="thumbnail"
               src="https://images.unsplash.com/photo-1551963831-b3b1ca40c98e"
             />
           </div>
@@ -82,7 +97,10 @@ function CourseDetail() {
         </Stack>
         <Stack direction="row" spacing="12px">
           <div className={`${styles.demo}`}>
-            <img src="https://images.unsplash.com/photo-1589118949245-7d38baf380d6" />
+            <img
+              alt="demo"
+              src="https://images.unsplash.com/photo-1589118949245-7d38baf380d6"
+            />
           </div>
           <List
             className={`${styles.list}`}
@@ -92,17 +110,14 @@ function CourseDetail() {
               return (
                 <ListItem>
                   <Paper className={`${styles.listitem}`} elevation={3}>
-                    <Stack
-                      direction="row"
-                      justifyContent="space-between"
-                    >
+                    <Stack direction="row" justifyContent="space-between">
                       <img
+                        alt="listitemiamge"
                         className={`${styles.listitemimage}`}
                         src="https://images.unsplash.com/photo-1551963831-b3b1ca40c98e"
                       />
 
                       <Stack
-                      
                         direction="column"
                         alignItems="flex-start"
                         justifyContent="space-evenly"
@@ -112,9 +127,35 @@ function CourseDetail() {
                         </Typography>
                         <Typography>12:25</Typography>
                       </Stack>
-                      <IconButton>
+                      <IconButton
+                        aria-controls={
+                          open ? "demo-positioned-menu" : undefined
+                        }
+                        aria-haspopup="true"
+                        aria-expanded={open ? "true" : undefined}
+                        onClick={handleClick}
+                      >
                         <MoreVert />
                       </IconButton>
+                      <Menu
+                        id="demo-positioned-menu"
+                        aria-labelledby="demo-positioned-button"
+                        anchorEl={anchorEl}
+                        open={open}
+                        onClose={handleClose}
+                        anchorOrigin={{
+                          vertical: "top",
+                          horizontal: "left",
+                        }}
+                        transformOrigin={{
+                          vertical: "top",
+                          horizontal: "left",
+                        }}
+                        elevation={1}
+                      >
+                        <MenuItem onClick={handleClose}>Chỉnh sửa</MenuItem>
+                        <MenuItem onClick={handleClose}>Xóa</MenuItem>
+                      </Menu>
                     </Stack>
                   </Paper>
                 </ListItem>

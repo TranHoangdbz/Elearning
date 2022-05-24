@@ -18,8 +18,8 @@ function CoursesManagerPage() {
                 <Header />
               </ListItem>
               <ListItem>
-                {/* <CoursesTable /> */}
-                <CourseDetail />
+                <CoursesTable />
+                {/* <CourseDetail /> */}
               </ListItem>
             </List>
           </Box>
