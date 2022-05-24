@@ -5,6 +5,7 @@ import React from "react";
 
 // import page
 const ExamPage = React.lazy(() => import("../components/exam"));
+const EditCourses = React.lazy(() => import("../features/edit-del-courses/pages/EditCourses"));
 
 // waiting
 const loading = (
@@ -17,6 +18,7 @@ const Routers = () => {
     return (
         <React.Suspense fallback={loading}>
             <Routes>
+                <Route path="/editcourses" name="EditCourses" element={<EditCourses />} />
                 <Route path="/exam" name="Example" element={<ExamPage />} />
                 <Route index name="Example" element={<Navigate to="exam" />} />
                 {routes.publicRoute.map((route, idx) => {
@@ -30,6 +32,7 @@ const Routers = () => {
                         )
                     );
                 })}
+                
             </Routes>
         </React.Suspense>
     );

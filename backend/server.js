@@ -17,10 +17,9 @@ db.once('open', () => console.log('Connected to Database'))
 
 app.use(express.json())
 
-const coursesRouter = require('./routes/courses')
-app.use('/courses', coursesRouter)
 
 const route = require('./routes');
 route(app);
+
 
 app.listen(PORT, () => console.log('Server Started'))
