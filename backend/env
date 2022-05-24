@@ -1,0 +1,1 @@
+DATABASE_URL=mongodb+srv://admin:admin@uit-elearning.uqfe4.mongodb.net/myFirstDatabase?retryWrites=true&w=majority
