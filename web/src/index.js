@@ -1,4 +1,5 @@
 import React from "react";
+import { BrowserRouter, Routes, Route } from "react-router-dom";
 import App from "./App";
 import GlobalStyles from "./assets/styles";
 
@@ -15,7 +16,17 @@ const root = createRoot(container); // createRoot(container!) if you use TypeScr
 root.render(
     <Provider store={store}>
         <GlobalStyles>
+            <BrowserRouter>
+                <Routes>
+                    <Route path="/" element={<App />} />
+                    <Route
+                        path="forgot-password"
+                        // element={<ForgotNumberPage />}
+                    />
+                </Routes>
+            </BrowserRouter>
             <App />
+            <App></App>
         </GlobalStyles>
     </Provider>
 );
