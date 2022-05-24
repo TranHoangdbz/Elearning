@@ -1,9 +1,9 @@
 import SendCodePage from "./pages/sendCode";
 
-function ExamPage() {
+function SendCodeFeature() {
     return(
         <SendCodePage></SendCodePage>
     )
 }
 
-export default ExamPage
+export default SendCodeFeature

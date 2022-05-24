@@ -8,10 +8,6 @@ import { configureStore } from "@reduxjs/toolkit";
 import rootReducer from "./reducers";
 import { createRoot } from "react-dom/client";
 
-import App from "./App";
-import GlobalStyles from "./assets/styles";
-import ForgotNumberPage from "./features/forgotPassword/pages/sendCode";
-
 const store = configureStore({
     reducer: rootReducer,
 });
@@ -20,6 +16,7 @@ const root = createRoot(container); // createRoot(container!) if you use TypeScr
 root.render(
     <Provider store={store}>
         <GlobalStyles>
+<<<<<<< HEAD
             <BrowserRouter>
                 <Routes>
                     <Route path="/" element={<App />} />
@@ -30,6 +27,9 @@ root.render(
                 </Routes>
             </BrowserRouter>
             <App />
+=======
+            <App></App>
+>>>>>>> 89ca6c9fa9a17391c407a3b6d30df41478006c34
         </GlobalStyles>
     </Provider>
 );
