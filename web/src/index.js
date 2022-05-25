@@ -26,7 +26,6 @@ root.render(
                 </Routes>
             </BrowserRouter>
             <App />
-            <App></App>
         </GlobalStyles>
     </Provider>
 );

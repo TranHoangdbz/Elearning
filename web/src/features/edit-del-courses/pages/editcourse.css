@@ -66,8 +66,12 @@
     height: 280px;
     border-radius: 10px;
     border-style: none;
+    justify-content: center;
+    align-items: center;
+    display: flex;
    
 }
+
 .edit__body .btn_save{
     margin-top: 20px;
 
@@ -94,11 +98,12 @@
     bottom: 0;
     position: fixed;
     background-color: #BFC9CA;
+    display: flex;
+    justify-content: center;
+    align-items: center;
 }
 .overlay .popup{
     position: absolute;
-    top: 40%;
-    left: 30%;
     padding: 20px;
     width: 100%;
     max-width: 400px;
