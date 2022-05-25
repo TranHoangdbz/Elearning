@@ -1,6 +1,8 @@
 import React from "react";
 import {useNavigate} from 'react-router-dom'
 
+import {RESET_PASSWORD} from '../../../../routes'
+
 import styles from "./modal.module.scss";
 
 import Modal from "@mui/material/Modal";
@@ -35,7 +37,7 @@ function ModalContent({ open, onClose }) {
                     <div className={`${styles.submitGroup}`}>
                         <button
                             className={`${styles.submitButton}`}
-                            onClick={(() => navigate('/reset-password'))}
+                            onClick={(() => navigate(RESET_PASSWORD))}
                         >
                             Reset password
                         </button>

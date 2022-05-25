@@ -1,5 +1,6 @@
 import APIhelper from'../../../../services'
 import * as authToken from'../../../../features/auth/localStorage'
+import CONSTANTS from '../../../../constants'
 
 import URL_API from '../../../../services/API/config'
 
@@ -14,9 +15,11 @@ helper.isValidPassword = (email) => {
     return false;
 };
 helper.isCorrectPassword = async (password,newPassword) => {
+    const TOKEN_KEY = CONSTANTS.LOCAL_STORAGE.AUTH_TOKEN_KEY
+
     const config = {
         headers: {
-            "procources-access-token": authToken.getToken()
+            [TOKEN_KEY]: authToken.getToken()
         }
     }
     try {      

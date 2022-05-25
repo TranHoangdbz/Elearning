@@ -1,4 +1,6 @@
 import React from "react";
+
+// page
 const AuthPageLayout = React.lazy(() =>
     import("./features/auth/AuthPageLayout")
 );
@@ -13,29 +15,38 @@ const ForgotPasswordPage = React.lazy(() =>
 );
 const ResetPasswordPage = React.lazy(() => import("./features/resetPassword"));
 
+//router path
+
+export const COURSE_LEARNING = "/course-learning";
+export const FORGOT_PASSWORD = "/forgot-password";
+export const SIGN_IN = "/sign-in";
+export const SIGN_UP = "/sign-up";
+export const DEMO = '/demo';
+export const RESET_PASSWORD = "/reset-password";
+
 const publicRoute = [
     {
-        path: "/course-learning",
+        path: COURSE_LEARNING,
         name: "Course Learning",
         element: <CourseLearningPage />,
     },
     {
-        path: "/forgot-password",
+        path: FORGOT_PASSWORD,
         name: "Forgot password",
         element: <ForgotPasswordPage />,
     },
     {
-        path: "/signin",
+        path: SIGN_IN,
         name: "SignIn",
         element: <SignInPage />,
     },
     {
-        path: "/signup",
+        path: SIGN_UP,
         name: "SignUp",
         element: <SignUpPage />,
     },
     {
-        path: "/demo/:id",
+        path: DEMO + "/:id",
         name: "Demo Course",
         element: <DemoCourse />,
     },
@@ -45,7 +56,7 @@ const commonRoute = [];
 
 const studentRoute = [
     {
-        path: "/reset-password",
+        path: RESET_PASSWORD,
         name: "Reset password",
         element: <ResetPasswordPage />,
     },
@@ -53,7 +64,7 @@ const studentRoute = [
 
 const teacherRoute = [
     {
-        path: "/reset-password",
+        path: RESET_PASSWORD,
         name: "Reset password",
         element: <ResetPasswordPage />,
     },
@@ -66,7 +77,8 @@ const routes = {
     commonRoute,
     studentRoute,
     teacherRoute,
-    adminRoute
+    adminRoute,
 };
 
 export default routes;
+
