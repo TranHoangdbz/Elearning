@@ -5,9 +5,15 @@ const lessonSchema = new mongoose.Schema({
     type: String,
     required: true,
   },
-  description: String,
-  video: String,
-  lessonVolume: Number,
+  description: {
+    type: String,
+  },
+  video: {
+    type: String,
+  },
+  lessonVolume: {
+    type: Number,
+  },
   quizz: [
     {
       type: mongoose.Schema.Types.ObjectId,
