@@ -25,15 +25,17 @@ router.patch("/update/:lessonId", upload.array('file'), async (req, res) => {
       res.status(400).json({
         error
       })
+      return;
     })
     fs.unlinkSync(path)
     newVideoUrl = newPath.url;
     newCloudId = newPath.public_id;
   }
 
-  lesson.findById(lessonId, function (err, doc) {
+  lesson.findById(lessonId, async function (err, doc) {
     if (err) {
-      res.status(500).json({ error: err.message });
+      //console.log('error here')
+      res.status(500).json({ error: "Query err " + err.message });
       return;
     }
 
@@ -44,22 +46,19 @@ router.patch("/update/:lessonId", upload.array('file'), async (req, res) => {
     if (newVideoUrl !== '') {
       doc.video = newVideoUrl;
       doc.cloudId = newCloudId;
-      await cloudinary.uploader.destroy(cloudId, function (result) {
-        console.log(result);
-      })
+      if (cloudId !== '')
+        await cloudinary.uploader.destroy(cloudId, function (result) {
+          console.log(result);
+        })
     }
     
     doc.save()
       .then((result) => {
         res.status(200).send(result);
+      }).catch(err => {
+        res.status(500).json({ error: "Save err " + err.message});
       })
-      .catch((err) => {
-        res.status(500).json({ error: err.message });
-      });
   })
-    .catch((err) => {
-      res.status(500).json({ error: err.message });
-    });
 });
 
 router.delete("/:lessonID", async (req, res) => {
