@@ -90,28 +90,6 @@ const Routers = () => {
                         )
                     );
                 })}
-                {routes.commonRoute.map((route, idx) => {
-                    return (
-                        route.element && (
-                            <Route
-                                key={idx}
-                                path={route.path}
-                                element={route.element}
-                            />
-                        )
-                    );
-                })}
-                {routes.managerRoute.map((route, idx) => {
-                    return (
-                        route.element && (
-                            <Route
-                                key={idx}
-                                path={route.path}
-                                element={route.element}
-                            />
-                        )
-                    );
-                })}
             </Routes>
         </React.Suspense>
     );

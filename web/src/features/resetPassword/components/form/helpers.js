@@ -1,7 +1,7 @@
-const APIhelper = require('../../../../services')
-const authToken = require('../../../../features/auth/localStorage')
+import APIhelper from'../../../../services'
+import * as authToken from'../../../../features/auth/localStorage'
 
-const {URL_RESET_PASSWORD} = require('../../../../services/API/config')
+import URL_API from '../../../../services/API/config'
 
 const helper = {};
 
@@ -19,8 +19,8 @@ helper.isCorrectPassword = async (password,newPassword) => {
             "procources-access-token": authToken.getToken()
         }
     }
-    try {
-        const result = await APIhelper.default.put(URL_RESET_PASSWORD, {password, newPassword}, config);
+    try {      
+        const result = await APIhelper.put(URL_API.URL_RESET_PASSWORD, {password, newPassword}, config);
         if (result.status === 200) {
             return true;
         }
