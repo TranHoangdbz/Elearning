@@ -5,6 +5,11 @@ import { TextField, FormControl, Select, InputLabel, MenuItem, CircularProgress 
 import axios, { CancelToken, isCancel } from "axios";
 const EditCourses = () => {
     const [course, setCourse] = React.useState('');
+    // checkvaildate
+    const [validate, setValidate] = useState(false);
+    const checkvaildate =(event) =>{
+        
+    }
     // mở thông báo
     const [popup, setPopup] = React.useState(false);
     const handleChange = (event) => {
@@ -36,7 +41,7 @@ const EditCourses = () => {
 
         axios
             .post(
-                "link_link_link",
+                "link_vo_day_back",
                 data,
                 options
             )
@@ -57,7 +62,7 @@ const EditCourses = () => {
                 setUploadPercentage(0);
             });
     };
-
+    // Khúc này chưa thêm
     const cancelUpload = () => {
         if (cancelFileUpload.current)
             cancelFileUpload.current("User has canceled the file upload.");
@@ -73,7 +78,7 @@ const EditCourses = () => {
             <div className="edit__body">
                <p className="title">Name</p>
                <TextField   
-                    
+                    error ={validate}
                     id="outlined-size-small"
                     size="small"
                     inputProps={{style: {fontSize: 14}}}
@@ -81,7 +86,7 @@ const EditCourses = () => {
                 />
                <p className="title">Description</p>
                <TextField   
-                    
+                    error = {validate}
                     name="Lesson description"
                     fullWidth
                     multiline={true}
@@ -115,13 +120,8 @@ const EditCourses = () => {
                     <div className="video_components">
                         <div className="video_header">
                             <p className="title">Thumbnail</p>
-                            {/* <button className="btnn_select" onClick={() => {inputFile.current.click();}} >
-                                Select Image
-                                <input type='file' id='file' ref={inputFile} />
-                            </button> */}
-                            <input className="btnn_select" type='file' id='file' onChange={uploadFile}  />
-                            
-                            
+                            <label htmlFor="fileThumbnail" className="btnn_select" >Select Image </label>
+                            <input type='file' id='fileThumbnail' onChange={uploadFile} style={{display:'none'}} />
                         </div>
 
                         <div className="video_body">
@@ -133,10 +133,8 @@ const EditCourses = () => {
                     <div className="video_components">
                         <div className="video_header">
                             <p className="title">Video</p>
-                            {/* <button className="btnn_select">
-                                Select Video
-                            </button> */}
-                            <input className="btnn_select" type='file' id='file' onChange={uploadFile}  />
+                            <label htmlFor="fileVideo" className="btnn_select" >Select Video </label>
+                            <input type='file' id='fileVideo' onChange={uploadFile} style={{display:'none'}} />
                         </div>
                         <div className="video_body">
                             {uploadPercentage > 0 && (
