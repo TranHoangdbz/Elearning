@@ -16,16 +16,6 @@ const root = createRoot(container); // createRoot(container!) if you use TypeScr
 root.render(
     <Provider store={store}>
         <GlobalStyles>
-            <BrowserRouter>
-                <Routes>
-                    <Route path="/" element={<App />} />
-                    <Route
-                        path="forgot-password"
-                        // element={<ForgotNumberPage />}
-                    />
-                </Routes>
-            </BrowserRouter>
-            <App />
             <App></App>
         </GlobalStyles>
     </Provider>
