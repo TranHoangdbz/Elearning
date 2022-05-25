@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 
-import '../widgets/course_list.dart';
+import '../../../global_widgets/course_list.dart';
 import '../../../constants/text_styles.dart';
 import '../../../constants/app_colors.dart';
 import '../../../global_widgets/logo_widget.dart';
@@ -40,23 +40,25 @@ class RecommendedScreen extends GetView<RecommendedController> {
       body: SafeArea(
         child: Container(
           margin: const EdgeInsets.only(top: 20),
-          child: SingleChildScrollView(
-            child: Column(
-              children: [
-                CourseList('Category 1'),
-                const SizedBox(
-                  height: 32,
-                ),
-                CourseList('Category 2'),
-                const SizedBox(
-                  height: 32,
-                ),
-                CourseList('Category 3'),
-                const SizedBox(
-                  height: 32,
-                ),
-                CourseList('Category 4'),
-              ],
+          child: Center(
+            child: SingleChildScrollView(
+              child: Column(
+                children: [
+                  CourseList('Category 1'),
+                  const SizedBox(
+                    height: 32,
+                  ),
+                  CourseList('Category 2'),
+                  const SizedBox(
+                    height: 32,
+                  ),
+                  CourseList('Category 3'),
+                  const SizedBox(
+                    height: 32,
+                  ),
+                  CourseList('Category 4'),
+                ],
+              ),
             ),
           ),
         ),

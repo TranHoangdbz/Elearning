@@ -55,6 +55,7 @@ class CourseList extends StatelessWidget {
         SizedBox(
           height: 280,
           child: ListView.separated(
+            controller: ScrollController(),
             shrinkWrap: true,
             physics: const ClampingScrollPhysics(),
             padding: const EdgeInsets.only(left: 24, bottom: 28),

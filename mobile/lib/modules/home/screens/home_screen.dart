@@ -3,9 +3,9 @@ import 'package:get/get.dart';
 
 import '../../../constants/app_colors.dart';
 import '../controllers/home_controller.dart';
-import 'my_courses_screen.dart';
-import 'recommended_screen.dart';
-import 'search_screen.dart';
+import '../../my_courses/screens/my_courses_screen.dart';
+import '../../recommended/screens/recommended_screen.dart';
+import '../../search/screens/search_screen.dart';
 
 class HomeScreen extends StatelessWidget {
   HomeScreen({Key? key}) : super(key: key);

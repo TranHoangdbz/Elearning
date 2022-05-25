@@ -11,10 +11,6 @@ class SearchScreen extends GetView<SearchController> {
 
   @override
   Widget build(BuildContext context) {
-    return const Center(
-      child: (
-          Text('Search')
-      )
-    );
+    return const Center(child: (Text('Search')));
   }
 }
