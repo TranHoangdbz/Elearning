@@ -1,6 +1,10 @@
 const mongoose = require("mongoose");
 const Lesson = require("../models/lesson");
 const Course = require("../models/course");
+const uploadFile = require("../middleware/upload");
+const cloudinary = require('../middleware/cloudinary');
+const fs = require('fs')
+const { BASE_API_URL } = require("../constants");
 
 const getAll = async (req, res) => {
   try {
@@ -170,6 +174,53 @@ const updateById = async (req, res) => {
   }
 };
 
+const updateFieldLesson = async (req, res) => {
+  const lessonId = req.params.id;
+  await uploadFile(req, res);
+  const { name, description, lessonVolume } = req.body;
+  const file = req.file;
+
+  try {
+    Lesson.findById(lessonId, async function (err, doc) {
+      if (err) {
+        //console.log('error here')
+        res.status(500).json({ error: "Query err - " + err.message });
+        return;
+      }
+  
+      doc.name = name;
+      doc.description = description;
+      doc.lessonVolume = lessonVolume;
+  
+      //exchange video
+      if (file) {
+        const path = `./public/uploads/${file.originalname}`
+        const newPath = await cloudinary.uploader.upload(path, {
+          resource_type: 'auto',
+        }).catch(error => {
+          console.log('cloudinary err - ', error)
+          res.status(400).json({
+            error
+          })
+          return;
+        })
+        fs.unlinkSync(path)
+        doc.video = newPath.url;
+        console.log('new url', newPath.url)
+      }
+  
+      doc.save()
+        .then((result) => {
+          res.status(200).send(result);
+        }).catch(err => {
+          res.status(500).json({ error: "Save err - " + err.message });
+        })
+    })
+  } catch (err) {
+    res.status(500).json({ error: err.message });
+  }
+}
+
 const deleteById = async (req, res) => {
   try {
     const id = mongoose.Types.ObjectId(req?.params?.id);
@@ -207,5 +258,6 @@ module.exports = {
   getById,
   create,
   updateById,
+  updateFieldLesson,
   deleteById,
 };
