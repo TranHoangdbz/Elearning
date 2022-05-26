@@ -1,4 +1,3 @@
-import 'package:dio/dio.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:google_sign_in/google_sign_in.dart';
@@ -139,20 +138,39 @@ class AuthenticationService {
 
   authenticate(Map<String, dynamic> data) async {
     if (!data["error"]) {
-      currentUser = User.fromJson(data['result']);
-      SharedPreferences prefs = await SharedPreferences.getInstance();
-      await prefs.setBool('authenticated', true);
-      await prefs.setString('userEmail', currentUser!.email);
-      await prefs.setString('userHash', currentUser!.password);
-      await prefs.setString('userFullName', currentUser!.fullName ?? '');
-      await prefs.setString('userPhoneNumber', currentUser!.phoneNumber ?? '');
-      await prefs.setString(
-          'userProfilePicture', currentUser!.profilePicture ?? '');
-      await prefs.setString(
-          'userTakenCourses', currentUser!.takenCourses.toString());
-      await prefs.setString(
-          'userCurrentCourses', currentUser!.currentCourses.toString());
-      Get.offAllNamed(Routes.home);
+      currentUser = User.fromJson(data['result']['user']);
+      if (currentUser!.verified) {
+        SharedPreferences prefs = await SharedPreferences.getInstance();
+        await prefs.setBool('authenticated', true);
+        await prefs.setString('userEmail', currentUser!.email);
+        await prefs.setString('userHash', currentUser!.password);
+        await prefs.setString('userFullName', currentUser!.fullName ?? '');
+        await prefs.setString(
+            'userPhoneNumber', currentUser!.phoneNumber ?? '');
+        await prefs.setString(
+            'userProfilePicture', currentUser!.profilePicture ?? '');
+        await prefs.setString(
+            'userTakenCourses', currentUser!.takenCourses.toString());
+        await prefs.setString(
+            'userCurrentCourses', currentUser!.currentCourses.toString());
+        await prefs.setBool('verified', currentUser!.verified);
+        Get.offAllNamed(Routes.home);
+      } else {
+        await showDialog(
+          context: Get.context!,
+          builder: (context) {
+            return CustomDialog(
+              content: data["message"],
+              icon: const Icon(
+                Icons.check_circle_rounded,
+                color: AppColors.greenColor,
+                size: 48,
+              ),
+            );
+          },
+        );
+        Get.offAllNamed(Routes.auth);
+      }
     } else {
       currentUser = null;
       SharedPreferences prefs = await SharedPreferences.getInstance();

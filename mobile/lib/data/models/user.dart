@@ -8,6 +8,7 @@ class User extends BaseModel {
   final String? profilePicture;
   final List<Object>? takenCourses;
   final List<Object>? currentCourses;
+  final bool verified;
 
   User({
     String? id,
@@ -18,6 +19,7 @@ class User extends BaseModel {
     this.profilePicture,
     this.takenCourses,
     this.currentCourses,
+    this.verified = false,
   }) : super(id);
 
   @override
@@ -31,6 +33,7 @@ class User extends BaseModel {
       'profilePicture': profilePicture,
       'takenCourses': takenCourses,
       'currentCourses': currentCourses,
+      'verified': verified,
     };
   }
 
@@ -40,7 +43,12 @@ class User extends BaseModel {
         password: data['password'],
         fullName: data['fullName'],
         phoneNumber: data['phoneNumber'],
-        takenCourses: data['takenCourses'],
-        currentCourses: data['currentCourses'],
+        takenCourses: List.from(
+          data['takenCourses'],
+        ),
+        currentCourses: List.from(
+          data['currentCourses'],
+        ),
+        verified: data['verified'],
       );
 }

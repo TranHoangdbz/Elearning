@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
+import 'package:uit_elearning/data/services/auth_service.dart';
 
 import '../../../constants/app_colors.dart';
 import '../../../constants/text_styles.dart';
@@ -68,7 +69,9 @@ class MyCoursesScreen extends GetView<MyCoursesController> {
                   ),
                   const Spacer(),
                   IconButton(
-                    onPressed: () {},
+                    onPressed: () {
+                      AuthenticationService.instance.signOut();
+                    },
                     icon: const Icon(Icons.settings),
                   )
                 ],
