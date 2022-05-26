@@ -8,7 +8,7 @@ const style = {
     },
     panel_2: {
         height: '100%',
-        width:'100%'
+        width: '100%'
     },
     leftStack: {
         p: 2,
@@ -51,7 +51,7 @@ const style = {
         p: 2,
         height: '100%',
         width: '80%',
-        mb:2
+        mb: 2
     },
     rightStack_imgCourse: {
         width: '100%'
@@ -61,11 +61,18 @@ const style = {
         backgroundColor: '#040E53'
     },
     rightStack_avatarLecturer: {
-      height: 80,
-      width: 80,
+        height: 80,
+        width: 80,
     },
-    rightStack_nameLecturer:{
-        m:1
+    rightStack_nameLecturer: {
+        m: 1
+    },
+    rightStack_authorInfo: {
+        justifyContent: 'center',
+        alignItems: 'center',
+        justifySelf: 'center',
+        height: '50vh',
+        mt: 2
     }
 }
 export default style;
