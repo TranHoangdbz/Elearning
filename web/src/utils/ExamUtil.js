@@ -1,3 +1,3 @@
-export default examUtil = function() {
+export function examUtil() {
     //
 }

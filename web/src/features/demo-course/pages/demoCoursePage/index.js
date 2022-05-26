@@ -4,6 +4,7 @@ import style from './style';
 import AjaxHelper from '../../../../services/index'
 import URL_API from '../../../../services/API/config'
 import { useParams } from 'react-router-dom'
+import { formatVolume } from '../../../../utils/FormatVolumeUtil';
 
 const DemoCourse = () => {
     const { id } = useParams()
@@ -36,16 +37,22 @@ const DemoCourse = () => {
         }
     }, [])
 
+    const CountCourseVolume = () => {
+        let totalVolume = 0
+        course.lessons.map(ite => totalVolume += ite.lessonVolume)
+        return formatVolume(totalVolume)
+    }
+
     return (
         <Stack>
             {
                 course ?
                     <Stack>
-                        <Stack sx={{ 
-                            height: 50, 
-                            backgroundColor: 'red', 
-                            width: '100%' 
-                            }}>Header Here</Stack>
+                        <Stack sx={{
+                            height: 50,
+                            backgroundColor: 'red',
+                            width: '100%'
+                        }}>Header Here</Stack>
                         <Grid container sx={style.container}>
                             <Grid container item xs={8} sx={style.panel_1}>
                                 <Stack sx={style.leftStack}>
@@ -55,8 +62,8 @@ const DemoCourse = () => {
                                     </Typography>
                                     <Typography variant='h4' sx={style.leftStack_introduceTitle}>Introduce to Course</Typography>
                                     <Stack direction='row' sx={style.leftStack_infoCoursePanel}>
-                                        <Typography variant='subtitle2' sx={style.leftStack_volumeCourse}>4 hours 20 mins • </Typography>
-                                        <Typography variant='subtitle2' sx={style.leftStack_totalLessons}>10 lessons</Typography>
+                                        <Typography variant='subtitle2' sx={style.leftStack_volumeCourse}>{CountCourseVolume()} • </Typography>
+                                        <Typography variant='subtitle2' sx={style.leftStack_totalLessons}>{course.lessons.length} lessons</Typography>
                                     </Stack>
                                     <Stack sx={style.leftStack_videoDemoPanel}>
                                         <iframe className="frame"
