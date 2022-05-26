@@ -4,9 +4,6 @@ import routes from "../routes";
 import React from "react";
 
 // import page
-const EditCourses = React.lazy(() =>
-    import("../features/edit-del-courses/pages/EditCourses")
-);
 const HomeCoursePage = React.lazy(() => import("../components/homeCourseList"));
 
 // waiting

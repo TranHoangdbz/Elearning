@@ -1,7 +1,10 @@
 import React, {useRef, useState}  from 'react';
 import './editcourse.css';
 import CancelOutlinedIcon from '@mui/icons-material/CancelOutlined';
-import { TextField, FormControl, Select, InputLabel, MenuItem, CircularProgress } from '@mui/material';
+import { 
+    TextField, FormControl, Select, InputLabel, 
+    MenuItem, CircularProgress, Button
+} from '@mui/material';
 import axios, { CancelToken, isCancel } from "axios";
 const EditCourses = () => {
     const [course, setCourse] = React.useState('');
@@ -12,13 +15,14 @@ const EditCourses = () => {
     };
     // checkvaildate
     const [validate, setValidate] = useState(false);
+    const [nameErr, setNameErr] = useState('');
+    
     const checkvaildate =() =>{
         console.log(name_value);
         if (name_value == "" ) {
-            setName_value("Không thể để trống")
-            setValidate(true);
+            setNameErr("Tên đang trống")
         } else {
-            setValidate(false);
+            setNameErr("")
             setPopup(true);
         }
     }
@@ -91,11 +95,12 @@ const EditCourses = () => {
                <TextField  
                     value={name_value} 
                     onChange={nameValue}
-                    error ={validate}
+                    error ={nameErr}
                     id="outlined-size-small"
                     size="small"
                     inputProps={{style: {fontSize: 14}}}
-                    
+                    FormHelperTextProps={{style: {fontSize: 12}}}
+                    helperText={nameErr}
                 />
                <p className="title">Description</p>
                <TextField   
@@ -146,7 +151,8 @@ const EditCourses = () => {
                     <div className="video_components">
                         <div className="video_header">
                             <p className="title">Video</p>
-                            <label htmlFor="fileVideo" className="btnn_select" >Select Video </label>
+                            <label htmlFor="fileVideo"  >Select Video </label>
+                            <Button className="btnn_select" variant="contained">Contained</Button>
                             <input type='file' id='fileVideo' onChange={uploadFile} style={{display:'none'}} />
                         </div>
                         <div className="video_body">
