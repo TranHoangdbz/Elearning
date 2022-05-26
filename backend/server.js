@@ -1,25 +1,31 @@
 // require('dotenv').config()
 
-const express = require('express');
-var cors = require('cors')
+const express = require("express");
+var cors = require("cors");
 const app = express();
-const mongoose = require('mongoose');
+const mongoose = require("mongoose");
+const bodyParser = require("body-parser");
+const { PORT } = require("./constants");
+
+global.__basedir = __dirname;
 
 app.use(cors());
+app.use("/public", express.static(__dirname + "/public"));
 
-const PORT = 32
+app.use(bodyParser.json());
+app.use(bodyParser.urlencoded({ extended: true }));
 
-mongoose.connect("mongodb+srv://admin:admin@uit-elearning.uqfe4.mongodb.net/myFirstDatabase?retryWrites=true&w=majority")
-const db = mongoose.connection
+mongoose.connect(
+  "mongodb+srv://admin:admin@uit-elearning.uqfe4.mongodb.net/myFirstDatabase?retryWrites=true&w=majority"
+);
+const db = mongoose.connection;
 
-db.on('error', (error) => console.error(error))
-db.once('open', () => console.log('Connected to Database'))
+db.on("error", (error) => console.error(error));
+db.once("open", () => console.log("Connected to Database"));
 
-app.use(express.json())
+app.use(express.json());
 
-
-const route = require('./routes');
+const route = require("./routes");
 route(app);
 
-
-app.listen(PORT, () => console.log('Server Started'))
+app.listen(PORT, () => console.log("Server Started"));

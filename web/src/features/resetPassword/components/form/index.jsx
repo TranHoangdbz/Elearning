@@ -141,7 +141,7 @@ function Form() {
     const handleClose = () => setOpen(false);
 
     // submit
-    const handleSubmit = () => {
+    const handleSubmit = async () => {
         const isCurrentPasswordValid = handleCurrentBlur();
         const isNewPasswordValid = handleBlur();
         const isConfirmPasswordValid = handleConfirmBlur();
@@ -151,14 +151,29 @@ function Form() {
             isNewPasswordValid &&
             isConfirmPasswordValid
         ) {
-            if(inputCurrentPassword === "pham@gmail") {
-                handleOpen();
-            } else {
-                setValidateCurrentPassword({mes: "Incorrect password.", isValid: false})
-                setInputPassword('');
-                setInputConfirmPassword('')
+            try {
+                const isCorrectPassword = await helpers.isCorrectPassword(
+                    inputCurrentPassword,inputPassword
+                );
+                
+                if (isCorrectPassword) {
+                    handleOpen();
+                } else {
+                    setValidateCurrentPassword({
+                        mes: "Incorrect password.",
+                        isValid: false,
+                    });
+                    setInputPassword("");
+                    setInputConfirmPassword("");
+                }
+            } catch (err) {
+                setValidateCurrentPassword({
+                    mes: err.message,
+                    isValid: false,
+                });
+                setInputPassword("");
+                setInputConfirmPassword("");
             }
-
         }
         //
     };
@@ -198,7 +213,7 @@ function Form() {
                                 onChange={(e) =>
                                     setInputPassword(e.target.value)
                                 }
-                                value= {inputPassword}
+                                value={inputPassword}
                                 className={`${passwordClass.join(" ")}`}
                             />
                             {!validatePassword.isValid && (
@@ -219,7 +234,7 @@ function Form() {
                                 onChange={(e) =>
                                     setInputConfirmPassword(e.target.value)
                                 }
-                                value= {inputConfirmPassword}
+                                value={inputConfirmPassword}
                                 className={`${styles.formInput}`}
                             />
                             {!validateConfirmPassword.isValid && (

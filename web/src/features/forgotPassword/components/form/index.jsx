@@ -32,7 +32,7 @@ function Form() {
             setInputClass(newClasses);
             if (inputValue === "") {
                 setIsValidEmail({
-                    mes: "Require field.",
+                    mes: "This field is required.",
                     isValid: false,
                 });
             } else {

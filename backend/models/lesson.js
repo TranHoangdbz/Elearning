@@ -5,10 +5,15 @@ const lessonSchema = new mongoose.Schema({
     type: String,
     required: true,
   },
-  description: String,
-  video: String,
-  cloudId: String, //public_id of file in cloudinary
-  lessonVolume: Number,
+  description: {
+    type: String,
+  },
+  video: {
+    type: String,
+  },
+  lessonVolume: {
+    type: Number,
+  },
   quizz: [
     {
       type: mongoose.Schema.Types.ObjectId,
