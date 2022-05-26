@@ -6,7 +6,7 @@ import axios, { CancelToken, isCancel } from "axios";
 const EditCourses = () => {
     const [course, setCourse] = React.useState('');
     // get value of name
-    const [name_value, setName_value] = useState();
+    const [name_value, setName_value] = useState("");
     const nameValue  = e =>{
         setName_value (e.target.value);
     };
