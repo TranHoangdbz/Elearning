@@ -5,10 +5,22 @@ import { TextField, FormControl, Select, InputLabel, MenuItem, CircularProgress 
 import axios, { CancelToken, isCancel } from "axios";
 const EditCourses = () => {
     const [course, setCourse] = React.useState('');
+    // get value of name
+    const [name_value, setName_value] = useState();
+    const nameValue  = e =>{
+        setName_value (e.target.value);
+    };
     // checkvaildate
     const [validate, setValidate] = useState(false);
-    const checkvaildate =(event) =>{
-        
+    const checkvaildate =() =>{
+        console.log(name_value);
+        if (name_value == "" ) {
+            setName_value("Không thể để trống")
+            setValidate(true);
+        } else {
+            setValidate(false);
+            setPopup(true);
+        }
     }
     // mở thông báo
     const [popup, setPopup] = React.useState(false);
@@ -23,7 +35,6 @@ const EditCourses = () => {
     const uploadFile = ({ target: { files } }) => {
         let data = new FormData();
         data.append("file", files[0]);
-
         const options = {
             onUploadProgress: progressEvent => {
                 const { loaded, total } = progressEvent;
@@ -77,7 +88,9 @@ const EditCourses = () => {
             </div>
             <div className="edit__body">
                <p className="title">Name</p>
-               <TextField   
+               <TextField  
+                    value={name_value} 
+                    onChange={nameValue}
                     error ={validate}
                     id="outlined-size-small"
                     size="small"
@@ -86,7 +99,6 @@ const EditCourses = () => {
                 />
                <p className="title">Description</p>
                <TextField   
-                    error = {validate}
                     name="Lesson description"
                     fullWidth
                     multiline={true}
@@ -128,6 +140,7 @@ const EditCourses = () => {
                             {uploadPercentage > 0 && (
                                 <CircularProgress color="success" variant="determinate" value={100} />
                             )}
+                            {/* <img src={URL.createObjectURL() } style={{ height: 280, width: 120 }}  /> */}
                         </div>
                     </div>
                     <div className="video_components">
@@ -146,7 +159,7 @@ const EditCourses = () => {
                     
                 </div>
                 <button className="btn_save"
-                    onClick={()=> setPopup(true)}    
+                    onClick={checkvaildate}    
                 >
                     Save all
                 </button>
