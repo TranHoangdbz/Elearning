@@ -57,11 +57,14 @@ function Form() {
         status: "fail",
         mes: "Some error",
     });
+    const [disabledButton, setDisabledButton] = useState(false);
     const handleSubmit = async () => {
         if (handleBlur()) {
             try {
+                setDisabledButton(true);
                 const getNewPassword = await helpers.getNewPassword(inputValue);
-                setModalContent(getNewPassword)
+                setModalContent(getNewPassword);
+                setDisabledButton(false);
             } catch (e) {
                 console.log(e);
             } finally {
@@ -94,8 +97,14 @@ function Form() {
 
                     <div className={`${styles.submitGroup}`}>
                         <button
+                            disabled={disabledButton}
                             type="submit"
-                            className={`${styles.submitButton}`}
+                            className={
+                                styles[
+                                    "submitButton" +
+                                        (disabledButton ? "_disable" : "")
+                                ]
+                            }
                             onClick={handleSubmit}
                         >
                             Get new password
