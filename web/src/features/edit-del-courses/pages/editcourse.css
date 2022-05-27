@@ -46,17 +46,17 @@
 
 .edit__body .editcourse__video .video_components .video_header{
     display: flex;
+    align-items: center;
+    justify-content: space-between;
 }
 .edit__body .editcourse__video .video_components .video_header .btnn_select{
-    margin-left: auto;
-    margin-right: 2px;
-    padding: 5px;
-    padding-bottom: 1px;
+    padding: 10px;
     font-size: 16px;
     color: #fff;
     background-color: #1A5276;
     border-radius: 10px;
     border-style: none;
+    cursor: pointer;
     box-shadow: 2px 2px 3px #99A3A4;
 }
 .edit__body .editcourse__video .video_components .video_body{
@@ -73,7 +73,6 @@
 
 .edit__body .btn_save{
     margin-top: 20px;
-
     float: right;
     padding: 10px;
     font-size: 16px;
@@ -82,6 +81,7 @@
     border-radius: 10px;
     border-style: none;
     box-shadow: 2px 2px 2px #99A3A4;
+    cursor: pointer;
 }
 
 .editLesson .editLesson-inner .nopopup{

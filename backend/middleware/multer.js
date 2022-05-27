@@ -1,9 +1,10 @@
 const multer = require('multer')
-const MAXSIZE = 200 * 1024 * 1024;
+const { MAX_FILE_SIZE_IN_MB } = require("../constants");
+const MAX_SIZE = MAX_FILE_SIZE_IN_MB * 1024 * 1024;
 
 const storage = multer.diskStorage({
     destination: function (req, file, cb) {
-        cb(null, './')
+        cb(null,  __basedir + "/public/uploads/")
     },
     filename: function (req, file, cb) {
         cb(null, Date.now() + '-' + file.originalname)
@@ -12,7 +13,7 @@ const storage = multer.diskStorage({
 
 const upload = multer({
     storage: storage,
-    limits: {fieldSize: MAXSIZE},
+    limits: {fieldSize: MAX_SIZE},
 })
 
 module.exports = upload
