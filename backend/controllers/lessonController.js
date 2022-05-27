@@ -192,7 +192,7 @@ const updateFieldLesson = async (req, res) => {
   const lessonId = req.params.id;
   const thumbnail = req.files.thumbnail;
   const video = req.files.video;
-  const { name, description, lessonVolume } = req.body;
+  const { name, description } = req.body;
   // const { path } = video[0]
   // res.status(200).send({ lessonId, video: path, thumbnail, description, lessonVolume })
 
@@ -206,7 +206,6 @@ const updateFieldLesson = async (req, res) => {
 
       doc.name = name;
       doc.description = description;
-      doc.lessonVolume = lessonVolume;
 
       //exchange file
       const thumbnailUrl = await handleUpload(thumbnail);
