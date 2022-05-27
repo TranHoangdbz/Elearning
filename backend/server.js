@@ -28,4 +28,4 @@ app.use(express.json());
 const route = require("./routes");
 route(app);
 
-app.listen(PORT, () => console.log("Server Started"));
+app.listen(PORT, () => console.log("Server Started " + PORT));

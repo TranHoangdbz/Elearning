@@ -11,7 +11,7 @@ function LayoutLeftCourseLearning(props) {
                 src="https://res.cloudinary.com/dry9yzxep/video/upload/v1653557155/courses/COURSE2/L1/course2_l1_atqbr4.mp4"
             >
             </iframe>
-            <OverviewAndQuizz></OverviewAndQuizz>
+            <OverviewAndQuizz lesson={props.lesson} lessonSelect={props.lessonSelect}></OverviewAndQuizz>
         </div>
     );
 }

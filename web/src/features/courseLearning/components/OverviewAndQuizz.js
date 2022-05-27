@@ -43,8 +43,7 @@ function a11yProps(index) {
     };
 }
 
-export default function OverviewAndQuizz() {
-
+export default function OverviewAndQuizz(props) {
     const [value, setValue] = React.useState(0);
 
     const handleChange = (event, newValue) => {
@@ -73,7 +72,7 @@ export default function OverviewAndQuizz() {
                 <Overview></Overview>
             </TabPanel>
             <TabPanel value={value} index={1}>
-                <Quizz></Quizz>
+                <Quizz lesson={props.lesson} lessonSelect={props.lessonSelect}></Quizz>
             </TabPanel>
         </Box>
     );
