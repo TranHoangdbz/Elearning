@@ -33,7 +33,7 @@ const style = {
     },
     leftStack_totalLessons: {
         pt: 1,
-        pl: 2,
+        pl: 1,
         color: 'black',
         fontWeight: 'bold'
     },
@@ -54,7 +54,8 @@ const style = {
         mb: 2
     },
     rightStack_imgCourse: {
-        width: '100%'
+        width: '100%',
+        marginBottom: 5
     },
     rightStack_registerButton: {
         fontSize: 12,
@@ -71,7 +72,7 @@ const style = {
         justifyContent: 'center',
         alignItems: 'center',
         justifySelf: 'center',
-        height: '50vh',
+        height: '40vh',
         mt: 2
     }
 }

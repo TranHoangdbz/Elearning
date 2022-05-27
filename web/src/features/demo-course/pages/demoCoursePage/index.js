@@ -62,7 +62,7 @@ const DemoCourse = () => {
                                     </Typography>
                                     <Typography variant='h4' sx={style.leftStack_introduceTitle}>Introduce to Course</Typography>
                                     <Stack direction='row' sx={style.leftStack_infoCoursePanel}>
-                                        <Typography variant='subtitle2' sx={style.leftStack_volumeCourse}>{CountCourseVolume()} • </Typography>
+                                        <Typography variant='subtitle2' sx={style.leftStack_volumeCourse}>{CountCourseVolume()}  • </Typography>
                                         <Typography variant='subtitle2' sx={style.leftStack_totalLessons}>{course.lessons.length} lessons</Typography>
                                     </Stack>
                                     <Stack sx={style.leftStack_videoDemoPanel}>
