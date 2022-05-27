@@ -53,9 +53,20 @@ function Form() {
     const handleClose = () => setOpen(false);
 
     // submit
-    const handleSubmit = () => {
-        if(handleBlur()) {
-            handleOpen()
+    const [modalContent, setModalContent] = useState({
+        status: "fail",
+        mes: "Some error",
+    });
+    const handleSubmit = async () => {
+        if (handleBlur()) {
+            try {
+                const getNewPassword = await helpers.getNewPassword(inputValue);
+                setModalContent(getNewPassword)
+            } catch (e) {
+                console.log(e);
+            } finally {
+                handleOpen();
+            }
         }
         //
     };
@@ -91,7 +102,12 @@ function Form() {
                         </button>
                     </div>
 
-                    <Modal open={open} onClose={handleClose}></Modal>
+                    <Modal
+                        open={open}
+                        onClose={handleClose}
+                        status={modalContent.status}
+                        mes={modalContent.mes}
+                    ></Modal>
                 </div>
             </div>
         </React.Fragment>
