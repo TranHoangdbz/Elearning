@@ -3,7 +3,7 @@ const Course = require("../models/course");
 
 const getAll = async (req, res) => {
   try {
-    const results = await Course.find({}).lean();
+    const results = await Course.find({}).lean().populate("lessons").populate("teacher");
 
     return res.status(200).json({
       success: true,

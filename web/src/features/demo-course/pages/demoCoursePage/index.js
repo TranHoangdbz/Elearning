@@ -16,6 +16,7 @@ const DemoCourse = () => {
                 const result = await AjaxHelper.get(URL_API.URL_GET_COURSE_BY_ID + '/' + id)
                 if (result.status == 200) {
                     setCourse(result.data.data)
+                    console.log(result.data.data)
                 }
                 else {
                     console.log(result.status)

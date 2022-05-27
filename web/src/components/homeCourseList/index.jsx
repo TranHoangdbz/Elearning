@@ -1,4 +1,4 @@
-import React, { useRef, useState } from 'react'
+import React, { useRef, useState, useEffect } from 'react'
 
 import { ScrollMenu, VisibilityContext } from 'react-horizontal-scrolling-menu';
 
@@ -10,6 +10,9 @@ import CardContent from '@mui/material/CardContent';
 import CardMedia from '@mui/material/CardMedia';
 import { CardActionArea } from '@mui/material';
 
+import AjaxHelper from '../../services';
+import URL_API from '../../services/API/config'
+
 import { FaAngleLeft, FaAngleRight } from 'react-icons/fa'
 
 import SwiperCore, { Virtual, Navigation, Pagination } from 'swiper';
@@ -19,450 +22,66 @@ import { Swiper, SwiperSlide } from 'swiper/react';
 import 'swiper/css';
 import 'swiper/css/pagination';
 import 'swiper/css/navigation';
+import { formatVolume } from '../../utils/FormatVolumeUtil';
 
 SwiperCore.use([Virtual, Navigation, Pagination]);
-
-const listCourse = [
-    {
-        id: '1',
-        CourseName: '.NET Advanced',
-        Teacher: {
-            Name: 'Jason Wong',
-            Avatar: 'http://moxdev.wpengine.com/wp-content/uploads/2019/10/jasonwong-300x300.jpg',
-            Expertise: 'Sr Software Engineer'
-        },
-        CourseImage: 'https://riptutorial.com/assets/images/csharp-logo.png',
-        Lessons: [
-            {
-                id: '1',
-                LessonVolume: 25,
-            },
-            {
-                id: '2',
-                LessonVolume: 20,
-            },
-            {
-                id: '3',
-                LessonVolume: 15,
-            },
-            {
-                id: '2',
-                LessonVolume: 35,
-            }
-        ]
-    },
-    {
-        id: '2',
-        CourseName: '.NET Advanced',
-        Teacher: {
-            Name: 'Jason Wong',
-            Avatar: 'http://moxdev.wpengine.com/wp-content/uploads/2019/10/jasonwong-300x300.jpg',
-            Expertise: 'Sr Software Engineer'
-        },
-        CourseImage: 'https://riptutorial.com/assets/images/csharp-logo.png',
-        Lessons: [
-            {
-                id: '1',
-                LessonVolume: 25,
-            },
-            {
-                id: '2',
-                LessonVolume: 20,
-            },
-            {
-                id: '3',
-                LessonVolume: 15,
-            },
-            {
-                id: '2',
-                LessonVolume: 35,
-            }
-        ]
-    },
-    {
-        id: '3',
-        CourseName: '.NET Advanced',
-        Teacher: {
-            Name: 'Jason Wong',
-            Avatar: 'http://moxdev.wpengine.com/wp-content/uploads/2019/10/jasonwong-300x300.jpg',
-            Expertise: 'Sr Software Engineer'
-        },
-        CourseImage: 'https://riptutorial.com/assets/images/csharp-logo.png',
-        Lessons: [
-            {
-                id: '1',
-                LessonVolume: 25,
-            },
-            {
-                id: '2',
-                LessonVolume: 20,
-            },
-            {
-                id: '3',
-                LessonVolume: 15,
-            },
-            {
-                id: '2',
-                LessonVolume: 35,
-            }
-        ]
-    },
-    {
-        id: '4',
-        CourseName: '.NET Advanced',
-        Teacher: {
-            Name: 'Jason Wong',
-            Avatar: 'http://moxdev.wpengine.com/wp-content/uploads/2019/10/jasonwong-300x300.jpg',
-            Expertise: 'Sr Software Engineer'
-        },
-        CourseImage: 'https://riptutorial.com/assets/images/csharp-logo.png',
-        Lessons: [
-            {
-                id: '1',
-                LessonVolume: 25,
-            },
-            {
-                id: '2',
-                LessonVolume: 20,
-            },
-            {
-                id: '3',
-                LessonVolume: 15,
-            },
-            {
-                id: '2',
-                LessonVolume: 35,
-            }
-        ]
-    },
-    {
-        id: '5',
-        CourseName: '.NET Advanced',
-        Teacher: {
-            Name: 'Jason Wong',
-            Avatar: 'http://moxdev.wpengine.com/wp-content/uploads/2019/10/jasonwong-300x300.jpg',
-            Expertise: 'Sr Software Engineer'
-        },
-        CourseImage: 'https://riptutorial.com/assets/images/csharp-logo.png',
-        Lessons: [
-            {
-                id: '1',
-                LessonVolume: 25,
-            },
-            {
-                id: '2',
-                LessonVolume: 20,
-            },
-            {
-                id: '3',
-                LessonVolume: 15,
-            },
-            {
-                id: '2',
-                LessonVolume: 35,
-            }
-        ]
-    },
-    {
-        id: '6',
-        CourseName: '.NET Advanced',
-        Teacher: {
-            Name: 'Jason Wong',
-            Avatar: 'http://moxdev.wpengine.com/wp-content/uploads/2019/10/jasonwong-300x300.jpg',
-            Expertise: 'Sr Software Engineer'
-        },
-        CourseImage: 'https://riptutorial.com/assets/images/csharp-logo.png',
-        Lessons: [
-            {
-                id: '1',
-                LessonVolume: 25,
-            },
-            {
-                id: '2',
-                LessonVolume: 20,
-            },
-            {
-                id: '3',
-                LessonVolume: 15,
-            },
-            {
-                id: '2',
-                LessonVolume: 35,
-            }
-        ]
-    },
-    {
-        id: '7',
-        CourseName: '.NET Advanced',
-        Teacher: {
-            Name: 'Jason Wong',
-            Avatar: 'http://moxdev.wpengine.com/wp-content/uploads/2019/10/jasonwong-300x300.jpg',
-            Expertise: 'Sr Software Engineer'
-        },
-        CourseImage: 'https://riptutorial.com/assets/images/csharp-logo.png',
-        Lessons: [
-            {
-                id: '1',
-                LessonVolume: 25,
-            },
-            {
-                id: '2',
-                LessonVolume: 20,
-            },
-            {
-                id: '3',
-                LessonVolume: 15,
-            },
-            {
-                id: '2',
-                LessonVolume: 35,
-            }
-        ]
-    },
-    {
-        id: '8',
-        CourseName: '.NET Advanced',
-        Teacher: {
-            Name: 'Jason Wong',
-            Avatar: 'http://moxdev.wpengine.com/wp-content/uploads/2019/10/jasonwong-300x300.jpg',
-            Expertise: 'Sr Software Engineer'
-        },
-        CourseImage: 'https://riptutorial.com/assets/images/csharp-logo.png',
-        Lessons: [
-            {
-                id: '1',
-                LessonVolume: 25,
-            },
-            {
-                id: '2',
-                LessonVolume: 20,
-            },
-            {
-                id: '3',
-                LessonVolume: 15,
-            },
-            {
-                id: '2',
-                LessonVolume: 35,
-            }
-        ]
-    },
-    {
-        id: '9',
-        CourseName: '.NET Advanced',
-        Teacher: {
-            Name: 'Jason Wong',
-            Avatar: 'http://moxdev.wpengine.com/wp-content/uploads/2019/10/jasonwong-300x300.jpg',
-            Expertise: 'Sr Software Engineer'
-        },
-        CourseImage: 'https://riptutorial.com/assets/images/csharp-logo.png',
-        Lessons: [
-            {
-                id: '1',
-                LessonVolume: 25,
-            },
-            {
-                id: '2',
-                LessonVolume: 20,
-            },
-            {
-                id: '3',
-                LessonVolume: 15,
-            },
-            {
-                id: '2',
-                LessonVolume: 35,
-            }
-        ]
-    },
-    {
-        id: '10',
-        CourseName: '.NET Advanced',
-        Teacher: {
-            Name: 'Jason Wong',
-            Avatar: 'http://moxdev.wpengine.com/wp-content/uploads/2019/10/jasonwong-300x300.jpg',
-            Expertise: 'Sr Software Engineer'
-        },
-        CourseImage: 'https://riptutorial.com/assets/images/csharp-logo.png',
-        Lessons: [
-            {
-                id: '1',
-                LessonVolume: 25,
-            },
-            {
-                id: '2',
-                LessonVolume: 20,
-            },
-            {
-                id: '3',
-                LessonVolume: 15,
-            },
-            {
-                id: '2',
-                LessonVolume: 35,
-            }
-        ]
-    },
-    {
-        id: '11',
-        CourseName: '.NET Advanced',
-        Teacher: {
-            Name: 'Jason Wong',
-            Avatar: 'http://moxdev.wpengine.com/wp-content/uploads/2019/10/jasonwong-300x300.jpg',
-            Expertise: 'Sr Software Engineer'
-        },
-        CourseImage: 'https://riptutorial.com/assets/images/csharp-logo.png',
-        Lessons: [
-            {
-                id: '1',
-                LessonVolume: 25,
-            },
-            {
-                id: '2',
-                LessonVolume: 20,
-            },
-            {
-                id: '3',
-                LessonVolume: 15,
-            },
-            {
-                id: '2',
-                LessonVolume: 35,
-            }
-        ]
-    },
-    {
-        id: '12',
-        CourseName: '.NET Advanced',
-        Teacher: {
-            Name: 'Jason Wong',
-            Avatar: 'http://moxdev.wpengine.com/wp-content/uploads/2019/10/jasonwong-300x300.jpg',
-            Expertise: 'Sr Software Engineer'
-        },
-        CourseImage: 'https://riptutorial.com/assets/images/csharp-logo.png',
-        Lessons: [
-            {
-                id: '1',
-                LessonVolume: 25,
-            },
-            {
-                id: '2',
-                LessonVolume: 20,
-            },
-            {
-                id: '3',
-                LessonVolume: 15,
-            },
-            {
-                id: '2',
-                LessonVolume: 35,
-            }
-        ]
-    },
-    {
-        id: '13',
-        CourseName: '.NET Advanced',
-        Teacher: {
-            Name: 'Jason Wong',
-            Avatar: 'http://moxdev.wpengine.com/wp-content/uploads/2019/10/jasonwong-300x300.jpg',
-            Expertise: 'Sr Software Engineer'
-        },
-        CourseImage: 'https://riptutorial.com/assets/images/csharp-logo.png',
-        Lessons: [
-            {
-                id: '1',
-                LessonVolume: 25,
-            },
-            {
-                id: '2',
-                LessonVolume: 20,
-            },
-            {
-                id: '3',
-                LessonVolume: 15,
-            },
-            {
-                id: '2',
-                LessonVolume: 35,
-            }
-        ]
-    },
-    {
-        id: '14',
-        CourseName: '.NET Advanced',
-        Teacher: {
-            Name: 'Jason Wong',
-            Avatar: 'http://moxdev.wpengine.com/wp-content/uploads/2019/10/jasonwong-300x300.jpg',
-            Expertise: 'Sr Software Engineer'
-        },
-        CourseImage: 'https://riptutorial.com/assets/images/csharp-logo.png',
-        Lessons: [
-            {
-                id: '1',
-                LessonVolume: 25,
-            },
-            {
-                id: '2',
-                LessonVolume: 20,
-            },
-            {
-                id: '3',
-                LessonVolume: 15,
-            },
-            {
-                id: '2',
-                LessonVolume: 35,
-            }
-        ]
-    },
-    {
-        id: '15',
-        CourseName: '.NET Advanced',
-        Teacher: {
-            Name: 'Jason Wong',
-            Avatar: 'http://moxdev.wpengine.com/wp-content/uploads/2019/10/jasonwong-300x300.jpg',
-            Expertise: 'Sr Software Engineer'
-        },
-        CourseImage: 'https://riptutorial.com/assets/images/csharp-logo.png',
-        Lessons: [
-            {
-                id: '1',
-                LessonVolume: 25,
-            },
-            {
-                id: '2',
-                LessonVolume: 20,
-            },
-            {
-                id: '3',
-                LessonVolume: 15,
-            },
-            {
-                id: '2',
-                LessonVolume: 35,
-            }
-        ]
-    }
-]
 
 
 const HomeCourseList = () => {
 
-    const [slides, setSlides] = useState(listCourse);
+    useEffect(() => {
+        async function LoadData() {
+            let temp = []
+            try {
+                const result = await AjaxHelper.get(URL_API.URL_GET_ALL_COURSE + '/')
+                if (result.status == 200) {
+                    for (let i = 0; i < result.data.data.length; i++) {
+                        temp.push(result.data.data[i])
+                    }
+                }
+                else {
+                    console.log(result.status)
+                    console.log(result.message)
+                }
+            }
+            catch (err) {
+                console.log(err)
+            }
+            setSlides(temp)
+        }
+
+        let isCancel = false;
+        if (isCancel) return
+        else LoadData()
+
+        return () => {
+            isCancel = true
+            // setSlides([])
+        }
+    }, [])
+
+    const [slides, setSlides] = useState([]);
 
     const [swiperRef, setSwiperRef] = useState(null);
-    const appendNumber = useRef(listCourse.length);
+    const appendNumber = useRef(slides.length);
     const prependNumber = useRef(1);
 
     const slideTo = (index) => {
         swiperRef.slideTo(index - 1, 0);
     };
 
+    const CountCourseVolume = (course) => {
+        let totalVolume = 0
+        course.lessons.map(ite => totalVolume += ite.lessonVolume)
+        return formatVolume(totalVolume)
+    }
+
 
 
     return (
-        <Stack direction="column" sx={{ backgroundColor: '#E5E5E5', top: 0, bottom: 0, padding: '60px' }} spacing={2}>
 
+        <Stack direction="column" sx={{ backgroundColor: '#E5E5E5', top: 0, bottom: 0, padding: '60px' }} spacing={2}>
+            {console.log(slides)}
             <Stack direction="row" justifyContent="space-between">
                 <Typography
                     sx={{
@@ -519,19 +138,19 @@ const HomeCourseList = () => {
                     style={{ height: '300px' }}
                     modules={[Navigation]}
                 >
-                    {slides.map((item) => (
-                        <SwiperSlide key={item.id}>
+                    {slides.map(course => (
+                        <SwiperSlide key={course._id}>
                             <Card sx={{ width: '250px', height: '250px', borderRadius: '20px' }}>
                                 <CardActionArea>
                                     <CardMedia
                                         component="img"
                                         height="140"
-                                        image={item.CourseImage}
+                                        image={course.courseImage}
                                         alt=" "
                                     />
                                     <Stack direction="column" spacing={2} marginLeft="10%">
                                         <Stack direction="row">
-                                            <Avatar src={item.Teacher.Avatar} sx={{
+                                            <Avatar src={course.teacher.profilePicture} sx={{
                                                 height: '37.88px',
                                                 width: "37.88px",
                                                 left: '0%',
@@ -548,10 +167,10 @@ const HomeCourseList = () => {
                                                         fontWeight: 600,
                                                         fontSize: '12px',
                                                         lineHeight: '15px',
-                                                        color: ' #000000'
+                                                        color: ' black'
                                                     }}
                                                 >
-                                                    {item.Teacher.Name}
+                                                    {course.teacher.fullName}
                                                 </Typography>
                                                 <Typography
                                                     sx={{
@@ -564,7 +183,7 @@ const HomeCourseList = () => {
                                                         color: ' #000000'
                                                     }}
                                                 >
-                                                    {item.Teacher.Expertise}
+                                                    {course.teacher.title}
                                                 </Typography>
                                             </Stack>
                                         </Stack>
@@ -578,7 +197,7 @@ const HomeCourseList = () => {
                                                 color: ' #000000',
                                             }}
                                         >
-                                            {item.CourseName}
+                                            {course.CourseName}
                                         </Typography>
                                         <Stack direction="row" justifyContent="space-between" paddingRight="3%">
                                             <Typography
@@ -593,7 +212,9 @@ const HomeCourseList = () => {
                                                     marginLeft: '-2%'
                                                 }}
                                             >
-                                                1 hours 7 mins
+                                                {
+                                                    CountCourseVolume(course)
+                                                }
                                             </Typography>
                                             <Typography
                                                 sx={{
@@ -607,7 +228,8 @@ const HomeCourseList = () => {
                                                     marginLeft: '-2%'
                                                 }}
                                             >
-                                                {item.Lessons.length} lessons
+                                                {course.lessons.length} lessons
+
                                             </Typography>
                                         </Stack>
 
@@ -689,19 +311,19 @@ const HomeCourseList = () => {
                     style={{ height: '300px' }}
                     modules={[Navigation]}
                 >
-                    {slides.map((item) => (
-                        <SwiperSlide key={item.id}>
+                    {slides.map((course) => (
+                        <SwiperSlide key={course._id}>
                             <Card sx={{ width: '250px', height: '250px', borderRadius: '20px' }}>
                                 <CardActionArea>
                                     <CardMedia
                                         component="img"
                                         height="140"
-                                        image={item.CourseImage}
+                                        image={course.courseImage}
                                         alt=" "
                                     />
                                     <Stack direction="column" spacing={2} marginLeft="10%">
                                         <Stack direction="row">
-                                            <Avatar src={item.Teacher.Avatar} sx={{
+                                            <Avatar src={course.teacher.profilePicture} sx={{
                                                 height: '37.88px',
                                                 width: "37.88px",
                                                 left: '0%',
@@ -721,7 +343,7 @@ const HomeCourseList = () => {
                                                         color: ' #000000'
                                                     }}
                                                 >
-                                                    {item.Teacher.Name}
+                                                    {course.teacher.fullName}
                                                 </Typography>
                                                 <Typography
                                                     sx={{
@@ -734,7 +356,7 @@ const HomeCourseList = () => {
                                                         color: ' #000000'
                                                     }}
                                                 >
-                                                    {item.Teacher.Expertise}
+                                                    {course.teacher.title}
                                                 </Typography>
                                             </Stack>
                                         </Stack>
@@ -748,7 +370,7 @@ const HomeCourseList = () => {
                                                 color: ' #000000',
                                             }}
                                         >
-                                            {item.CourseName}
+                                            {course.CourseName}
                                         </Typography>
                                         <Stack direction="row" justifyContent="space-between" paddingRight="3%">
                                             <Typography
@@ -763,7 +385,9 @@ const HomeCourseList = () => {
                                                     marginLeft: '-2%'
                                                 }}
                                             >
-                                                1 hours 7 mins
+                                                {
+                                                    CountCourseVolume(course)
+                                                }
                                             </Typography>
                                             <Typography
                                                 sx={{
@@ -777,7 +401,7 @@ const HomeCourseList = () => {
                                                     marginLeft: '-2%'
                                                 }}
                                             >
-                                                {item.Lessons.length} lessons
+                                                {course.lessons.length} lessons
                                             </Typography>
                                         </Stack>
 
@@ -859,19 +483,19 @@ const HomeCourseList = () => {
                     style={{ height: '300px' }}
                     modules={[Navigation]}
                 >
-                    {slides.map((item) => (
-                        <SwiperSlide key={item.id}>
+                    {slides.map((course) => (
+                        <SwiperSlide key={course._id}>
                             <Card sx={{ width: '250px', height: '250px', borderRadius: '20px' }}>
                                 <CardActionArea>
                                     <CardMedia
                                         component="img"
                                         height="140"
-                                        image={item.CourseImage}
+                                        image={course.courseImage}
                                         alt=" "
                                     />
                                     <Stack direction="column" spacing={2} marginLeft="10%">
                                         <Stack direction="row">
-                                            <Avatar src={item.Teacher.Avatar} sx={{
+                                            <Avatar src={course.teacher.profilePicture} sx={{
                                                 height: '37.88px',
                                                 width: "37.88px",
                                                 left: '0%',
@@ -891,7 +515,7 @@ const HomeCourseList = () => {
                                                         color: ' #000000'
                                                     }}
                                                 >
-                                                    {item.Teacher.Name}
+                                                    {course.teacher.fullName}
                                                 </Typography>
                                                 <Typography
                                                     sx={{
@@ -904,7 +528,7 @@ const HomeCourseList = () => {
                                                         color: ' #000000'
                                                     }}
                                                 >
-                                                    {item.Teacher.Expertise}
+                                                    {course.teacher.title}
                                                 </Typography>
                                             </Stack>
                                         </Stack>
@@ -918,7 +542,7 @@ const HomeCourseList = () => {
                                                 color: ' #000000',
                                             }}
                                         >
-                                            {item.CourseName}
+                                            {course.CourseName}
                                         </Typography>
                                         <Stack direction="row" justifyContent="space-between" paddingRight="3%">
                                             <Typography
@@ -933,7 +557,9 @@ const HomeCourseList = () => {
                                                     marginLeft: '-2%'
                                                 }}
                                             >
-                                                1 hours 7 mins
+                                                {
+                                                    CountCourseVolume(course)
+                                                }
                                             </Typography>
                                             <Typography
                                                 sx={{
@@ -947,7 +573,7 @@ const HomeCourseList = () => {
                                                     marginLeft: '-2%'
                                                 }}
                                             >
-                                                {item.Lessons.length} lessons
+                                                {course.lessons.length} lessons
                                             </Typography>
                                         </Stack>
 
@@ -1029,19 +655,19 @@ const HomeCourseList = () => {
                     style={{ height: '300px' }}
                     modules={[Navigation]}
                 >
-                    {slides.map((item) => (
-                        <SwiperSlide key={item.id}>
+                    {slides.map((course) => (
+                        <SwiperSlide key={course._id}>
                             <Card sx={{ width: '250px', height: '250px', borderRadius: '20px' }}>
                                 <CardActionArea>
                                     <CardMedia
                                         component="img"
                                         height="140"
-                                        image={item.CourseImage}
+                                        image={course.courseImage}
                                         alt=" "
                                     />
                                     <Stack direction="column" spacing={2} marginLeft="10%">
                                         <Stack direction="row">
-                                            <Avatar src={item.Teacher.Avatar} sx={{
+                                            <Avatar src={course.teacher.profilePicture} sx={{
                                                 height: '37.88px',
                                                 width: "37.88px",
                                                 left: '0%',
@@ -1061,7 +687,7 @@ const HomeCourseList = () => {
                                                         color: ' #000000'
                                                     }}
                                                 >
-                                                    {item.Teacher.Name}
+                                                    {course.teacher.fullName}
                                                 </Typography>
                                                 <Typography
                                                     sx={{
@@ -1074,7 +700,7 @@ const HomeCourseList = () => {
                                                         color: ' #000000'
                                                     }}
                                                 >
-                                                    {item.Teacher.Expertise}
+                                                    {course.teacher.title}
                                                 </Typography>
                                             </Stack>
                                         </Stack>
@@ -1088,7 +714,7 @@ const HomeCourseList = () => {
                                                 color: ' #000000',
                                             }}
                                         >
-                                            {item.CourseName}
+                                            {course.CourseName}
                                         </Typography>
                                         <Stack direction="row" justifyContent="space-between" paddingRight="3%">
                                             <Typography
@@ -1103,7 +729,9 @@ const HomeCourseList = () => {
                                                     marginLeft: '-2%'
                                                 }}
                                             >
-                                                1 hours 7 mins
+                                                {
+                                                    CountCourseVolume(course)
+                                                }
                                             </Typography>
                                             <Typography
                                                 sx={{
@@ -1117,7 +745,7 @@ const HomeCourseList = () => {
                                                     marginLeft: '-2%'
                                                 }}
                                             >
-                                                {item.Lessons.length} lessons
+                                                {course.lessons.length} lessons
                                             </Typography>
                                         </Stack>
 
@@ -1199,19 +827,19 @@ const HomeCourseList = () => {
                     style={{ height: '300px' }}
                     modules={[Navigation]}
                 >
-                    {slides.map((item) => (
-                        <SwiperSlide key={item.id}>
+                    {slides.map((course) => (
+                        <SwiperSlide key={course._id}>
                             <Card sx={{ width: '250px', height: '250px', borderRadius: '20px' }}>
                                 <CardActionArea>
                                     <CardMedia
                                         component="img"
                                         height="140"
-                                        image={item.CourseImage}
+                                        image={course.courseImage}
                                         alt=" "
                                     />
                                     <Stack direction="column" spacing={2} marginLeft="10%">
                                         <Stack direction="row">
-                                            <Avatar src={item.Teacher.Avatar} sx={{
+                                            <Avatar src={course.teacher.profilePicture} sx={{
                                                 height: '37.88px',
                                                 width: "37.88px",
                                                 left: '0%',
@@ -1231,7 +859,7 @@ const HomeCourseList = () => {
                                                         color: ' #000000'
                                                     }}
                                                 >
-                                                    {item.Teacher.Name}
+                                                    {course.teacher.fullName}
                                                 </Typography>
                                                 <Typography
                                                     sx={{
@@ -1244,7 +872,7 @@ const HomeCourseList = () => {
                                                         color: ' #000000'
                                                     }}
                                                 >
-                                                    {item.Teacher.Expertise}
+                                                    {course.teacher.title}
                                                 </Typography>
                                             </Stack>
                                         </Stack>
@@ -1258,7 +886,7 @@ const HomeCourseList = () => {
                                                 color: ' #000000',
                                             }}
                                         >
-                                            {item.CourseName}
+                                            {course.CourseName}
                                         </Typography>
                                         <Stack direction="row" justifyContent="space-between" paddingRight="3%">
                                             <Typography
@@ -1273,7 +901,9 @@ const HomeCourseList = () => {
                                                     marginLeft: '-2%'
                                                 }}
                                             >
-                                                1 hours 7 mins
+                                                {
+                                                    CountCourseVolume(course)
+                                                }
                                             </Typography>
                                             <Typography
                                                 sx={{
@@ -1287,7 +917,7 @@ const HomeCourseList = () => {
                                                     marginLeft: '-2%'
                                                 }}
                                             >
-                                                {item.Lessons.length} lessons
+                                                {course.lessons.length} lessons
                                             </Typography>
                                         </Stack>
 
