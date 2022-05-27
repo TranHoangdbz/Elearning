@@ -3,8 +3,25 @@ import { Rating, Avatar } from '@mui/material'
 import ThumbUpOutlinedIcon from '@mui/icons-material/ThumbUpOutlined';
 import ForumOutlinedIcon from '@mui/icons-material/ForumOutlined';
 import CommentCard from './CommentCard';
+import {useDispatch, useSelector} from 'react-redux';
+import {addComment} from '../courseLearningSlice';
+import { useState, useEffect, useRef } from "react";
+
 function Overview(props) {
+
+    const dispatch = useDispatch();
     const [value, setValue] = React.useState(0);
+
+    const comments = useSelector((state) => {
+        console.log("state", state);
+        return [];
+    }) || [];
+
+    console.log("comments", comments);
+    const cmtContentRef = useRef(null);
+
+    var currentLessonID = "628f9cb6495c3273aae3408c";
+
     return (
         <div>
             <div style={{ fontFamily: "'Montserrat', san-serif" }} className='description'>
@@ -37,9 +54,22 @@ function Overview(props) {
             <div className='chat'>
                 <div className='enter-chat'>
                     <Avatar sx={{ marginRight: '12px' }} height={36} width={36} alt="Remy Sharp" src="https://kenh14cdn.com/thumb_w/660/203336854389633024/2021/7/9/photo-1-16257989599561090737937.jpeg" />
-                    <input className='chat-input' type={'text'}></input>
+                    <input 
+                        className='chat-input' 
+                        type={'text'}
+                        ref = {cmtContentRef} 
+                    >
+                        
+                    </input>
                     <div className='btn-send'>Send</div>
                 </div>
+                <button
+                    onClick={()=>{
+                        dispatch(addComment({data:"ok"}));
+                    }}  
+                >
+                    Nguyễn Công Phi
+                </button>
                 <div className='chat-user'>
                     <CommentCard componentChild={false}></CommentCard>
                     <CommentCard componentChild={<CommentCard componentChild={<CommentCard></CommentCard>}></CommentCard>}></CommentCard>

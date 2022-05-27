@@ -33,6 +33,11 @@ const publicRoute = [
         element: <CourseLearningPage />,
     },
     {
+        path: COURSE_LEARNING + '/:id',
+        name: "Course Learning",
+        element: <CourseLearningPage />,
+    },
+    {
         path: FORGOT_PASSWORD,
         name: "Forgot password",
         element: <ForgotPasswordPage />,

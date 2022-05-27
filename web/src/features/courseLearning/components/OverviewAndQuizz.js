@@ -1,4 +1,5 @@
 import * as React from 'react';
+import{ useState, useEffect } from 'react';
 import PropTypes from 'prop-types';
 import Tabs from '@mui/material/Tabs';
 import Tab from '@mui/material/Tab';
@@ -6,6 +7,8 @@ import Typography from '@mui/material/Typography';
 import Box from '@mui/material/Box';
 import Overview from './Overview';
 import Quizz from './Quizz';
+import axios from 'axios';
+import config from '../../../services/API/config';
 
 function TabPanel(props) {
     const { children, value, index, ...other } = props;
@@ -41,11 +44,22 @@ function a11yProps(index) {
 }
 
 export default function OverviewAndQuizz() {
+
     const [value, setValue] = React.useState(0);
 
     const handleChange = (event, newValue) => {
         setValue(newValue);
     };
+
+    // useEffect(async() =>{
+    //     axios.get(configUrl + '/courses/' + courseID)
+    //     .then(res => {
+    //         console.log("data", res.data.data.discussion)
+    //     })
+    //     .catch(error => {
+    //         console.log(error)
+    //     });
+    // });
 
     return (
         <Box sx={{ width: '100%' }}>
@@ -61,7 +75,6 @@ export default function OverviewAndQuizz() {
             <TabPanel value={value} index={1}>
                 <Quizz></Quizz>
             </TabPanel>
-
         </Box>
     );
 }

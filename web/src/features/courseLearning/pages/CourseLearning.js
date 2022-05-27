@@ -64,6 +64,12 @@ const mockCourses = [
 ]
 
 function CourseLearning() {
+    const url = window.location.pathname;
+    const path = url.split("/").filter((x) => x);
+
+    console.log("path", path);
+    
+
     return (
         <Container spacing={2} style={{ marginTop: '40px' }} maxWidth='xl'>
             <Grid spacing={1} container>
