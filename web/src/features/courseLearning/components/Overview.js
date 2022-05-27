@@ -8,7 +8,6 @@ import {addComment} from '../courseLearningSlice';
 import { useState, useEffect, useRef } from "react";
 
 function Overview(props) {
-
     const dispatch = useDispatch();
     const [value, setValue] = React.useState(0);
 
@@ -21,18 +20,15 @@ function Overview(props) {
     const cmtContentRef = useRef(null);
 
     var currentLessonID = "628f9cb6495c3273aae3408c";
+    
 
     return (
         <div>
             <div style={{ fontFamily: "'Montserrat', san-serif" }} className='description'>
-                Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.
-                Eget aliquet nibh praesent tristique magna. Enim praesent elementum facilisis leo vel fringilla est ullamcorper eget.
-                Platea dictumst quisque sagittis purus sit amet. Aliquet eget sit amet tellus cras. Egestas maecenas pharetra convallis posuere.
-                Dolor sit amet consectetur adipiscing elit duis tristique sollicitudin. Lacus vel facilisis volutpat est velit egestas.
-                At varius vel pharetra vel. Viverra nam libero justo laoreet.
+                {props.course.description}
             </div>
             <div style={{ fontFamily: "'Montserrat', san-serif" }} className='quantity-discussions'>
-                2 Discussions
+                {props.course.discussion ? props.course.discussion.length : "0"} Discussions
             </div>
             <div className='model-rating'>
                 <div className='custom'>
@@ -61,19 +57,34 @@ function Overview(props) {
                     >
                         
                     </input>
-                    <div className='btn-send'>Send</div>
+                    <div 
+                        className='btn-send'
+                        onClick={()=>{
+                            dispatch(addComment({data:"ok"}));
+                            console.log(props.course);
+                        }}
+                    >
+                        Send
+                    </div>
                 </div>
-                <button
+                {/* <button
                     onClick={()=>{
                         dispatch(addComment({data:"ok"}));
                     }}  
                 >
                     Nguyễn Công Phi
-                </button>
+                </button> */}
                 <div className='chat-user'>
-                    <CommentCard componentChild={false}></CommentCard>
+                    {
+                        props.course && props.course.discussion
+                        ?   props.course.discussion.map((value, index) => {
+                                return <CommentCard comment={value}></CommentCard>
+                            })
+                        : (null)
+                    }
+                    {/* <CommentCard componentChild={false}></CommentCard>
                     <CommentCard componentChild={<CommentCard componentChild={<CommentCard></CommentCard>}></CommentCard>}></CommentCard>
-                    <CommentCard componentChild={<CommentCard></CommentCard>}></CommentCard>
+                    <CommentCard componentChild={<CommentCard></CommentCard>}></CommentCard> */}
                 </div>
             </div>
         </div>

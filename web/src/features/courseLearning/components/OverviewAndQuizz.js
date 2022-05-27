@@ -69,7 +69,7 @@ export default function OverviewAndQuizz(props) {
                 </Tabs>
             </Box>
             <TabPanel value={value} index={0}>
-                <Overview></Overview>
+                <Overview course={props.course}></Overview>
             </TabPanel>
             <TabPanel value={value} index={1}>
                 <Quizz lesson={props.lesson} lessonSelect={props.lessonSelect}></Quizz>

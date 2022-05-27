@@ -23,7 +23,7 @@ function CourseLearning() {
     
     const [selectLesson, setSelectLesson] = useState(0)
     const [lessons, setLessons] = useState([])
-    const [course, setCourse] = useState()
+    const [course, setCourse] = useState({})
     const [mockLesson, setMockLesson] = useState([
         {
             lessonCode: "COURSE1L1",
@@ -150,6 +150,7 @@ function CourseLearning() {
 
     const calculateStar = (ratingArray) => {
         var sum = 0;
+        if(typeof ratingArray == 'undefined') return 0;
         ratingArray.forEach(element => {
             sum+=element.rate;
         });
@@ -161,31 +162,37 @@ function CourseLearning() {
             <Grid spacing={1} container>
                 <Grid lg={8} md={12}>
                     {/* Layout left */}
-                    <LayoutLeftCourseLearning lesson={lessons[selectLesson]} lessonSelect={mockLesson[selectLesson]}></LayoutLeftCourseLearning>
-                    <button 
+                    <LayoutLeftCourseLearning 
+                        lesson={lessons[selectLesson]} 
+                        lessonSelect={mockLesson[selectLesson]}
+                        course={course}
+                    ></LayoutLeftCourseLearning>
+                    {/* <button 
                         onClick={() => {
                             console.log("course", course);
                         }}
                     >
                         Nguyễn Công Phi
-                    </button>
+                    </button> */}
                 </Grid>
                 <Grid lg={4} md={12}>
                     
                     {/* Layout right */}
                     <div className='layout-right'>
-                        <div className='name-course' style={{ fontFamily: "'Montserrat', san-serif" }}>{course.courseName}</div>
+                        <div className='name-course' style={{ fontFamily: "'Montserrat', san-serif" }}>
+                            {course && typeof course.courseName!='undefined' && course.courseName  ? course.courseName : ""}
+                        </div>
                         <div style={{ display: 'flex', justifyContent: 'space-between', paddingLeft: '25px', paddingRight: '25px' }}>
                             <div className='students' style={{ fontFamily: "'Montserrat', san-serif" }}>0 students</div>
                             <div style={{ display: 'flex', flexDirection: 'column' }}>
                                 <div className='rating' style={{ display: 'flex', justifyContent: 'center' }}>
                                     <p style={{ marginRight: '10px', marginTop: '0', marginBottom: '0', fontFamily: "'Montserrat', san-serif" }}>
-                                        {calculateStar(course.rating)}
+                                        {course ? calculateStar(course.rating): ""}
                                     </p>
                                     <StarIcon style={{ color: '#FFD601' }}></StarIcon>
                                 </div>
                                 <div className='view' style={{ display: 'flex', justifyContent: 'center', fontFamily: "'Montserrat', san-serif" }}>
-                                    {course.rating.length} reviews
+                                    {course && course.rating && course.rating.length ?course.rating.length:"4.8"} reviews
                                 </div>
                             </div>
                         </div>
@@ -204,7 +211,7 @@ function CourseLearning() {
                         </div>
                         <div style={{ display: 'flex', paddingLeft: '25px', marginTop: '12px', paddingRight: '25px' }}>
                             <div style={{ fontFamily: "'Montserrat', san-serif" }} className='description'>
-                                {course.description}
+                                {course ? course.description : ""}
                             </div>
                         </div>
                         <div className='list-course'>
