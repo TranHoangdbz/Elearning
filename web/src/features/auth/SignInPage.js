@@ -1,5 +1,6 @@
 import { Card, Box, Button, Link, Divider, Avatar } from "@mui/material";
-import React from "react";
+
+import React, { useState } from "react";
 import { useFormik } from "formik";
 import { useNavigate } from "react-router-dom";
 import * as yup from "yup";
@@ -7,6 +8,7 @@ import AuthPageLayout from "./AuthPageLayout";
 import CTextField from "./components/CTextField";
 import { signin } from "./auth";
 import { saveToken } from "./localStorage";
+import Toast from "./components/Toast";
 
 const facebook = require("../../assets/images/facebook.png");
 const google = require("../../assets/images/google.png");
@@ -78,26 +80,37 @@ const validationSchema = yup.object({
 
 function SignInPage() {
   const navigate = useNavigate();
+  const [open, setOpen] = useState(false);
+  const [message, setMessage] = useState(null);
 
   const formik = useFormik({
     initialValues,
     validationSchema: validationSchema,
     onSubmit: (values) => {
       const { email, password } = values;
-      signin(email, password).then(({data}) => {
-        console.log(data);
-        if (data && data.token) {
-          saveToken(data.token);
-          navigate("/exam");
-        }
-      }).catch(({response}) => alert(response.data.message));
+      signin(email, password)
+        .then(({ data }) => {
+          console.log(data);
+          if (data && data.token) {
+            setOpen(false);
+            saveToken(data.token);
+            navigate("/exam");
+          }
+        })
+        .catch(({ response }) => {
+          setOpen(true);
+          setMessage("Bạn đã đăng nhập thất bại!");
+          console.log(response);
+        });
+
       // console.log({ email, password });
     },
   });
 
   return (
     <AuthPageLayout isSignIn>
-      <Box mx="auto" marginTop="56px" marginBottom="86px">
+      <Box mx="auto" marginTop="56px" marginBottom="86px" position="relative">
+        <Toast open={open} setOpen={setOpen} isError={true} message={message} />
         <Card sx={cardStyle}>
           <p style={cardTitleStyle}>Welcome Back!</p>
           <form
