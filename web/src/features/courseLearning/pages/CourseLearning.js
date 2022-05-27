@@ -148,26 +148,44 @@ function CourseLearning() {
         fetchCourse()
     }, [])
 
+    const calculateStar = (ratingArray) => {
+        var sum = 0;
+        ratingArray.forEach(element => {
+            sum+=element.rate;
+        });
+        return Math.round(sum*10 / ratingArray.length) / 10
+    }
+
     return (
         <Container spacing={2} style={{ marginTop: '40px' }} maxWidth='xl'>
             <Grid spacing={1} container>
-                <Grid lg={8}>
+                <Grid lg={8} md={12}>
                     {/* Layout left */}
                     <LayoutLeftCourseLearning lesson={lessons[selectLesson]} lessonSelect={mockLesson[selectLesson]}></LayoutLeftCourseLearning>
+                    <button 
+                        onClick={() => {
+                            console.log("course", course);
+                        }}
+                    >
+                        Nguyễn Công Phi
+                    </button>
                 </Grid>
-                <Grid lg={4}>
+                <Grid lg={4} md={12}>
+                    
                     {/* Layout right */}
                     <div className='layout-right'>
-                        <div className='name-course' style={{ fontFamily: "'Montserrat', san-serif" }}>.NET Advanced</div>
+                        <div className='name-course' style={{ fontFamily: "'Montserrat', san-serif" }}>{course.courseName}</div>
                         <div style={{ display: 'flex', justifyContent: 'space-between', paddingLeft: '25px', paddingRight: '25px' }}>
-                            <div className='students' style={{ fontFamily: "'Montserrat', san-serif" }}>10k students</div>
+                            <div className='students' style={{ fontFamily: "'Montserrat', san-serif" }}>0 students</div>
                             <div style={{ display: 'flex', flexDirection: 'column' }}>
                                 <div className='rating' style={{ display: 'flex', justifyContent: 'center' }}>
-                                    <p style={{ marginRight: '10px', marginTop: '0', marginBottom: '0', fontFamily: "'Montserrat', san-serif" }}>4.8</p>
+                                    <p style={{ marginRight: '10px', marginTop: '0', marginBottom: '0', fontFamily: "'Montserrat', san-serif" }}>
+                                        {calculateStar(course.rating)}
+                                    </p>
                                     <StarIcon style={{ color: '#FFD601' }}></StarIcon>
                                 </div>
                                 <div className='view' style={{ display: 'flex', justifyContent: 'center', fontFamily: "'Montserrat', san-serif" }}>
-                                    123 reviews
+                                    {course.rating.length} reviews
                                 </div>
                             </div>
                         </div>
@@ -186,8 +204,7 @@ function CourseLearning() {
                         </div>
                         <div style={{ display: 'flex', paddingLeft: '25px', marginTop: '12px', paddingRight: '25px' }}>
                             <div style={{ fontFamily: "'Montserrat', san-serif" }} className='description'>
-                                This class will teach you some advanced C# and .NET skill as well as a full implementation of
-                                .NET Framework for your future application.
+                                {course.description}
                             </div>
                         </div>
                         <div className='list-course'>
