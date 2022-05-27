@@ -81,9 +81,9 @@ const DemoCourse = () => {
                                     <img style={style.rightStack_imgCourse} src={course.courseImage}></img>
                                     <Button variant="contained" style={style.rightStack_registerButton} >REGISTER</Button>
                                     <Stack direction={'column'} sx={style.rightStack_authorInfo}>
-                                        <Avatar sx={style.rightStack_avatarLecturer} src='https://images.unsplash.com/photo-1539571696357-5a69c17a67c6?crop=entropy&cs=tinysrgb&fm=jpg&ixlib=rb-1.2.1&q=80&raw_url=true&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=387' />
-                                        <Typography sx={style.rightStack_nameLecturer} variant='h5' fontWeight={'bold'}>Thien Fam</Typography>
-                                        <Typography variant='h5'>Senior UI/UX Design</Typography>
+                                        <Avatar sx={style.rightStack_avatarLecturer} src={course.teacher.profilePicture} />
+                                        <Typography sx={style.rightStack_nameLecturer} variant='h5' fontWeight={'bold'}>{course.teacher.fullName}</Typography>
+                                        <Typography variant='h5'>{course.teacher.title}</Typography>
                                     </Stack>
                                 </Stack>
                             </Grid>
