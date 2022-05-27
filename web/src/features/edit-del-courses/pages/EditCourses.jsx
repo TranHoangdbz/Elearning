@@ -1,10 +1,10 @@
 import React, {useRef, useState}  from 'react';
 import './editcourse.css';
-import thumnail from '../../../assets/images/facebook.png';
+import Thumnail from '../../../assets/images/facebook.png';
 import CancelOutlinedIcon from '@mui/icons-material/CancelOutlined';
 import { 
     TextField, FormControl, Select, InputLabel, 
-    MenuItem, CircularProgress, Button
+    MenuItem, LinearProgress, Button
 } from '@mui/material';
 import axios, { CancelToken, isCancel } from "axios";
 const EditCourses = (props) => {
@@ -27,28 +27,58 @@ const EditCourses = (props) => {
             setPopup(true);
         }
     }
+    // handle save
+    const handleSave = () =>{
+        
+        uploadFile(thumnail,video);
+        if ( uploadPercentage === 0 ){
+            setPopup(false);
+        }
+    }
     // mở thông báo
     const [popup, setPopup] = React.useState(false);
     const handleChange = (event) => {
         setCourse(event.target.value);
     };
-    // Nhập file 2
+    // Change image
     const inputAvatarRef = useRef(null);
-    const [avatar, setAvatar] = useState();
-    const onImageChange = (event) => {
-        if (event.target.files && event.target.files[0]) {
-          setAvatar(event.target.files[0]);
+    const [thumnail, setThumnail] = useState()
+    const imageChange = (event) => {
+        if (isFileImage(event.target.files[0])) {
+          setThumnail(event.target.files[0]);
+        } else {
+            alert("Tệp nên là file image");
+        }
+        
+      };
+    function isFileImage(file) {
+        return file && file['type'].split('/')[0] === 'image';
+    }
+    // Change video
+    
+    const [video, setVideo] = useState();
+    const videoChange = (event) => {
+        if (isFileVideo(event.target.files[0])) {
+          setVideo(event.target.files[0]);
+        }else{
+            alert("Tệp nên là video");
         }
       };
+    function isFileVideo(file) {
+        console.log(file);
+        return file && file['type'].split('/')[0] === 'video';
+    }
     // nhập file 
-    const [selectedFile, setSelectedFile] = useState()
+    
+    const [selectedVideo, setSelectedVideo] = useState()
     const [uploadPercentage, setUploadPercentage] = useState(0);
     const cancelFileUpload = useRef(null);
 
-    const uploadFile = ({ target: { files } }) => {
+    const uploadFile = (thumnail, video) => {
         let data = new FormData();
-        data.append("file", files[0]);
-        setSelectedFile(files[0])
+        data.append("image", thumnail);
+        data.append("video", video);
+        
         const options = {
             onUploadProgress: progressEvent => {
                 const { loaded, total } = progressEvent;
@@ -148,14 +178,12 @@ const EditCourses = (props) => {
                         <div className="video_header">
                             <p className="title">Thumbnail</p>
                             <label htmlFor="fileThumbnail" className="btnn_select" >Select Image </label>
-                            <input ref={inputAvatarRef} type='file' id='fileThumbnail' onChange={uploadFile} style={{display:'none'}} />
+                            <input ref={inputAvatarRef} type='file' id='fileThumbnail' onChange={imageChange} style={{display:'none'}} />
                         </div>
 
                         <div className="video_body">
-                            {uploadPercentage > 0 && (
-                                <CircularProgress color="success" variant="determinate" value={100} />
-                            )}
-                            <img src={selectedFile ? URL.createObjectURL(selectedFile) : thumnail } style={{ height: 280 }}  />
+                            
+                            <img src={thumnail ? URL.createObjectURL(thumnail) : Thumnail } style={{ height: 280 }}  />
                         </div>
                     </div>
                     <div className="video_components">
@@ -163,13 +191,12 @@ const EditCourses = (props) => {
                             <p className="title">Video</p>
                             <label className="btnn_select" htmlFor="fileVideo"  >Select Video </label>
                             
-                            <input type='file' id='fileVideo' onChange={uploadFile} style={{display:'none'}} />
+                            <input type='file' id='fileVideo' onChange={videoChange} style={{display:'none'}} />
                         </div>
                         <div className="video_body">
-                            {uploadPercentage > 0 && (
-                                <CircularProgress color="success" variant="determinate" value={100} />
-                            )}
-                            <img src={selectedFile ? URL.createObjectURL(selectedFile) : thumnail } style={{ height: 280}}  />
+                            
+                            
+                            <video src={video ? URL.createObjectURL(video) : Thumnail } style={{ height: 280 }}  />
                         </div>
                         
                     </div>
@@ -189,11 +216,14 @@ const EditCourses = (props) => {
                             <button className='header__right' onClick={()=> setPopup(false)}> <CancelOutlinedIcon color="secondary" fontSize="large"/> </button>
                         </div>
                         <p>This is confirm message we will pass into the model</p>
+                        {uploadPercentage > 0 && (
+                            <LinearProgress variant="determinate" value={uploadPercentage} />
+                        )}
                         <div className='footer'>
                             <div className='footer__left'></div>
                             <div className='footer__right'>
                                 <button className='btn__cancel' onClick={()=> setPopup(false)}> Cancel </button>
-                                <button className='btn__ok' onClick={()=> setPopup(false)}> Ok </button>
+                                <button className='btn__ok' onClick={()=> handleSave()}> Ok </button>
                             </div>
                         </div>
                     </div>
