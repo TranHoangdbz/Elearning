@@ -18,13 +18,15 @@ const getAll = async (req, res) => {
   }
 };
 
+
 const getById = async (req, res) => {
   try {
     const id = mongoose.Types.ObjectId(req?.params?.id);
     const result = await Course.findOne({
       _id: id,
-    }).populate("lesson");
-
+    }).populate({
+      path: "lessons",
+    });
     if (result) {
       return res.status(200).json({
         success: true,
