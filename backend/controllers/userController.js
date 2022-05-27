@@ -187,7 +187,7 @@ const userController = {
         }
     },
     resetPassword: async (req, res) => {
-        const user = res.user;
+        const user = req.user;
         const { password, newPassword } = req.body;
 
         try {
