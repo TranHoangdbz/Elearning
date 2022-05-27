@@ -15,7 +15,7 @@ function LayoutLeftCourseLearning(props) {
                 allowfullscreen
             >
             </iframe>
-            <OverviewAndQuizz></OverviewAndQuizz>
+            <OverviewAndQuizz lesson={props.lesson} lessonSelect={props.lessonSelect}></OverviewAndQuizz>
         </div>
     );
 }

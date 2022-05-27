@@ -3,19 +3,15 @@ import './CourseLearning.scss'
 import LockIcon from '@mui/icons-material/Lock';
 function CardCourse(props) {
     const handleClickCourse = () => {
-        if(props.course.unClock) {
-            console.log('Chuyển khóa học')
-        } else {
-            console.log('Khóa học chưa được mở')
-        }
+        props.handleClickLesson(props.index)
     }
     return (
-        <div onClick={handleClickCourse} style={{ display: 'flex', justifyContent: 'space-between' }} className={props.course.unClock ? 'course unclock' : 'course'}>
+        <div onClick={handleClickCourse} style={{ display: 'flex', justifyContent: 'space-between' }} className={/*props.course.unClock ?*/ 'course unclock'}>
             <div style={{ fontFamily: "'Montserrat', san-serif" }} >
-                {props.course.stt ? props.course.stt : 'Error'}. {props.course.name ? props.course.name : 'Error'}
+                {props.index + 1}.  {props.lesson.description ? props.lesson.description : 'Error'}
             </div>
             <div style={{ fontFamily: "'Montserrat', san-serif" }} >
-                {props.course.time ? props.course.time : 'Error'}
+                12
             </div>
             <div className='layout-lock'>
                 <LockIcon />

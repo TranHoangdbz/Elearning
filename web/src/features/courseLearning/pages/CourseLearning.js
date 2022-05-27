@@ -1,8 +1,9 @@
+import React, { useEffect, useState } from 'react';
 import '../components/CourseLearning.scss';
 import { Container, Grid, Avatar } from '@mui/material'
 import StarIcon from '@mui/icons-material/Star';
 import CardCourse from '../components/CardCourse';
-
+import axios from 'axios'
 import LayoutLeftCourseLearning from '../components/LayoutLeftCourseLearning';
 
 const mockCourses = [
@@ -12,64 +13,142 @@ const mockCourses = [
         name: 'A summary about .NET',
         time: '5min'
     },
-    {
-        unClock: true,
-        stt: 2,
-        name: 'Exception filters',
-        time: '10min'
-
-    },
-    {
-        unClock: true,
-        stt: 3,
-        name: 'ref keyword',
-        time: '8min'
-
-    },
-    {
-        unClock: true,
-        stt: 4,
-        name: 'Finalizers',
-        time: '16min'
-
-    },
-    {
-        stt: 5,
-        unClock: false,
-        name: 'Struct layout',
-        time: '14min'
-
-    },
-    {
-        unClock: false,
-        stt: 6,
-        name: 'Multi threads',
-        time: '17min'
-
-    },
-    {
-        unClock: false,
-        stt: 7,
-        name: 'Background workers',
-        time: '20min'
-
-    },
-    {
-        unClock: false,
-        stt: 8,
-        name: 'A summary about .NET',
-        time: '10min'
-    },
-
 ]
 
 function CourseLearning() {
+    const [selectLesson, setSelectLesson] = useState(0)
+    const [lessons, setLessons] = useState([])
+    const [course, setCourse] = useState()
+    const [mockLesson, setMockLesson] = useState([
+        {
+            lessonCode: "COURSE1L1",
+            description: "Mỗi ngày 1 bài mới",
+            video: "https://res.cloudinary.com/dry9yzxep/video/upload/v1653557155/courses/COURSE2/L1/course2_l1_atqbr4.mp4",
+            quizz: [
+                {
+                    quizzCode: "COURSE2L1Q1",
+                    question: "What is full-stack?",
+                    choice: [
+                        "Đáp án A câu 1",
+                        "Đáp án B câu 1",
+                        "Đáp án C câu 1",
+                        "Đáp án d câu 1",
+                    ],
+                    answer: [0, 1],
+                },
+                {
+                    quizzCode: "COURSE2L1Q2",
+                    question: "What is fontend?",
+                    choice: [
+                        "Đáp án A câu 2",
+                        "Đáp án B câu 2",
+                        "Đáp án C câu 2",
+                        "Đáp án d câu 2",
+                    ],
+                    answer: [0, 1],
+                },
+                {
+                    quizzCode: "COURSE2L1Q3",
+                    question: "What is backend?",
+                    choice: [
+                        "Đáp án A câu 3",
+                        "Đáp án B câu 3",
+                        "Đáp án C câu 3",
+                        "Đáp án d câu 3",
+                    ],
+                    answer: [0, 1],
+                },
+            ],
+            passed: [
+                {
+                    passed: false
+                },
+                {
+                    passed: false
+                },
+            ],
+            thumbnail: "http://res.cloudinary.com/ddpmmci58/image/upload/v1653662717/j5esd6cekivjuhb2uohg.png",
+            name: "Mỗi ngày 1 bài mới",
+        },
+        {
+            lessonCode: "COURSE1L2",
+            description: "Let's get started with the basics",
+            video: "https://res.cloudinary.com/dry9yzxep/video/upload/v1653557155/courses/COURSE2/L1/course2_l1_atqbr4.mp4",
+            quizz: [
+                {
+                    quizzCode: "COURSE2L1Q1",
+                    question: "What is full-stack? 2",
+                    choice: [
+                        "Đáp án A câu 1",
+                        "Đáp án B câu 1",
+                        "Đáp án C câu 1",
+                        "Đáp án d câu 1",
+                    ],
+                    answer: [0, 1],
+                },
+                {
+                    quizzCode: "COURSE2L1Q2",
+                    question: "What is fontend? 2",
+                    choice: [
+                        "Đáp án A câu 2",
+                        "Đáp án B câu 2",
+                        "Đáp án C câu 2",
+                        "Đáp án d câu 2",
+                    ],
+                    answer: [0, 1],
+                },
+                {
+                    quizzCode: "COURSE2L1Q3",
+                    question: "What is backend? 2",
+                    choice: [
+                        "Đáp án A câu 3",
+                        "Đáp án B câu 3",
+                        "Đáp án C câu 3",
+                        "Đáp án d câu 3",
+                    ],
+                    answer: [0, 1],
+                },
+            ],
+            passed: [
+                {
+                    passed: false
+                },
+                {
+                    passed: false
+                },
+            ],
+            thumbnail: "http://res.cloudinary.com/ddpmmci58/image/upload/v1653662717/j5esd6cekivjuhb2uohg.png",
+            name: "Mỗi ngày 1 bài mới",
+        }
+    ])
+
+    const handleClickLesson = (index) => {
+        setSelectLesson(index)
+    }
+
+    useEffect(() => {
+        let id = '628e51cbb64e260717ce07b2'
+        const fetchCourse = async () => {
+            await axios.get(`http://localhost:32/api/courses/${id}`)
+                .then(res => {
+                    console.log(res.data.data)
+                    console.log(res.data.data.lessons)
+                    setCourse(res.data.data)
+                    setLessons(res.data.data.lessons)
+                })
+                .catch(err => {
+                    console.log(err)
+                })
+        }
+        fetchCourse()
+    }, [])
+
     return (
         <Container spacing={2} style={{ marginTop: '40px' }} maxWidth='xl'>
             <Grid spacing={1} container>
                 <Grid lg={8}>
                     {/* Layout left */}
-                    <LayoutLeftCourseLearning></LayoutLeftCourseLearning>
+                    <LayoutLeftCourseLearning lesson={lessons[selectLesson]} lessonSelect={mockLesson[selectLesson]}></LayoutLeftCourseLearning>
                 </Grid>
                 <Grid lg={4}>
                     {/* Layout right */}
@@ -88,9 +167,9 @@ function CourseLearning() {
                             </div>
                         </div>
                         <div style={{ display: 'flex', justifyContent: 'space-between', paddingLeft: '25px', paddingRight: '25px' }}>
-                            <div style={{ display: 'flex', marginTop:'10px' }}>
+                            <div style={{ display: 'flex', marginTop: '10px' }}>
                                 <Avatar height={50} width={50} alt="Remy Sharp" src="https://kenh14cdn.com/thumb_w/660/203336854389633024/2021/7/9/photo-1-16257989599561090737937.jpeg" />
-                                <div style={{ display: 'flex', flexDirection: 'column', marginLeft: '10px', justifyContent:'center' }}>
+                                <div style={{ display: 'flex', flexDirection: 'column', marginLeft: '10px', justifyContent: 'center' }}>
                                     <div className='name' style={{ fontFamily: "'Montserrat', san-serif" }}>Json Wong</div>
                                     <div className='major' style={{ fontFamily: "'Montserrat', san-serif" }}>Sr Software Engineer</div>
                                 </div>
@@ -108,11 +187,10 @@ function CourseLearning() {
                         </div>
                         <div className='list-course'>
                             {
-                                mockCourses.map((course) => (
-                                    <CardCourse course={course}></CardCourse>
+                                lessons.map((lesson, index) => (
+                                    <CardCourse handleClickLesson={handleClickLesson} key={index} index={index} lesson={lesson}></CardCourse>
                                 ))
                             }
-                          
                         </div>
                     </div>
                 </Grid>
