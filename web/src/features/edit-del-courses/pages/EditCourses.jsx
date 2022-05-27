@@ -1,12 +1,13 @@
 import React, {useRef, useState}  from 'react';
 import './editcourse.css';
+import thumnail from '../../../assets/images/facebook.png';
 import CancelOutlinedIcon from '@mui/icons-material/CancelOutlined';
 import { 
     TextField, FormControl, Select, InputLabel, 
     MenuItem, CircularProgress, Button
 } from '@mui/material';
 import axios, { CancelToken, isCancel } from "axios";
-const EditCourses = () => {
+const EditCourses = (props) => {
     const [course, setCourse] = React.useState('');
     // get value of name
     const [name_value, setName_value] = useState("");
@@ -31,14 +32,23 @@ const EditCourses = () => {
     const handleChange = (event) => {
         setCourse(event.target.value);
     };
-
+    // Nhập file 2
+    const inputAvatarRef = useRef(null);
+    const [avatar, setAvatar] = useState();
+    const onImageChange = (event) => {
+        if (event.target.files && event.target.files[0]) {
+          setAvatar(event.target.files[0]);
+        }
+      };
     // nhập file 
+    const [selectedFile, setSelectedFile] = useState()
     const [uploadPercentage, setUploadPercentage] = useState(0);
     const cancelFileUpload = useRef(null);
 
     const uploadFile = ({ target: { files } }) => {
         let data = new FormData();
         data.append("file", files[0]);
+        setSelectedFile(files[0])
         const options = {
             onUploadProgress: progressEvent => {
                 const { loaded, total } = progressEvent;
@@ -138,27 +148,28 @@ const EditCourses = () => {
                         <div className="video_header">
                             <p className="title">Thumbnail</p>
                             <label htmlFor="fileThumbnail" className="btnn_select" >Select Image </label>
-                            <input type='file' id='fileThumbnail' onChange={uploadFile} style={{display:'none'}} />
+                            <input ref={inputAvatarRef} type='file' id='fileThumbnail' onChange={uploadFile} style={{display:'none'}} />
                         </div>
 
                         <div className="video_body">
                             {uploadPercentage > 0 && (
                                 <CircularProgress color="success" variant="determinate" value={100} />
                             )}
-                            {/* <img src={URL.createObjectURL() } style={{ height: 280, width: 120 }}  /> */}
+                            <img src={selectedFile ? URL.createObjectURL(selectedFile) : thumnail } style={{ height: 280 }}  />
                         </div>
                     </div>
                     <div className="video_components">
                         <div className="video_header">
                             <p className="title">Video</p>
-                            <label htmlFor="fileVideo"  >Select Video </label>
-                            <Button className="btnn_select" variant="contained">Contained</Button>
+                            <label className="btnn_select" htmlFor="fileVideo"  >Select Video </label>
+                            
                             <input type='file' id='fileVideo' onChange={uploadFile} style={{display:'none'}} />
                         </div>
                         <div className="video_body">
                             {uploadPercentage > 0 && (
                                 <CircularProgress color="success" variant="determinate" value={100} />
                             )}
+                            <img src={selectedFile ? URL.createObjectURL(selectedFile) : thumnail } style={{ height: 280}}  />
                         </div>
                         
                     </div>
