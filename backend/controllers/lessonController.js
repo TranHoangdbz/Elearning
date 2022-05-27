@@ -174,11 +174,27 @@ const updateById = async (req, res) => {
   }
 };
 
+const handleUpload = async (files) => {
+  if (files) {
+    const { path } = files[0]
+    const newPath = await cloudinary.uploader.upload(path, {
+      resource_type: 'auto',
+    }).catch(error => {
+      throw Error(error.message)
+    })
+    fs.unlinkSync(path)
+    return newPath.url;
+  }
+  return '';
+}
+
 const updateFieldLesson = async (req, res) => {
   const lessonId = req.params.id;
-  await uploadFile(req, res);
+  const thumbnail = req.files.thumbnail;
+  const video = req.files.video;
   const { name, description, lessonVolume } = req.body;
-  const file = req.file;
+  // const { path } = video[0]
+  // res.status(200).send({ lessonId, video: path, thumbnail, description, lessonVolume })
 
   try {
     Lesson.findById(lessonId, async function (err, doc) {
@@ -187,28 +203,23 @@ const updateFieldLesson = async (req, res) => {
         res.status(500).json({ error: "Query err - " + err.message });
         return;
       }
-  
+
       doc.name = name;
       doc.description = description;
       doc.lessonVolume = lessonVolume;
-  
-      //exchange video
-      if (file) {
-        const path = `./public/uploads/${file.originalname}`
-        const newPath = await cloudinary.uploader.upload(path, {
-          resource_type: 'auto',
-        }).catch(error => {
-          console.log('cloudinary err - ', error)
-          res.status(400).json({
-            error
-          })
-          return;
-        })
-        fs.unlinkSync(path)
-        doc.video = newPath.url;
-        console.log('new url', newPath.url)
+
+      //exchange file
+      const thumbnailUrl = await handleUpload(thumbnail);
+      const videoUrl = await handleUpload(video);
+      
+      if (thumbnailUrl !== '') {
+        doc.thumbnail = thumbnailUrl
       }
-  
+
+      if (videoUrl !== '') {
+        doc.video = videoUrl;
+      }
+
       doc.save()
         .then((result) => {
           res.status(200).send(result);
