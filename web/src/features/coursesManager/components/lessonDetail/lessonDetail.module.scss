@@ -16,6 +16,8 @@
     width: 66%;
     img{
         width: 100%;
+        height: calc(45vw * 5 / 19);
+        object-fit: cover;
         border-radius: 2%;
     }
 }
