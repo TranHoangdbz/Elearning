@@ -28,7 +28,7 @@ const getByCourseId = async (req, res) => {
 
     if (result) {
       const results = await Lesson.find({
-        courseId: id,
+        _id: result.lessons,
       }).lean();
 
       return res.status(200).json({
