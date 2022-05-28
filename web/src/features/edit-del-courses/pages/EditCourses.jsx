@@ -1,4 +1,4 @@
-import React, { useRef, useState } from 'react';
+import React, { useRef, useState    } from 'react';
 import './editcourse.css';
 import Thumbnail from '../../../assets/images/facebook.png';
 import CancelOutlinedIcon from '@mui/icons-material/CancelOutlined';
@@ -8,10 +8,14 @@ import {
 } from '@mui/material';
 import axios, { CancelToken, isCancel } from "axios";
 import API from '../../../services/API/config'
-
+import { useLocation , Link } from "react-router-dom";
 const EditCourses = (props) => {
+    // getdata
+    const location = useLocation();
+    const state = location.state;
+    //
     const [course, setCourse] = React.useState('');
-    const [name, setName] = useState();
+    const [name, setName] = useState(state.name);
     const [nameErr, setNameErr] = useState('');
     const [description, setDescription] = useState()
     // checkvaildate
@@ -24,7 +28,8 @@ const EditCourses = (props) => {
     const [video, setVideo] = useState();
     const [uploadPercentage, setUploadPercentage] = useState(0);
     const cancelFileUpload = useRef(null);
-
+    
+    console.log(state);
     const handleChange = (event) => {
         setCourse(event.target.value);
     };
@@ -127,11 +132,13 @@ const EditCourses = (props) => {
         if (cancelFileUpload.current)
             cancelFileUpload.current("User has canceled the file upload.");
     };
-
+   
     return (
         <div className='editLesson'>
             <div className="editLesson-inner">
-                <button className='header__right'> <CancelOutlinedIcon color="secondary" fontSize="large" /> </button>
+                <Link to = '/coursesmanager/courseslist'>
+                    <button className='header__right'> <CancelOutlinedIcon color="secondary" fontSize="large" /> </button>
+                </Link>
                 <div className="edit__header">
                     <h2 className='header__center'>Edit lesson</h2>
                 </div>
@@ -190,7 +197,7 @@ const EditCourses = (props) => {
 
                             <div className="video_body">
 
-                                <img src={thumbnail ? URL.createObjectURL(thumbnail) : Thumbnail} style={{ height: 280 }} />
+                                <img src={thumbnail ? URL.createObjectURL(thumbnail) : state.thumbnail} style={{ height: 280 }} />
                             </div>
                         </div>
                         <div className="video_components">

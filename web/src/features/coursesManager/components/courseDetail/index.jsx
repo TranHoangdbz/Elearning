@@ -13,7 +13,7 @@ import {
 import { Box } from "@mui/system";
 import React from "react";
 import { useDispatch, useSelector } from "react-redux";
-import { useNavigate } from "react-router-dom";
+import { useNavigate ,Link } from "react-router-dom";
 import { getLessonsByCourse } from "../../coursesManagerSlice";
 import styles from "./courseDetail.module.scss";
 
@@ -41,7 +41,7 @@ function CourseDetail() {
   }, [courseData]);
 
   const [anchorEl, setAnchorEl] = React.useState(null);
-
+  
   const open = Boolean(anchorEl);
 
   const handleClick = (e) => {
@@ -51,6 +51,9 @@ function CourseDetail() {
   const handleClose = () => {
     setAnchorEl(null);
   };
+  
+
+  
 
   return (
     <Paper className={`${styles.coursedetail}`} elevation={3}>
@@ -175,7 +178,15 @@ function CourseDetail() {
                         }}
                         elevation={1}
                       >
-                        <MenuItem onClick={handleClose}>Chỉnh sửa</MenuItem>
+                       <Link 
+                            to= "/edit-courses"
+                            state={{
+                                name: item.name,
+                                thumbnail: item.thumbnail,
+                            }}
+                        >
+                          <MenuItem onClick={handleClose} >Chỉnh sửa</MenuItem>
+                        </Link>
                         <MenuItem onClick={handleClose}>Xóa</MenuItem>
                       </Menu>
                     </Stack>
@@ -186,6 +197,7 @@ function CourseDetail() {
           </List>
         </Stack>
       </Stack>
+
     </Paper>
   );
 }
