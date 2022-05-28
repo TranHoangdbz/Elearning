@@ -29,7 +29,6 @@ const EditCourses = (props) => {
     const [uploadPercentage, setUploadPercentage] = useState(0);
     const cancelFileUpload = useRef(null);
     
-    console.log(state);
     const handleChange = (event) => {
         setCourse(event.target.value);
     };
