@@ -16,9 +16,12 @@ app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({ extended: true }));
 
 mongoose.connect(
-  "mongodb+srv://admin:admin@uit-elearning.uqfe4.mongodb.net/myFirstDatabase?retryWrites=true&w=majority"
+  "mongodb+srv://admin:admin@uit-elearning.uqfe4.mongodb.net/sample?retryWrites=true&w=majority"
 );
 const db = mongoose.connection;
+
+//mongoDB dependencies
+require('./models/teacher') 
 
 db.on("error", (error) => console.error(error));
 db.once("open", () => console.log("Connected to Database"));
