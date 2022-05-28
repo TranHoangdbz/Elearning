@@ -1,7 +1,7 @@
 import { PanoramaSharp } from "@mui/icons-material";
 import { createAsyncThunk, createSlice } from "@reduxjs/toolkit";
 import API from "../../services";
-import URL_API from "../../services/API/config"
+import URL_API from "../../services/API/config";
 
 export const getCourses = createAsyncThunk(
   "courses/getCourses",
@@ -14,9 +14,20 @@ export const getCourses = createAsyncThunk(
 export const getLessonsByCourse = createAsyncThunk(
   "courses/getLessonsByCourse",
   async (params, thunkAPI) => {
-    console.log(params)
+    console.log(params);
     const response = await API.get(URL_API.URL_GET_LESSONS_BY_COURSE + params);
     return response.data;
+  }
+);
+
+export const deleteLessonById = createAsyncThunk(
+  "courses/deleteLessonById",
+  async (id, thunkAPI) => {
+    const response = await API.delete(URL_API.URL_UPDATE_LESSON + "/" + id);
+    return {
+      ...response.data,
+      _id: id,
+    };
   }
 );
 
@@ -28,8 +39,7 @@ const coursesManagerSlice = createSlice({
     success: false,
     message: "",
   },
-  reducers: {
-  },
+  reducers: {},
   extraReducers: {
     [getCourses.pending]: (state) => {
       state.success = false;
@@ -60,6 +70,27 @@ const coursesManagerSlice = createSlice({
       state.success = action.payload.success;
       state.message = action.payload.message;
       state.lessons = action.payload.data;
+    },
+    [deleteLessonById.pending]: (state) => {
+      state.success = false;
+      state.message = "";
+    },
+    [deleteLessonById.rejected]: (state, action) => {
+      state.success = false;
+      state.message = action.payload.message;
+    },
+    [deleteLessonById.fulfilled]: (state, action) => {
+      if (action.payload.success == true) {
+        state.success = true;
+        state.message = action.payload.message;
+        const newLessons = state.lessons.filter((lesson) => {
+          return lesson._id !== action.payload._id;
+        });
+        state.lessons = newLessons;
+      } else {
+        state.success = false;
+        state.message = action.payload.message;
+      }
     },
   },
 });

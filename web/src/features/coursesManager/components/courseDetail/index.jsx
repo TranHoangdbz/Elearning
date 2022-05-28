@@ -13,8 +13,11 @@ import {
 import { Box } from "@mui/system";
 import React from "react";
 import { useDispatch, useSelector } from "react-redux";
-import { useNavigate ,Link, useLocation } from "react-router-dom";
-import { getLessonsByCourse } from "../../coursesManagerSlice";
+import { useNavigate, Link, useLocation } from "react-router-dom";
+import {
+  deleteLessonById,
+  getLessonsByCourse,
+} from "../../coursesManagerSlice";
 import styles from "./courseDetail.module.scss";
 
 function CourseDetail() {
@@ -34,13 +37,15 @@ function CourseDetail() {
     courseIndex
   ];
 
-  const lessons = useSelector((state) => state.coursesManager.lessons)
+  const lessons = useSelector((state) => state.coursesManager.lessons);
 
   React.useEffect(() => {
-    dispatch(getLessonsByCourse(courseData._id))
+    dispatch(getLessonsByCourse(courseData._id));
   }, [courseData]);
 
   const [anchorEl, setAnchorEl] = React.useState(null);
+  const [currentItem, setCurrentItem] = React.useState();
+
   const location = useLocation();
   const open = Boolean(anchorEl);
 
@@ -51,9 +56,10 @@ function CourseDetail() {
   const handleClose = () => {
     setAnchorEl(null);
   };
-  
 
-  
+  const handleDelete = (lessonData) => {
+    dispatch(deleteLessonById(lessonData._id));
+  };
 
   return (
     <Paper className={`${styles.coursedetail}`} elevation={3}>
@@ -158,7 +164,10 @@ function CourseDetail() {
                         }
                         aria-haspopup="true"
                         aria-expanded={open ? "true" : undefined}
-                        onClick={handleClick}
+                        onClick={(e) => {
+                          handleClick(e);
+                          setCurrentItem(item._id);
+                        }}
                       >
                         <MoreVert />
                       </IconButton>
@@ -166,7 +175,7 @@ function CourseDetail() {
                         id="demo-positioned-menu"
                         aria-labelledby="demo-positioned-button"
                         anchorEl={anchorEl}
-                        open={open}
+                        open={open && currentItem == item._id}
                         onClose={handleClose}
                         anchorOrigin={{
                           vertical: "top",
@@ -178,17 +187,23 @@ function CourseDetail() {
                         }}
                         elevation={1}
                       >
-                       <Link 
-                            to= "/edit-courses"
-                            state={{
-                                name: item.name,
-                                thumbnail: item.thumbnail,
-                                course_url :  location.pathname,
-                            }}
+                        <Link
+                          to="/edit-courses"
+                          state={{
+                            name: item.name,
+                            thumbnail: item.thumbnail,
+                            course_url: location.pathname,
+                          }}
                         >
-                          <MenuItem onClick={handleClose} >Chỉnh sửa</MenuItem>
+                          <MenuItem onClick={handleClose}>Chỉnh sửa</MenuItem>
                         </Link>
-                        <MenuItem onClick={handleClose}>Xóa</MenuItem>
+                        <MenuItem
+                          onClick={(e) => {
+                            handleDelete(item);
+                          }}
+                        >
+                          Xóa
+                        </MenuItem>
                       </Menu>
                     </Stack>
                   </Paper>
@@ -198,7 +213,6 @@ function CourseDetail() {
           </List>
         </Stack>
       </Stack>
-
     </Paper>
   );
 }
