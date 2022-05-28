@@ -20,6 +20,9 @@ mongoose.connect(
 );
 const db = mongoose.connection;
 
+//mongoDB dependencies
+require('./models/teacher') 
+
 db.on("error", (error) => console.error(error));
 db.once("open", () => console.log("Connected to Database"));
 
