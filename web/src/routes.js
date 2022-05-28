@@ -84,6 +84,11 @@ const adminRoute = [
         element: <CoursesManagerPage route={"coursedetail"} />
     },
     {
+        path: "/coursesmanager/lessondetail",
+        name: "CourseDetail",
+        element: <CoursesManagerPage route={"lessondetail"} />
+    },
+    {
         path: "/coursesmanager/addcourse",
         name: "AddCourse",
         element: <EditCourses />
