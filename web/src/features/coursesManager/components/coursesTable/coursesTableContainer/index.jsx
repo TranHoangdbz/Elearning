@@ -78,14 +78,14 @@ function CoursesTableContainer({
           {rowData
             .slice(page * rowsPerPage, page * rowsPerPage + rowsPerPage)
             .map((item, index) => {
-              const isItemSelected = isSelected(item.id);
+              const isItemSelected = isSelected(item.courseCode);
 
               return (
                 <TableRow
-                  key={item.id}
+                  key={item.courseCode}
                   hover
                   onClick={() => {
-                    navigate("/coursesmanager/coursedetail/" + item.id);
+                    navigate("/coursesmanager/coursedetail/" + item._id);
                   }}
                 >
                   <TableCell padding="checkbox">
@@ -95,9 +95,9 @@ function CoursesTableContainer({
                     />
                   </TableCell>
                   <TableCell>{page * rowsPerPage + index + 1}</TableCell>
-                  <TableCell>{item.id}</TableCell>
+                  <TableCell>{item.courseCode}</TableCell>
                   <TableCell
-                    key={item.id}
+                    key={item.courseCode}
                     component="th"
                     scope="row"
                     sx={{ width: "500px" }}

@@ -12,25 +12,33 @@ import {
 } from "@mui/material";
 import { Box } from "@mui/system";
 import React from "react";
-import { useSelector } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 import { useNavigate } from "react-router-dom";
+import { getLessonsByCourse } from "../../coursesManagerSlice";
 import styles from "./courseDetail.module.scss";
 
 function CourseDetail() {
+  const dispatch = useDispatch();
   const navigate = useNavigate();
 
   const url = window.location.pathname;
   const path = url.split("/").filter((x) => x);
 
   const courseIndex = useSelector(
-    (state) => state.coursesManager.data
+    (state) => state.coursesManager.courses
   ).findIndex((object) => {
-    return object.id === path[2];
+    return object._id === path[2];
   });
 
-  const courseData = useSelector((state) => state.coursesManager.data)[
+  const courseData = useSelector((state) => state.coursesManager.courses)[
     courseIndex
   ];
+
+  const lessons = useSelector((state) => state.coursesManager.lessons)
+
+  React.useEffect(() => {
+    dispatch(getLessonsByCourse(courseData._id))
+  }, [courseData]);
 
   const [anchorEl, setAnchorEl] = React.useState(null);
 
@@ -120,7 +128,7 @@ function CourseDetail() {
             className={`${styles.list}`}
             sx={{ margin: "0px", padding: "0px" }}
           >
-            {courseData.lessons.map((item) => {
+            {lessons.map((item) => {
               return (
                 <ListItem>
                   <Paper className={`${styles.listitem}`} elevation={3}>
@@ -128,7 +136,7 @@ function CourseDetail() {
                       <img
                         alt="listitemiamge"
                         className={`${styles.listitemimage}`}
-                        src={item.video}
+                        src={item.thumbnail}
                       />
 
                       <Stack
