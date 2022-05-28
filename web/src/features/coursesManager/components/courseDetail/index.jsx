@@ -13,7 +13,7 @@ import {
 import { Box } from "@mui/system";
 import React from "react";
 import { useDispatch, useSelector } from "react-redux";
-import { useNavigate ,Link } from "react-router-dom";
+import { useNavigate ,Link, useLocation } from "react-router-dom";
 import { getLessonsByCourse } from "../../coursesManagerSlice";
 import styles from "./courseDetail.module.scss";
 
@@ -41,7 +41,7 @@ function CourseDetail() {
   }, [courseData]);
 
   const [anchorEl, setAnchorEl] = React.useState(null);
-  
+  const location = useLocation();
   const open = Boolean(anchorEl);
 
   const handleClick = (e) => {
@@ -183,6 +183,7 @@ function CourseDetail() {
                             state={{
                                 name: item.name,
                                 thumbnail: item.thumbnail,
+                                course_url :  location.pathname,
                             }}
                         >
                           <MenuItem onClick={handleClose} >Chỉnh sửa</MenuItem>

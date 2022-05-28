@@ -136,7 +136,7 @@ const EditCourses = (props) => {
     return (
         <div className='editLesson'>
             <div className="editLesson-inner">
-                <Link to = '/coursesmanager/courseslist'>
+                <Link to = {state.course_url}>
                     <button className='header__right'> <CancelOutlinedIcon color="secondary" fontSize="large" /> </button>
                 </Link>
                 <div className="edit__header">
