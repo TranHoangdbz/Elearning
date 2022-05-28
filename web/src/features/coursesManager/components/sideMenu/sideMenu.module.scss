@@ -1,0 +1,14 @@
+.sideMenu {
+    background-color: var(--primaryColor);
+    color: var(--onPrimaryColor);
+    height: 100%;
+    min-height: 100vh;
+}
+
+.menuHeader {
+    margin-bottom: 3px;
+}
+
+.menuItemIcon {
+    color: var(--onPrimaryColor);
+}

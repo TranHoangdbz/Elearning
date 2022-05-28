@@ -1,5 +1,8 @@
-import { combineReducers } from 'redux'
+import { combineReducers } from "redux";
+import coursesManager from "../features/coursesManager/coursesManagerSlice";
 
-export default combineReducers({
-    // someSlice: someSlice
-})
+const rootReducer = combineReducers({
+  coursesManager: coursesManager,
+});
+
+export default rootReducer;
