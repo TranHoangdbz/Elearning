@@ -5,6 +5,12 @@ const Schema = mongoose.Schema;
 
 const User = new Schema(
     {
+        googleId: {
+            type: String,
+        },
+        facebookId: {
+            type: String,
+        },
         fullName: {
             type: String,
             required: true,
@@ -13,17 +19,14 @@ const User = new Schema(
         email: {
             type: String,
             required: true,
-            unique: true,
             trim: true,
         },
         password: {
             type: String,
-            required: true,
             trim: true,
         },
         phoneNumber: {
             type: String,
-            required: true,
             trim: true,
         },
         takenCourses: [{ type: Schema.Types.ObjectId, ref: 'Course', default: [] }],
@@ -39,15 +42,17 @@ const User = new Schema(
     }, { timestamps: true, collection: 'users' }
 );
 
-User.pre('save', async function (next) {
+User.pre('save', async (next) => {
     const user = this;
-    if (user.isModified('password')) {
-        user.password = await bcrypt.hash(user.password, 8);
+    if (user.password) {
+        if (user.isModified('password')) {
+            user.password = await bcrypt.hash(user.password, 8);
+        }
     }
     next();
 });
 
-User.methods.generateAuthToken = async function () {
+User.methods.generateAuthToken = async () => {
     const user = this;
     const token = jwt.sign({ _id: user._id }, process.env.JWT_KEY);
     return token;

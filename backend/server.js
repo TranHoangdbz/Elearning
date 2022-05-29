@@ -1,11 +1,13 @@
-require('dotenv').config()
+require('dotenv').config();
+require('./services/passport');
 
 const express = require('express');
-var cors = require('cors')
+const cors = require('cors');
 const app = express();
 const mongoose = require('mongoose');
-
-app.use(cors());
+const passport = require('passport');
+const cookieSession = require('cookie-session');
+const jwt = require('jsonwebtoken');
 
 const PORT = 32
 
@@ -16,9 +18,14 @@ db.on('error', (error) => console.error(error))
 db.once('open', () => console.log('Connected to Database'))
 
 app.use(express.json())
+app.use(passport.initialize());
 
-const coursesRouter = require('./routes/courses')
-app.use('/courses', coursesRouter)
+app.use(
+    cookieSession({
+      maxAge: 30 * 24 * 60 * 60 * 1000,
+      keys: 'procourse',
+    })
+  );
 
 const route = require('./routes');
 route(app);

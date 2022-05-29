@@ -3,6 +3,8 @@ const bcrypt = require('bcrypt');
 const nodemailer = require('nodemailer');
 const { google } = require('googleapis');
 
+const passport = require('passport');
+
 const CLIENT_ID = '127746184739-mtd90vl8h27p5h4ngi9khj5lu70of7ne.apps.googleusercontent.com';
 const CLIENT_SECRET = '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';
 const REDIRECT_URI = 'https://developers.google.com/oauthplayground';
@@ -16,7 +18,6 @@ const oAuth2Client = new google.auth.OAuth2(
 oAuth2Client.setCredentials({ refresh_token: REFRESH_TOKEN });
 
 const userController = {
-
     register: async (req, res) => {
         try {
             const {
@@ -32,6 +33,11 @@ const userController = {
                     .json({ msg: 'Please fill out the information' });
     
             const user = await User.findOne({ email });
+
+            if (user && !user.googleId)
+            return res
+                .status(400)
+                .json({ msg: 'The email is used' });
     
             if (user) {
                 if (user.verified) {
@@ -181,8 +187,6 @@ const userController = {
                     .json({ message: 'Invalid login credentials' });
             }
 
-
-    
             const token = await user.generateAuthToken();
             return res.json({
                 user,
@@ -191,7 +195,12 @@ const userController = {
         } catch (err) {
             return res.status(500).json({ msg: err.message });
         }
-    } 
+    },
+    callback: async (req, res) => {
+        const user = req.user;
+        const token = await user.generateAuthToken();
+        return res.json({ user, token });
+    }
 };
 
 module.exports = userController;
