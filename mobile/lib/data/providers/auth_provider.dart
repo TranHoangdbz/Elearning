@@ -252,25 +252,36 @@ class AuthenticationProvider {
     required String dest,
     required Function(Map<String, dynamic>) onResponse,
   }) async {
-    String authKey = AppStrings.authKey;
-    IOWebSocketChannel channel;
     try {
-      channel = IOWebSocketChannel.connect(
-          '${AppStrings.protocol}://${AppStrings.host}:${AppStrings.port}/reset$dest');
-      String login = "{'auth':'$authKey','cmd':'resetPassword','dest':'$dest'}";
-      channel.sink.add(login);
-      channel.stream.listen((event) async {
-        var data = json.decode(event);
-        channel.sink.close();
-        return onResponse(data);
-      });
-    } catch (e) {
+      Map<String, dynamic> req = {
+        'email': dest,
+      };
+      final response = await Dio().put(
+        '${AppStrings.connectString}/api/users/get-new-password',
+        data: req,
+      );
       Map<String, dynamic> data = {
-        'error': true,
-        'message': 'Send reset password failed',
-        'result': null,
+        'error': false,
+        'message': 'Successfully reset password',
+        'result': response.data,
       };
       onResponse(data);
+    } on DioError catch (e) {
+      try {
+        Map<String, dynamic> data = {
+          'error': true,
+          'message': e.response!.data['message'],
+          'result': null,
+        };
+        onResponse(data);
+      } catch (e) {
+        Map<String, dynamic> data = {
+          'error': true,
+          'message': 'Send reset password failed with unknown error',
+          'result': null,
+        };
+        onResponse(data);
+      }
     }
   }
 }

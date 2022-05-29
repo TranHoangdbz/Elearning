@@ -102,23 +102,6 @@ class AuthenticationService {
         },
       );
     } else {
-      // const serviceId = 'service_kyd2w0r';
-      // const templateId = 'template_pf3a7wd';
-      // const userId = 'XAwu7ISgZJFzfLd0U';
-
-      // const url = 'https://api.emailjs.com/api/v1.0/email/send';
-      // final response = await Dio().post(url, data: {
-      //   'service_id': serviceId,
-      //   'template_id': templateId,
-      //   'user_id': userId,
-      //   'template_params': {
-      //     'message': 'Alo',
-      //     'to_name': 'Lam Truong',
-      //     'to_email': 'lamtruoq@gmail.com',
-      //   }
-      // });
-
-      // print(response);
       showDialog(
         context: Get.context!,
         builder: (context) {
