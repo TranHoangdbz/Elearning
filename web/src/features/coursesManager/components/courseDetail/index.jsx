@@ -34,10 +34,10 @@ function CourseDetail() {
     courseIndex
   ];
 
-  const lessons = useSelector((state) => state.coursesManager.lessons)
+  const lessons = useSelector((state) => state.coursesManager.lessons);
 
   React.useEffect(() => {
-    dispatch(getLessonsByCourse(courseData._id))
+    dispatch(getLessonsByCourse(courseData._id));
   }, [courseData]);
 
   const [anchorEl, setAnchorEl] = React.useState(null);
@@ -50,6 +50,11 @@ function CourseDetail() {
 
   const handleClose = () => {
     setAnchorEl(null);
+  };
+
+  const handleViewLesson = (courseId, lessonId) => {
+    navigate("/coursesmanager/lessondetail/" + courseId + "/" + lessonId);
+    handleClose();
   };
 
   return (
@@ -175,6 +180,13 @@ function CourseDetail() {
                         }}
                         elevation={1}
                       >
+                        <MenuItem
+                          onClick={() => {
+                            handleViewLesson(courseData._id, item._id);
+                          }}
+                        >
+                          Xem
+                        </MenuItem>
                         <MenuItem onClick={handleClose}>Chỉnh sửa</MenuItem>
                         <MenuItem onClick={handleClose}>Xóa</MenuItem>
                       </Menu>
