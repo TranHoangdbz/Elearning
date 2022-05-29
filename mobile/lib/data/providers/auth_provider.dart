@@ -103,7 +103,7 @@ class AuthenticationProvider {
         try {
           Map<String, dynamic> data = {
             'error': true,
-            'message': e.response!.data['msg'],
+            'message': e.response!.data['message'],
             'result': null,
           };
           onResponse(data);

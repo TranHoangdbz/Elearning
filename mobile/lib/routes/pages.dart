@@ -8,6 +8,7 @@ import 'package:uit_elearning/modules/authentication/screens/forget_password_scr
 import 'package:uit_elearning/modules/authentication/screens/login_screen.dart';
 import 'package:uit_elearning/modules/authentication/screens/sign_up_screen.dart';
 import 'package:uit_elearning/modules/home/controllers/home_binding.dart';
+import 'package:uit_elearning/modules/profile/screens/profile_detail_screen.dart';
 import 'package:uit_elearning/modules/splash/controllers/splash_binding.dart';
 import 'package:uit_elearning/modules/splash/screens/splash_screen.dart';
 
@@ -45,6 +46,10 @@ abstract class Pages {
       name: Routes.forgetPassword,
       page: () => ForgetPassword(),
       binding: ForgetPasswordBinding(),
+    ),
+    GetPage(
+      name: Routes.profileDetail,
+      page: () => const ProfileDetailScreen(),
     ),
   ];
 }

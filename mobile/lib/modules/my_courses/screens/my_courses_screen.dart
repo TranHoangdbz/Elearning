@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:uit_elearning/data/services/auth_service.dart';
+import 'package:uit_elearning/routes/routes.dart';
 
 import '../../../constants/app_colors.dart';
 import '../../../constants/text_styles.dart';
@@ -49,7 +50,9 @@ class MyCoursesScreen extends GetView<MyCoursesController> {
                         height: 12,
                       ),
                       ElevatedButton(
-                        onPressed: () {},
+                        onPressed: () {
+                          Get.toNamed(Routes.profileDetail);
+                        },
                         child: Padding(
                           padding: const EdgeInsets.all(10),
                           child: Text(
@@ -69,9 +72,7 @@ class MyCoursesScreen extends GetView<MyCoursesController> {
                   ),
                   const Spacer(),
                   IconButton(
-                    onPressed: () {
-                      AuthenticationService.instance.signOut();
-                    },
+                    onPressed: () {},
                     icon: const Icon(Icons.settings),
                   )
                 ],

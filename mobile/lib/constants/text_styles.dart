@@ -87,4 +87,32 @@ class TextStyles {
     fontSize: 12.sp,
     fontWeight: FontWeight.w600,
   );
+  static final TextStyle textStyleOnPrimaryColor18w600 = textStyleBase.copyWith(
+    color: AppColors.onPrimaryColor,
+    fontSize: 18.sp,
+    fontWeight: FontWeight.w600,
+  );
+  static final TextStyle textStyleOnPrimaryColor14w400 = textStyleBase.copyWith(
+    color: AppColors.onPrimaryColor,
+    fontSize: 14.sp,
+    fontWeight: FontWeight.w400,
+  );
+  static final TextStyle textStyleOnBackgroundColor18w600 =
+      textStyleBase.copyWith(
+    color: AppColors.onBackgroundColor,
+    fontSize: 18.sp,
+    fontWeight: FontWeight.w600,
+  );
+  static final TextStyle textStyleOnBackgroundColor18w400 =
+      textStyleBase.copyWith(
+    color: AppColors.onBackgroundColor,
+    fontSize: 18.sp,
+    fontWeight: FontWeight.w400,
+  );
+  static final TextStyle textStyleOnBackgroundColor14w600 =
+      textStyleBase.copyWith(
+    color: AppColors.onBackgroundColor,
+    fontSize: 14.sp,
+    fontWeight: FontWeight.w600,
+  );
 }

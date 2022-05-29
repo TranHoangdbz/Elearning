@@ -5,4 +5,5 @@ abstract class Routes {
   static const login = '/login';
   static const signUp = '/signUp';
   static const forgetPassword = '/forgetPassword';
+  static const profileDetail = '/profileDetain';
 }
