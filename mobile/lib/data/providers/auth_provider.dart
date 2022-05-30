@@ -47,14 +47,16 @@ class AuthenticationProvider {
           try {
             Map<String, dynamic> data = {
               'error': true,
-              'message': e.response!.data['msg'],
+              'message': e.response!.data['msg'] ??
+                  e.response!.data['message'] ??
+                  e.response!.data['mes'],
               'result': null,
             };
             onResponse(data);
           } catch (e) {
             Map<String, dynamic> data = {
               'error': true,
-              'message': 'Sign un failed with unknown error',
+              'message': 'Sign up failed with unknown error',
               'result': null,
             };
             onResponse(data);
@@ -103,7 +105,9 @@ class AuthenticationProvider {
         try {
           Map<String, dynamic> data = {
             'error': true,
-            'message': e.response!.data['message'],
+            'message': e.response!.data['msg'] ??
+                e.response!.data['message'] ??
+                e.response!.data['mes'],
             'result': null,
           };
           onResponse(data);
@@ -169,27 +173,40 @@ class AuthenticationProvider {
   loginWithFacebook({
     required Function(Map<String, dynamic>) onResponse,
   }) async {
-    String authKey = AppStrings.authKey;
     final LoginResult result = await FacebookAuth.instance.login();
     if (result.status == LoginStatus.success) {
       final userData = await FacebookAuth.instance.getUserData();
-
-      IOWebSocketChannel channel;
       try {
-        channel = IOWebSocketChannel.connect(
-            '${AppStrings.protocol}://${AppStrings.host}:${AppStrings.port}/login${userData['email']}');
-        String login =
-            "{'auth':'$authKey','cmd':'signInWithFacebook','email':'${userData['email']}','token':'${result.accessToken!.token}','fullName':'${userData['name']}'}";
-        channel.sink.add(login);
-        channel.stream.listen((event) async {
-          var data = json.decode(event);
-          channel.sink.close();
-          return onResponse(data);
-        });
-      } catch (e) {
+        Map<String, dynamic> req = {
+          'email': userData['email'],
+          'password': userData['id'],
+          'fullName': userData['name'],
+          'phoneNumber': '0',
+          'profilePicture': userData['picture']['data']['url'],
+          'takenCourses': [],
+          'currentCourses': [],
+          'facebookId': userData['id'],
+        };
+        final response = await Dio().post(
+          '${AppStrings.connectString}/api/users/register',
+          data: req,
+        );
+        Map<String, dynamic> data = {
+          'error': false,
+          'message':
+              'Please check your email to complete the verification step.',
+          'result': response.data,
+        };
+        onResponse(data);
+      } on DioError {
+        login(
+            email: userData['email'],
+            password: userData['id'],
+            onResponse: onResponse);
+      } on Exception {
         Map<String, dynamic> data = {
           'error': true,
-          'message': 'Sign in failed',
+          'message': 'Login failed with unknown error',
           'result': null,
         };
         onResponse(data);
@@ -216,24 +233,34 @@ class AuthenticationProvider {
     GoogleSignInAccount? user = await googleSignIn.signIn();
 
     if (user != null) {
-      GoogleSignInAuthentication auth = await user.authentication;
-
-      IOWebSocketChannel channel;
       try {
-        channel = IOWebSocketChannel.connect(
-            '${AppStrings.protocol}://${AppStrings.host}:${AppStrings.port}/login${user.email}');
-        String login =
-            "{'auth':'$authKey','cmd':'signInWithGoogle','email':'${user.email}','token':'${auth.accessToken}','fullName':'${user.displayName}'}";
-        channel.sink.add(login);
-        channel.stream.listen((event) async {
-          var data = json.decode(event);
-          channel.sink.close();
-          return onResponse(data);
-        });
-      } catch (e) {
+        Map<String, dynamic> req = {
+          'email': user.email,
+          'password': user.id,
+          'fullName': user.displayName,
+          'phoneNumber': '0',
+          'profilePicture': user.photoUrl,
+          'takenCourses': [],
+          'currentCourses': [],
+          'googleId': user.id,
+        };
+        final response = await Dio().post(
+          '${AppStrings.connectString}/api/users/register',
+          data: req,
+        );
+        Map<String, dynamic> data = {
+          'error': false,
+          'message':
+              'Please check your email to complete the verification step.',
+          'result': response.data,
+        };
+        onResponse(data);
+      } on DioError {
+        login(email: user.email, password: user.id, onResponse: onResponse);
+      } on Exception {
         Map<String, dynamic> data = {
           'error': true,
-          'message': 'Sign in failed',
+          'message': 'Login failed with unknown error',
           'result': null,
         };
         onResponse(data);
@@ -270,7 +297,9 @@ class AuthenticationProvider {
       try {
         Map<String, dynamic> data = {
           'error': true,
-          'message': e.response!.data['message'],
+          'message': e.response!.data['msg'] ??
+              e.response!.data['message'] ??
+              e.response!.data['mes'],
           'result': null,
         };
         onResponse(data);
