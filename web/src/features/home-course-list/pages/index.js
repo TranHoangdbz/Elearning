@@ -141,10 +141,12 @@ const HomeCourseList = () => {
                                                 <Typography sx={style.teacherTitle}>{course.teacher.title}</Typography>
                                             </Stack>
                                         </Stack>
-                                        <Typography sx={style.courseName}>{course.CourseName}</Typography>
+                                        <Typography sx={style.courseName}>{course.courseName}</Typography>
                                         <Stack direction="row" justifyContent="space-between" paddingRight="3%">
                                             <Typography sx={style.countCourseVolume}>{CountCourseVolume(course)}</Typography>
-                                            <Typography sx={style.countLessons}>{course.lessons.length} lessons</Typography>
+                                            <ul>
+                                                <li style={style.countLessons}>{course.lessons.length} lessons</li>
+                                            </ul>
                                         </Stack>
                                     </Stack>
                                 </CardActionArea>
@@ -196,10 +198,12 @@ const HomeCourseList = () => {
                                                 <Typography sx={style.teacherTitle}>{course.teacher.title}</Typography>
                                             </Stack>
                                         </Stack>
-                                        <Typography sx={style.courseName}>{course.CourseName}</Typography>
+                                        <Typography sx={style.courseName}>{course.courseName}</Typography>
                                         <Stack direction="row" justifyContent="space-between" paddingRight="3%">
                                             <Typography sx={style.countCourseVolume}>{CountCourseVolume(course)}</Typography>
-                                            <Typography sx={style.countLessons}>{course.lessons.length} lessons</Typography>
+                                            <ul>
+                                                <li style={style.countLessons}>{course.lessons.length} lessons</li>
+                                            </ul>
                                         </Stack>
                                     </Stack>
                                 </CardActionArea>
@@ -254,10 +258,12 @@ const HomeCourseList = () => {
                                                             <Typography sx={style.teacherTitle}>{course.teacher.title}</Typography>
                                                         </Stack>
                                                     </Stack>
-                                                    <Typography sx={style.courseName}>{course.CourseName}</Typography>
+                                                    <Typography sx={style.courseName}>{course.courseName}</Typography>
                                                     <Stack direction="row" justifyContent="space-between" paddingRight="3%">
                                                         <Typography sx={style.countCourseVolume}>{CountCourseVolume(course)}</Typography>
-                                                        <Typography sx={style.countLessons}>{course.lessons.length} lessons</Typography>
+                                                        <ul>
+                                                            <li style={style.countLessons}>{course.lessons.length} lessons</li>
+                                                        </ul>
                                                     </Stack>
                                                 </Stack>
                                             </CardActionArea>
@@ -316,10 +322,12 @@ const HomeCourseList = () => {
                                                             <Typography sx={style.teacherTitle}>{course.teacher.title}</Typography>
                                                         </Stack>
                                                     </Stack>
-                                                    <Typography sx={style.courseName}>{course.CourseName}</Typography>
+                                                    <Typography sx={style.courseName}>{course.courseName}</Typography>
                                                     <Stack direction="row" justifyContent="space-between" paddingRight="3%">
                                                         <Typography sx={style.countCourseVolume}>{CountCourseVolume(course)}</Typography>
-                                                        <Typography sx={style.countLessons}>{course.lessons.length} lessons</Typography>
+                                                        <ul>
+                                                            <li style={style.countLessons}>{course.lessons.length} lessons</li>
+                                                        </ul>
                                                     </Stack>
                                                 </Stack>
                                             </CardActionArea>

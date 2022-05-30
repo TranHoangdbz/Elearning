@@ -28,7 +28,8 @@ const style = {
     },
     card: {
         width: '250px',
-        height: '250px',
+        height: '280px',
+        // minHeight: '250px',
         borderRadius: '20px'
     },
     avatar: {
@@ -62,7 +63,8 @@ const style = {
         fontWeight: 600,
         fontSize: '12px',
         lineHeight: '15px',
-        color: ' #000000'
+        color: ' #000000',
+        marginTop: '-5px'
     },
     countCourseVolume: {
         fontFamily: 'Montserrat',
