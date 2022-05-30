@@ -6,21 +6,22 @@ import '../data/models/teacher.dart';
 import '../constants/app_colors.dart';
 
 class CourseTeacher extends StatelessWidget {
-  CourseTeacher({Key? key}) : super(key: key);
+  const CourseTeacher({required this.teacher, Key? key}) : super(key: key);
 
-  final Teacher teacher = Teacher(
-    fullName: 'Huy Nhan',
-    email: 'example@example.com',
-    title: 'Flutter Developer',
-  );
+  // final Teacher teacher = Teacher(
+  //   fullName: 'Huy Nhan',
+  //   email: 'example@example.com',
+  //   title: 'Flutter Developer',
+  // );
   // CourseTeacher(this.teacher);
+  final Teacher teacher;
 
   @override
   Widget build(BuildContext context) {
     return Row(
       children: [
         CircleAvatar(
-          backgroundImage: const NetworkImage('https://picsum.photos/100/100'),
+          backgroundImage: NetworkImage(teacher.profilePicture),
           onBackgroundImageError: (e, s) {
             debugPrint('Teacher avatar can\'t load: , $e, $s');
           },
@@ -36,7 +37,7 @@ class CourseTeacher extends StatelessWidget {
               style: TextStyles.textStylePrimaryColor12w600,
             ),
             Text(
-              teacher.title ?? 'No Title',
+              teacher.title,
               textAlign: TextAlign.left,
               style: TextStyles.textStylePrimaryColor12w300,
             )
