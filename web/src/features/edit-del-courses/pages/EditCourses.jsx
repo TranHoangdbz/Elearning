@@ -17,7 +17,7 @@ const EditCourses = (props) => {
     const [course, setCourse] = React.useState('');
     const [name, setName] = useState(state.name);
     const [nameErr, setNameErr] = useState('');
-    const [description, setDescription] = useState()
+    const [description, setDescription] = useState(state.description)
     // checkvaildate
     const [validate, setValidate] = useState(false);
     // mở thông báo
@@ -101,7 +101,7 @@ const EditCourses = (props) => {
             )
         };
 
-        const lessonId = "628f9cb6495c3273aae3408c"//props._id; //Where is lessonId?
+        const lessonId = state._id;//props._id; //Where is lessonId?
 
         axios
             .patch(
@@ -135,7 +135,7 @@ const EditCourses = (props) => {
     return (
         <div className='editLesson'>
             <div className="editLesson-inner">
-                <Link to = {state.course_url}>
+                <Link to = {state.course_url2}>
                     <button className='header__right'> <CancelOutlinedIcon color="secondary" fontSize="large" /> </button>
                 </Link>
                 <div className="edit__header">
@@ -209,7 +209,7 @@ const EditCourses = (props) => {
                             <div className="video_body">
 
 
-                                <video src={video ? URL.createObjectURL(video) : Thumbnail} style={{ height: 280 }} controls />
+                                <video src={video ? URL.createObjectURL(video) : state.course_url} style={{ height: 280 }} controls />
                             </div>
 
                         </div>
