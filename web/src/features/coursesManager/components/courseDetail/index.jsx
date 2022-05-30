@@ -1,6 +1,7 @@
 import { ArrowBack, Delete, Edit, MoreVert } from "@mui/icons-material";
 import {
   Button,
+  Dialog,
   IconButton,
   List,
   ListItem,
@@ -19,7 +20,7 @@ import {
   getLessonsByCourse,
 } from "../../coursesManagerSlice";
 import styles from "./courseDetail.module.scss";
-
+import CancelOutlinedIcon from "@mui/icons-material/CancelOutlined";
 function CourseDetail() {
   const dispatch = useDispatch();
   const navigate = useNavigate();
@@ -45,7 +46,7 @@ function CourseDetail() {
 
   const [anchorEl, setAnchorEl] = React.useState(null);
   const [currentItem, setCurrentItem] = React.useState();
-
+  const [openConfirm, setOpenConfirm] = React.useState(false);
   const location = useLocation();
   const open = Boolean(anchorEl);
 
@@ -57,8 +58,9 @@ function CourseDetail() {
     setAnchorEl(null);
   };
 
-  const handleDelete = (lessonData) => {
-    dispatch(deleteLessonById(lessonData._id));
+  const handleDelete = () => {
+    dispatch(deleteLessonById(currentItem?._id));
+    setOpenConfirm(false);
   };
 
   return (
@@ -166,7 +168,7 @@ function CourseDetail() {
                         aria-expanded={open ? "true" : undefined}
                         onClick={(e) => {
                           handleClick(e);
-                          setCurrentItem(item._id);
+                          setCurrentItem(item);
                         }}
                       >
                         <MoreVert />
@@ -175,7 +177,7 @@ function CourseDetail() {
                         id="demo-positioned-menu"
                         aria-labelledby="demo-positioned-button"
                         anchorEl={anchorEl}
-                        open={open && currentItem == item._id}
+                        open={open && currentItem?._id == item._id}
                         onClose={handleClose}
                         anchorOrigin={{
                           vertical: "top",
@@ -199,7 +201,7 @@ function CourseDetail() {
                         </Link>
                         <MenuItem
                           onClick={(e) => {
-                            handleDelete(item);
+                            setOpenConfirm(true);
                           }}
                         >
                           Xóa
@@ -213,6 +215,46 @@ function CourseDetail() {
           </List>
         </Stack>
       </Stack>
+      <Dialog
+        open={openConfirm}
+        onClose={() => setOpenConfirm(false)}
+        aria-labelledby="alert-dialog-title"
+        aria-describedby="alert-dialog-description"
+      >
+        <div className={`${styles.popup}`}>
+          <div className={`${styles.header}`}>
+            <h2 className={`${styles.header__title}`}>Confirm action</h2>
+            <button
+              className={`${styles.header__right}`}
+              onClick={() => {
+                setOpenConfirm(false);
+              }}
+            >
+              <CancelOutlinedIcon color="secondary" fontSize="large" />{" "}
+            </button>
+          </div>
+          <p>Are you sure want to delete?</p>
+
+          <div className={`${styles.footer}`}>
+            <div className={`${styles.footer__left}`}></div>
+            <div className={`${styles.footer__right}`}>
+              <button
+                className={`${styles.btn__cancel}`}
+                onClick={() => {
+                  setOpenConfirm(false);
+                }}
+              >
+                {" "}
+                Cancel{" "}
+              </button>
+              <button className={`${styles.btn__ok}`} onClick={handleDelete}>
+                {" "}
+                Ok{" "}
+              </button>
+            </div>
+          </div>
+        </div>
+      </Dialog>
     </Paper>
   );
 }
