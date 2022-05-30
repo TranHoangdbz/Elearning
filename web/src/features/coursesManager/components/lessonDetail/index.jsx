@@ -76,7 +76,7 @@ function LessonDetail() {
         </Stack>
         <Stack direction="row" spacing="12px">
           <div className={`${styles.demo}`}>
-            <iframe src={currentLesson.video} />
+            <iframe src={currentLesson.video} allowFullScreen />
           </div>
           <Stack
             className={`${styles.detail}`}
