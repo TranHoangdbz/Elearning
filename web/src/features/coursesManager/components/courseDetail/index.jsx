@@ -191,8 +191,9 @@ function CourseDetail() {
                           to="/edit-courses"
                           state={{
                             name: item.name,
+                            description: item.description,
                             thumbnail: item.thumbnail,
-                            course_url: location.pathname,
+                            course_url: item.video,
                           }}
                         >
                           <MenuItem onClick={handleClose}>Chỉnh sửa</MenuItem>

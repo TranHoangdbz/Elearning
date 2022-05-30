@@ -17,7 +17,7 @@ const EditCourses = (props) => {
     const [course, setCourse] = React.useState('');
     const [name, setName] = useState(state.name);
     const [nameErr, setNameErr] = useState('');
-    const [description, setDescription] = useState()
+    const [description, setDescription] = useState(state.description)
     // checkvaildate
     const [validate, setValidate] = useState(false);
     // mở thông báo
@@ -209,7 +209,7 @@ const EditCourses = (props) => {
                             <div className="video_body">
 
 
-                                <video src={video ? URL.createObjectURL(video) : Thumbnail} style={{ height: 280 }} controls />
+                                <video src={video ? URL.createObjectURL(video) : state.course_url} style={{ height: 280 }} controls />
                             </div>
 
                         </div>
