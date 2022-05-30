@@ -30,7 +30,7 @@ class CourseProvider extends BaseProvider {
     dynamic response =
         await Dio().get("${AppStrings.connectString}/api/courses");
 
-    if (response['success'] == true) {
+    if (response.data['success'] == true) {
       final parsed =
           List.from(response.data['data']).cast<Map<String, dynamic>>();
 
