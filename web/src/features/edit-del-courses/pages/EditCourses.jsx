@@ -135,7 +135,7 @@ const EditCourses = (props) => {
     return (
         <div className='editLesson'>
             <div className="editLesson-inner">
-                <Link to = {state.course_url}>
+                <Link to = {state.course_url2}>
                     <button className='header__right'> <CancelOutlinedIcon color="secondary" fontSize="large" /> </button>
                 </Link>
                 <div className="edit__header">

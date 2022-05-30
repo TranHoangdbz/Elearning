@@ -195,6 +195,7 @@ function CourseDetail() {
                             description: item.description,
                             thumbnail: item.thumbnail,
                             course_url: item.video,
+                            course_url2: location.pathname,
                           }}
                         >
                           <MenuItem onClick={handleClose}>Chỉnh sửa</MenuItem>
