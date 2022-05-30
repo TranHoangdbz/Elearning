@@ -15,6 +15,7 @@ import React from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { useNavigate } from "react-router-dom";
 import { getLessonsByCourse } from "../../coursesManagerSlice";
+import AddLessonModal from "../addLessonModal";
 import styles from "./courseDetail.module.scss";
 
 function CourseDetail() {
@@ -23,6 +24,8 @@ function CourseDetail() {
 
   const url = window.location.pathname;
   const path = url.split("/").filter((x) => x);
+
+  const [show, setShow] = React.useState(false);
 
   const courseIndex = useSelector(
     (state) => state.coursesManager.courses
@@ -118,9 +121,7 @@ function CourseDetail() {
           <Button
             className={`${styles.addbutton}`}
             variant="contained"
-            onClick={() => {
-              navigate("/coursesmanager/addcourse");
-            }}
+            onClick={() => setShow(!show)}
           >
             Thêm bài học
           </Button>
@@ -198,6 +199,7 @@ function CourseDetail() {
           </List>
         </Stack>
       </Stack>
+      <AddLessonModal open={show} setOpen={setShow} />
     </Paper>
   );
 }

@@ -1,9 +1,11 @@
 const mongoose = require("mongoose");
 
 const lessonSchema = new mongoose.Schema({
+  lessonCode: {
+    type: String,
+  },
   name: {
     type: String,
-    required: true,
   },
   description: {
     type: String,

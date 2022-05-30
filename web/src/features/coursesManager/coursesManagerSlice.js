@@ -11,10 +11,13 @@ export const getCourses = createAsyncThunk(
   }
 );
 
-export const getCourseById = createAsyncThunk("courses/getCourseById", async (params, thunkAPI) => {
-  const response = await API.get(URL_API.URL_GET_COURSES + params);
-  return response.data;
-})
+export const getCourseById = createAsyncThunk(
+  "courses/getCourseById",
+  async (params, thunkAPI) => {
+    const response = await API.get(URL_API.URL_GET_COURSES + params);
+    return response.data;
+  }
+);
 
 export const getLessonsByCourse = createAsyncThunk(
   "lessons/getLessonsByCourse",
@@ -28,6 +31,17 @@ export const getLessonById = createAsyncThunk(
   "lessons/getLessonById",
   async (params, thunkAPI) => {
     const response = await API.get(URL_API.URL_GET_LESSONS + params);
+    console.log(response);
+    return response.data;
+  }
+);
+
+export const createLesson = createAsyncThunk(
+  "lessons/createLesson",
+  async (params, thunkAPI) => {
+    const response = await API.post(URL_API.URL_CREATE_LESSON, params, {
+      headers: { "Content-Type": "multipart/form-data" },
+    });
     return response.data;
   }
 );
@@ -103,6 +117,18 @@ const coursesManagerSlice = createSlice({
       state.success = action.payload.success;
       state.message = action.payload.message;
       state.currentLesson = action.payload.data;
+    },
+    [createLesson.pending]: (state) => {
+      state.success = false;
+      state.message = "";
+    },
+    [createLesson.rejected]: (state, action) => {
+      state.success = false;
+      state.message = "action.payload.message";
+    },
+    [createLesson.fulfilled]: (state, action) => {
+      state.success = action.payload.success;
+      state.message = action.payload.message;
     },
   },
 });

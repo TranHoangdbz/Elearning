@@ -2,8 +2,8 @@ const mongoose = require("mongoose");
 const Lesson = require("../models/lesson");
 const Course = require("../models/course");
 const uploadFile = require("../middleware/upload");
-const cloudinary = require('../middleware/cloudinary');
-const fs = require('fs')
+const cloudinary = require("../middleware/cloudinary");
+const fs = require("fs");
 const { BASE_API_URL } = require("../constants");
 
 const getAll = async (req, res) => {
@@ -77,27 +77,27 @@ const getById = async (req, res) => {
 
 const create = async (req, res) => {
   try {
-    const { name, description, video, lessonVolume, quizz } = req.body;
-    let errors = {};
-
-    if (name === "") {
-      errors["name"] = ["Name is required!"];
-    }
-
-    if (Object.keys(errors)?.length > 0) {
-      return res.status(500).json({
-        success: false,
-        message: "Failed to create a new lesson!",
-        errors,
-      });
-    }
-
-    const newItem = new Lesson({
+    const {
+      lessonCode,
       name,
       description,
       video,
+      thumbnail,
       lessonVolume,
       quizz,
+    } = req.body;
+
+    const videoUrl = await handleUpload(video);
+    const thumbnailUrl = await handleUpload(thumbnail);
+
+    const newItem = new Lesson({
+      lessonCode: lessonCode,
+      name: name,
+      description: description,
+      video: videoUrl,
+      thumbnail: thumbnailUrl,
+      lessonVolumne: lessonVolume,
+      quizz: quizz,
     });
 
     const result = await newItem.save();
@@ -176,17 +176,19 @@ const updateById = async (req, res) => {
 
 const handleUpload = async (files) => {
   if (files) {
-    const { path } = files[0]
-    const newPath = await cloudinary.uploader.upload(path, {
-      resource_type: 'auto',
-    }).catch(error => {
-      throw Error(error.message)
-    })
-    fs.unlinkSync(path)
+    const { path } = files[0];
+    const newPath = await cloudinary.uploader
+      .upload(path, {
+        resource_type: "auto",
+      })
+      .catch((error) => {
+        throw Error(error.message);
+      });
+    fs.unlinkSync(path);
     return newPath.url;
   }
-  return '';
-}
+  return "";
+};
 
 const updateFieldLesson = async (req, res) => {
   const lessonId = req.params.id;
@@ -210,26 +212,28 @@ const updateFieldLesson = async (req, res) => {
       //exchange file
       const thumbnailUrl = await handleUpload(thumbnail);
       const videoUrl = await handleUpload(video);
-      
-      if (thumbnailUrl !== '') {
-        doc.thumbnail = thumbnailUrl
+
+      if (thumbnailUrl !== "") {
+        doc.thumbnail = thumbnailUrl;
       }
 
-      if (videoUrl !== '') {
+      if (videoUrl !== "") {
         doc.video = videoUrl;
       }
 
-      doc.save()
+      doc
+        .save()
         .then((result) => {
           res.status(200).send(result);
-        }).catch(err => {
-          res.status(500).json({ error: "Save err - " + err.message });
         })
-    })
+        .catch((err) => {
+          res.status(500).json({ error: "Save err - " + err.message });
+        });
+    });
   } catch (err) {
     res.status(500).json({ error: err.message });
   }
-}
+};
 
 const deleteById = async (req, res) => {
   try {
