@@ -11,6 +11,9 @@ const lessonSchema = new mongoose.Schema({
   video: {
     type: String,
   },
+  thumbnail: {
+    type: String,
+  },
   lessonVolume: {
     type: Number,
   },
