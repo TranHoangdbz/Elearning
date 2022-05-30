@@ -190,6 +190,7 @@ function CourseDetail() {
                         <Link
                           to="/edit-courses"
                           state={{
+                            _id: item._id,
                             name: item.name,
                             description: item.description,
                             thumbnail: item.thumbnail,
