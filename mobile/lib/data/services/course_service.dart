@@ -12,19 +12,20 @@ class CourseService {
 
   final CourseProvider _courseProvider = CourseProvider();
 
-  List<Course>? courses;
+  List<Course> courses = [];
 
-  getAllCourse() async {
+  fetchCourses() async {
     try {
       courses = await _courseProvider.fetchAll();
+      return courses;
     } catch (e) {
       courses = [];
       showDialog(
         context: Get.context!,
         builder: (context) {
-          return CustomDialog(
-            content: e.toString(),
-            icon: const Icon(
+          return const CustomDialog(
+            content: "Can't connect to server",
+            icon: Icon(
               Icons.error,
               color: AppColors.redColor,
               size: 48,
@@ -32,6 +33,16 @@ class CourseService {
           );
         },
       );
+
+      rethrow;
     }
+  }
+
+  getAllCourse() {
+    return courses;
+  }
+
+  getAllCategories() {
+    return courses.map((e) => e.category).toSet();
   }
 }
