@@ -55,7 +55,7 @@ function CommentCard(props) {
                     <div style={{ fontFamily: "'Montserrat', san-serif" }} className='like'>{props.comment ? props.comment.comment.likes.length : '0'} likes</div>
                 </div>
                 {
-                    props.comment.repliedComments.map((value, index) => {
+                    props.comment.repliedComments.map((value, index,key) => {
                         return (<ReplyCommentCard comment={value}/>);
                     })
                 }

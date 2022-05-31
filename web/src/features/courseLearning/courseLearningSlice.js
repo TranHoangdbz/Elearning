@@ -4,7 +4,6 @@ const courseLearningSlice = createSlice({
     name: 'courseLearning',
     initialState: {
         currentCourse : {},
-        currentLessons : {},
         currentLessonIndex : 0,
     },
     reducers: {

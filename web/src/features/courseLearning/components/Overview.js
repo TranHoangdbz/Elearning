@@ -78,7 +78,7 @@ function Overview(props) {
                 <div className='chat-user'>
                     {
                         currentCourse && currentCourse.discussion
-                        ?   currentCourse.discussion.map((value, index) => {
+                        ?   currentCourse.discussion.map((value, index, key) => {
                                 return <CommentCard comment={value}></CommentCard>
                             })
                         : (null)

@@ -34,11 +34,11 @@ function CourseLearning() {
     useEffect(() => {
         // let id = '628e51cbb64e260717ce07b2'
         const fetchCourse = async () => {
-            await AjaxHelper.get(URL_API.URL_GET_COURSE_BY_ID + '/' + currentCourseID)
+            await AjaxHelper.get(URL_API.URL_SYSTEM_V1 + '/discussions/lesson-quizz/' + currentCourseID)
                 .then(res => {
-                    console.log(res.data.data)
-                    setLessons(res.data.data.lessons);
-                    dispatch(setCurrentCourse(res.data.data));
+                    console.log("res", res)
+                    //setLessons(res.data.data.lessons);
+                    dispatch(setCurrentCourse(res.data.currentCourse));
                 })
                 .catch(err => {
                     console.log(err)
@@ -50,7 +50,8 @@ function CourseLearning() {
     // Lấy thử current course
     const currentCourse = useSelector((state) => {return state.courseLearning.currentCourse});
     const currentLesson = useSelector((state) => {return state.courseLearning.currentLessons});
-    console.log("currentCourse", currentCourse)
+    console.log("currentCourse", currentCourse);
+    console.log("currentLesson" )
 
     const [mockLesson, setMockLesson] = useState([
         {
@@ -157,7 +158,6 @@ function CourseLearning() {
 
     const handleClickLesson = (index) => {
         // Get lesson hiện tại ở đây
-
         setSelectLesson(index)
     }
 
@@ -177,7 +177,6 @@ function CourseLearning() {
                     <LayoutLeftCourseLearning 
                         lesson={lessons[selectLesson]} 
                         lessonSelect={mockLesson[selectLesson]}
-                        course={currentCourse}
                     ></LayoutLeftCourseLearning>
                 </Grid>
                 <Grid item lg={4} md={12} sm={12}>

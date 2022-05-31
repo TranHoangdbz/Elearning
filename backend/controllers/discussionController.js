@@ -3,19 +3,19 @@ const Course = require("../models/course");
 const Quizz = require("../models/quizz");
 class discussionController {
     getLessonandQuizzByCourseID = async(req ,res) => {
-        console.log("req.body", req.body);
-        console.log("req.params.id", req.params.id);
+        // console.log("req.body", req.body);
+        // console.log("req.params.id", req.params.id);
         try {
             const id = mongoose.Types.ObjectId(req?.params?.id);
             var currentCourse;
-            await Course.findById(req.params.id).populate("lessons")
+            await Course.findById(req.params.id).populate("lessons").populate("teacher")
                 .then(data => {
                     currentCourse = data;
                 })
                 .catch(error => {
                     throw new Error("This course does not exist!");
                 })
-            console.log("currentCourse", currentCourse) 
+            // console.log("currentCourse", currentCourse) 
 
             var currentLessonList = currentCourse.lessons;
             // console.log("currentLessonList", currentLessonList)  
@@ -43,6 +43,7 @@ class discussionController {
                                 quizzCode: allQuizzs[j].quizzCode,
                                 question:  allQuizzs[j].question,
                                 choice:  allQuizzs[j].choice,
+                                answer: allQuizzs[j].answer,
                             });
                             break;
                         }
