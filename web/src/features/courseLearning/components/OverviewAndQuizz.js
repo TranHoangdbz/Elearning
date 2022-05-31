@@ -58,7 +58,7 @@ export default function OverviewAndQuizz() {
                 <Tabs value={value} onChange={handleChange} aria-label="basic tabs example">
                     <Tab sx={{ fontSize: '16px', fontWeight: '700', color: '#777777' }} label="Overview" {...a11yProps(0)} />
                     <Tab sx={{ fontSize: '16px', fontWeight: '700', color: '#777777' }} label="Quizz" {...a11yProps(1)} />
-                </Tabs>
+                </Tabs> 
             </Box>
             <TabPanel value={value} index={0}>
                 <Overview></Overview>

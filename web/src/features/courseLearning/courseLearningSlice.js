@@ -20,13 +20,18 @@ const courseLearningSlice = createSlice({
         addComment:(state, action) => {
             console.log("action", action);
             // state.discussion.add()
+        },
+        changeCurrentLessonIndex: (state, action) => {
+            console.log("action", action);
+            state.currentLessonIndex = action.payload;
         }
     }
 })
 
 export const {
     addComment,
-    setCurrentCourse
+    setCurrentCourse,
+    changeCurrentLessonIndex,
 } = courseLearningSlice.actions;
 
 export default courseLearningSlice.reducer

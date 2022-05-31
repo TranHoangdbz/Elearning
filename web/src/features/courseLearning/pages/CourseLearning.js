@@ -7,7 +7,7 @@ import CardCourse from '../components/CardCourse';
 import LayoutLeftCourseLearning from '../components/LayoutLeftCourseLearning';
 import URL_API from '../../../services/API/config';
 import AjaxHelper from '../../../services/index';
-import {setCurrentCourse} from '../courseLearningSlice.js';
+import {setCurrentCourse, changeCurrentLessonIndex} from '../courseLearningSlice.js';
 
 const mockCourses = [
     {
@@ -49,116 +49,11 @@ function CourseLearning() {
 
     // Lấy thử current course
     const currentCourse = useSelector((state) => {return state.courseLearning.currentCourse});
-    const currentLesson = useSelector((state) => {return state.courseLearning.currentLessons});
     console.log("currentCourse", currentCourse);
-    console.log("currentLesson" )
-
-    const [mockLesson, setMockLesson] = useState([
-        {
-            lessonCode: "COURSE1L1",
-            description: "Mỗi ngày 1 bài mới",
-            video: "https://res.cloudinary.com/dry9yzxep/video/upload/v1653557155/courses/COURSE2/L1/course2_l1_atqbr4.mp4",
-            quizz: [
-                {
-                    quizzCode: "COURSE2L1Q1",
-                    question: "What is full-stack?",
-                    choice: [
-                        "Đáp án A câu 1",
-                        "Đáp án B câu 1",
-                        "Đáp án C câu 1",
-                        "Đáp án d câu 1",
-                    ],
-                    answer: [0, 1],
-                },
-                {
-                    quizzCode: "COURSE2L1Q2",
-                    question: "What is fontend?",
-                    choice: [
-                        "Đáp án A câu 2",
-                        "Đáp án B câu 2",
-                        "Đáp án C câu 2",
-                        "Đáp án d câu 2",
-                    ],
-                    answer: [0, 1],
-                },
-                {
-                    quizzCode: "COURSE2L1Q3",
-                    question: "What is backend?",
-                    choice: [
-                        "Đáp án A câu 3",
-                        "Đáp án B câu 3",
-                        "Đáp án C câu 3",
-                        "Đáp án d câu 3",
-                    ],
-                    answer: [0, 1],
-                },
-            ],
-            passed: [
-                {
-                    passed: false
-                },
-                {
-                    passed: false
-                },
-            ],
-            thumbnail: "http://res.cloudinary.com/ddpmmci58/image/upload/v1653662717/j5esd6cekivjuhb2uohg.png",
-            name: "Mỗi ngày 1 bài mới",
-        },
-        {
-            lessonCode: "COURSE1L2",
-            description: "Let's get started with the basics",
-            video: "https://res.cloudinary.com/dry9yzxep/video/upload/v1653557155/courses/COURSE2/L1/course2_l1_atqbr4.mp4",
-            quizz: [
-                {
-                    quizzCode: "COURSE2L1Q1",
-                    question: "What is full-stack? 2",
-                    choice: [
-                        "Đáp án A câu 1",
-                        "Đáp án B câu 1",
-                        "Đáp án C câu 1",
-                        "Đáp án d câu 1",
-                    ],
-                    answer: [0, 1],
-                },
-                {
-                    quizzCode: "COURSE2L1Q2",
-                    question: "What is fontend? 2",
-                    choice: [
-                        "Đáp án A câu 2",
-                        "Đáp án B câu 2",
-                        "Đáp án C câu 2",
-                        "Đáp án d câu 2",
-                    ],
-                    answer: [0, 1],
-                },
-                {
-                    quizzCode: "COURSE2L1Q3",
-                    question: "What is backend? 2",
-                    choice: [
-                        "Đáp án A câu 3",
-                        "Đáp án B câu 3",
-                        "Đáp án C câu 3",
-                        "Đáp án d câu 3",
-                    ],
-                    answer: [0, 1],
-                },
-            ],
-            passed: [
-                {
-                    passed: false
-                },
-                {
-                    passed: false
-                },
-            ],
-            thumbnail: "http://res.cloudinary.com/ddpmmci58/image/upload/v1653662717/j5esd6cekivjuhb2uohg.png",
-            name: "Mỗi ngày 1 bài mới",
-        }
-    ])
 
     const handleClickLesson = (index) => {
         // Get lesson hiện tại ở đây
-        setSelectLesson(index)
+        dispatch(changeCurrentLessonIndex(index));
     }
 
     const calculateStar = (ratingArray) => {
@@ -220,9 +115,9 @@ function CourseLearning() {
                         </div>
                         <div className='list-course'>
                             {
-                                lessons.map((lesson, index, key) => (
+                                currentCourse.lessons ? currentCourse.lessons.map((lesson, index, key) => (
                                     <CardCourse handleClickLesson={handleClickLesson} key={index} index={index} lesson={lesson}></CardCourse>
-                                ))
+                                )) : null
                             }
                         </div>
                     </div>

@@ -92,7 +92,7 @@ function Quizz() {
                     {/* <SliderQuestion></SliderQuestion> */}
                     <div>
                         <div style={{ fontFamily: "'Montserrat', san-serif" }} className='name-question'>
-                            {currentLesson.quizz[activeStep].question}
+                            {currentLesson.quizz[activeStep] ? currentLesson.quizz[activeStep].question : ""}
                         </div>
                         {
                             currentLesson.quizz.map((value, index) => {
@@ -186,9 +186,10 @@ function Quizz() {
                                     Submit
                                 </div>
                             ) : (
+                                currentLesson.quizz.length > 0 ?
                                 <div onClick={handleClickNext} className='btn-back'>
                                     Next
-                                </div>
+                                </div> : null
                             )
                         }
                     </div>
