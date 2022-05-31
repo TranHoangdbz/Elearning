@@ -20,9 +20,17 @@ class CourseProvider extends BaseProvider {
   }
 
   @override
-  Future fetch(id) {
-    // TODO: implement fetch
-    throw UnimplementedError();
+  Future fetch(id) async {
+    dynamic response =
+        await Dio().get("${AppStrings.connectString}/api/courses/$id");
+
+    if (response.data['success'] == true) {
+      final course = Course.fromJson(response.data['data']);
+
+      return course;
+    } else {
+      throw Exception(response.data['message']);
+    }
   }
 
   @override
