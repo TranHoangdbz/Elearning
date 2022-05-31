@@ -1,10 +1,14 @@
 import React, { useEffect, useState } from 'react';
+import { useSelector, useDispatch } from 'react-redux';
 import '../components/CourseLearning.scss';
 import { Container, Grid, Avatar } from '@mui/material'
 import StarIcon from '@mui/icons-material/Star';
 import CardCourse from '../components/CardCourse';
-import axios from 'axios'
+// import axios from 'axios'
 import LayoutLeftCourseLearning from '../components/LayoutLeftCourseLearning';
+import URL_API from '../../../services/API/config';
+import AjaxHelper from '../../../services/index';
+import {setCurrentCourse} from '../courseLearningSlice.js';
 
 const mockCourses = [
     {
@@ -16,14 +20,40 @@ const mockCourses = [
 ]
 
 function CourseLearning() {
+    const dispatch = useDispatch();
+
     const url = window.location.pathname;
     const path = url.split("/").filter((x) => x);
-
     console.log("path", path);
-    
-    const [selectLesson, setSelectLesson] = useState(0)
-    const [lessons, setLessons] = useState([])
+
+    const currentCourseID = path.length > 1 ?  path[path.length-1] : "628e51cbb64e260717ce07b2";
+
+    const [selectLesson, setSelectLesson] = useState(0) 
     const [course, setCourse] = useState({})
+    const [lessons, setLessons] = useState([])
+
+    useEffect(() => {
+        // let id = '628e51cbb64e260717ce07b2'
+        const fetchCourse = async () => {
+            await AjaxHelper.get(URL_API.URL_GET_COURSE_BY_ID + '/' + currentCourseID)
+                .then(res => {
+                    console.log(res.data.data)
+                    // console.log(res.data.data.lessons)
+                    setCourse(res.data.data);
+                    setLessons(res.data.data.lessons);
+                    dispatch(setCurrentCourse(res.data.data));
+                })
+                .catch(err => {
+                    console.log(err)
+                })
+        }
+        fetchCourse()
+    }, [])
+
+    // Lấy thử current course
+    const currentCourse = useSelector((state) => {return state.courseLearning.currentCourse});
+    console.log("currentCourse", currentCourse)
+
     const [mockLesson, setMockLesson] = useState([
         {
             lessonCode: "COURSE1L1",
@@ -131,28 +161,11 @@ function CourseLearning() {
         setSelectLesson(index)
     }
 
-    useEffect(() => {
-        let id = '628e51cbb64e260717ce07b2'
-        const fetchCourse = async () => {
-            await axios.get(`http://localhost:32/api/courses/${id}`)
-                .then(res => {
-                    console.log(res.data.data)
-                    console.log(res.data.data.lessons)
-                    setCourse(res.data.data)
-                    setLessons(res.data.data.lessons)
-                })
-                .catch(err => {
-                    console.log(err)
-                })
-        }
-        fetchCourse()
-    }, [])
-
     const calculateStar = (ratingArray) => {
         var sum = 0;
         if(typeof ratingArray == 'undefined') return 0;
         ratingArray.forEach(element => {
-            sum+=element.rate;
+            sum += element.rate;
         });
         return Math.round(sum*10 / ratingArray.length) / 10
     }
@@ -160,63 +173,58 @@ function CourseLearning() {
     return (
         <Container spacing={2} style={{ marginTop: '40px' }} maxWidth='xl'>
             <Grid spacing={1} container>
-                <Grid lg={8} md={12}>
-                    {/* Layout left */}
+                <Grid item lg={8} md={12} sm={12}>
                     <LayoutLeftCourseLearning 
                         lesson={lessons[selectLesson]} 
                         lessonSelect={mockLesson[selectLesson]}
-                        course={course}
+                        course={currentCourse}
                     ></LayoutLeftCourseLearning>
-                    {/* <button 
-                        onClick={() => {
-                            console.log("course", course);
-                        }}
-                    >
-                        Nguyễn Công Phi
-                    </button> */}
                 </Grid>
-                <Grid lg={4} md={12}>
-                    
-                    {/* Layout right */}
+                <Grid item lg={4} md={12} sm={12}>
                     <div className='layout-right'>
                         <div className='name-course' style={{ fontFamily: "'Montserrat', san-serif" }}>
-                            {course && typeof course.courseName!='undefined' && course.courseName  ? course.courseName : ""}
+                            {currentCourse && typeof currentCourse.courseName!='undefined' && currentCourse.courseName  ? currentCourse.courseName : ""}
                         </div>
                         <div style={{ display: 'flex', justifyContent: 'space-between', paddingLeft: '25px', paddingRight: '25px' }}>
                             <div className='students' style={{ fontFamily: "'Montserrat', san-serif" }}>0 students</div>
                             <div style={{ display: 'flex', flexDirection: 'column' }}>
                                 <div className='rating' style={{ display: 'flex', justifyContent: 'center' }}>
                                     <p style={{ marginRight: '10px', marginTop: '0', marginBottom: '0', fontFamily: "'Montserrat', san-serif" }}>
-                                        {course ? calculateStar(course.rating): ""}
+                                        {currentCourse ? calculateStar(currentCourse.rating): ""}
                                     </p>
                                     <StarIcon style={{ color: '#FFD601' }}></StarIcon>
                                 </div>
                                 <div className='view' style={{ display: 'flex', justifyContent: 'center', fontFamily: "'Montserrat', san-serif" }}>
-                                    {course && course.rating && course.rating.length ?course.rating.length:"4.8"} reviews
+                                    {currentCourse && currentCourse.rating && currentCourse.rating.length ?currentCourse.rating.length:"4.8"} reviews
                                 </div>
                             </div>
                         </div>
                         <div style={{ display: 'flex', justifyContent: 'space-between', paddingLeft: '25px', paddingRight: '25px' }}>
                             <div style={{ display: 'flex', marginTop: '10px' }}>
-                                <Avatar height={50} width={50} alt="Remy Sharp" src="https://kenh14cdn.com/thumb_w/660/203336854389633024/2021/7/9/photo-1-16257989599561090737937.jpeg" />
+                                <Avatar height={50} width={50} alt="Remy Sharp" 
+                                    src={course.teacher ? course.teacher.profilePicture : ""}
+                                />
                                 <div style={{ display: 'flex', flexDirection: 'column', marginLeft: '10px', justifyContent: 'center' }}>
-                                    <div className='name' style={{ fontFamily: "'Montserrat', san-serif" }}>Json Wong</div>
-                                    <div className='major' style={{ fontFamily: "'Montserrat', san-serif" }}>Sr Software Engineer</div>
+                                    <div className='name' style={{ fontFamily: "'Montserrat', san-serif" }}>
+                                        {course.teacher ? course.teacher.fullName : ""}
+                                    </div>
+                                    <div className='major' style={{ fontFamily: "'Montserrat', san-serif" }}>
+                                        {course.teacher ? course.teacher.title : ""}
+                                    </div>
                                 </div>
                             </div>
                             <div className='enroll' style={{ display: 'flex', justifyContent: 'center', alignItems: 'center', marginRight: '10px', fontFamily: "'Montserrat', san-serif" }}>
                                 Enroll
                             </div>
-
                         </div>
                         <div style={{ display: 'flex', paddingLeft: '25px', marginTop: '12px', paddingRight: '25px' }}>
                             <div style={{ fontFamily: "'Montserrat', san-serif" }} className='description'>
-                                {course ? course.description : ""}
+                                {currentCourse ? currentCourse.description : ""}
                             </div>
                         </div>
                         <div className='list-course'>
                             {
-                                lessons.map((lesson, index) => (
+                                lessons.map((lesson, index, key) => (
                                     <CardCourse handleClickLesson={handleClickLesson} key={index} index={index} lesson={lesson}></CardCourse>
                                 ))
                             }

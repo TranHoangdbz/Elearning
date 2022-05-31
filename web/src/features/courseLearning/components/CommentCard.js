@@ -3,15 +3,12 @@ import { Rating, Avatar } from '@mui/material'
 import ThumbUpOutlinedIcon from '@mui/icons-material/ThumbUpOutlined';
 import ForumOutlinedIcon from '@mui/icons-material/ForumOutlined';
 import ReplyCommentCard from './ReplyCommentCard';
+
 function CommentCard(props) {
-
-
     console.log("commentProps", props);
     
     const calculateTime = (timeString) => {
-        // console.log("timeString", timeString);
         const postTime = new Date(timeString);
-        // console.log("calculating time", Math.abs(new Date() - postTime));
         var diff = Math.abs(new Date() - postTime);
         if(diff<1000*60){
             return ("0 minutes ago");

@@ -3,9 +3,13 @@ import { createSlice } from '@reduxjs/toolkit'
 const courseLearningSlice = createSlice({
     name: 'courseLearning',
     initialState: {
-        discussion: []
+        currentCourse : {},
     },
     reducers: {
+        setCurrentCourse:(state, action) => {
+            // console.log("action", action.payload);
+            state.currentCourse = action.payload;
+        },
         // increase:(state) => {
         //   state.value += 1;
         // },
@@ -19,5 +23,9 @@ const courseLearningSlice = createSlice({
     }
 })
 
-export const {addComment} = courseLearningSlice.actions;
+export const {
+    addComment,
+    setCurrentCourse
+} = courseLearningSlice.actions;
+
 export default courseLearningSlice.reducer
