@@ -44,23 +44,13 @@ function a11yProps(index) {
     };
 }
 
-export default function OverviewAndQuizz(props) {
+export default function OverviewAndQuizz() {
     const [value, setValue] = React.useState(0);
     const currentCourse = useSelector((state) => {return state.courseLearning.currentCourse});
 
     const handleChange = (event, newValue) => {
         setValue(newValue);
     };
-
-    // useEffect(async() =>{
-    //     axios.get(configUrl + '/courses/' + courseID)
-    //     .then(res => {
-    //         console.log("data", res.data.data.discussion)
-    //     })
-    //     .catch(error => {
-    //         console.log(error)
-    //     });
-    // });
     
     return (
         <Box sx={{ width: '100%' }}>
@@ -74,7 +64,7 @@ export default function OverviewAndQuizz(props) {
                 <Overview></Overview>
             </TabPanel>
             <TabPanel value={value} index={1}>
-                <Quizz lesson={props.lesson} lessonSelect={props.lessonSelect}></Quizz>
+                <Quizz></Quizz>
             </TabPanel>
         </Box>
     );

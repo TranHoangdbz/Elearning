@@ -1,9 +1,12 @@
 const mongoose = require("mongoose");
+const { framework } = require("passport");
 const Course = require("../models/course");
 const Quizz = require("../models/quizz");
+const User = require("../models/user");
+
 class discussionController {
     getLessonandQuizzByCourseID = async(req ,res) => {
-        // console.log("req.body", req.body);
+        // console.log("req.body", req.body);s
         // console.log("req.params.id", req.params.id);
         try {
             const id = mongoose.Types.ObjectId(req?.params?.id);
@@ -58,11 +61,62 @@ class discussionController {
             // for(var i = 0; i < temptLessonList.length; i++){
             //     console.log("temptLessonList[i]", temptLessonList[i])
             // }
+
+            // Lấy được các lesson giờ lấy thêm phần các bình luận
+            var currentDiscussion = currentCourse.discussion;
+            var userData;
+            await User.find()
+                .then(data => {
+                    userData = data;
+                })
+                .catch((err)=> {
+                    
+                })
+
+            // console.log("userData", userData)
+            // refine each discussion and it's replied
+            var newDiscussion = []; 
+            // console.log("currentDiscussion", currentDiscussion)
+            for(var i = 0; i < currentDiscussion.length; i++){
+                var tempt = {};
+                var replyRefine = [];
+                for(var j = 0; j < currentDiscussion[i].repliedComments.length; j++){
+                    for(var k = 0; k < userData.length; k++){
+                        // console.log(currentDiscussion[i].repliedComments[j]._id.toString(), userData[k]._id.toString());
+                        if(currentDiscussion[i].repliedComments[j].user.toString() == userData[k]._id.toString()){
+                            replyRefine.push({
+                                ...currentDiscussion[i].repliedComments[j],
+                                username: userData[j].fullName,
+                                userID: userData[j]._id,
+                                avatar: userData[j].profilePicture,
+                            })
+                            break;
+                        }
+                    }
+                }
+                for(var j = 0; j < userData.length; j++){
+                    if(currentDiscussion[i].comment.user.toString() == userData[j]._id.toString()){
+                        tempt.comment = {
+                            ...currentDiscussion[i].comment,
+                            username: userData[j].fullName,
+                            userID: userData[j]._id,
+                            avatar: userData[j].profilePicture,
+                            repliedComments: replyRefine,
+                        }
+                        break;
+                    }
+                }
+                newDiscussion.push(tempt);
+            }
+
+            // console.log("newDiscussion", newDiscussion)
+            
             res.status(200).send({
                 run: true,      
                 currentCourse: {
                     ...currentCourse._doc,
                     lessons: temptLessonList,
+                    discussion: newDiscussion,
                 }
             })
 

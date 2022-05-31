@@ -8,7 +8,7 @@ import { useSelector, useDispatch } from 'react-redux';
 
 const label = { inputProps: { 'aria-label': 'Checkbox demo' } };
 
-function Quizz(props) {
+function Quizz() {
     const [activeStep, setActiveStep] = React.useState(0);
     const currentLesson = useSelector(state => {
         return state.courseLearning.currentCourse.lessons[state.courseLearning.currentLessonIndex]}
@@ -49,9 +49,15 @@ function Quizz(props) {
             }
         })
         if (isSuccess) {
-            console.log("Thành công")
+            console.log("Thành công");
+            alert("Bạn đẫ hoàn thành bài test");
+            window.location.reload();
+            // APi check hoàn thành bài học ở đây
+
         } else {
-            console.log("Thất bại")
+            console.log("Thất bại");
+            alert("Bạn đã trả lời sai bài test, bạn phải học lại từ đầu");
+            window.location.reload();
         }
     }
 
@@ -62,7 +68,7 @@ function Quizz(props) {
     }
 
     const handleClickNext = () => {
-        if (activeStep < props.lessonSelect.quizz.length - 1) {
+        if (activeStep < currentLesson.quizz.length - 1) {
             setActiveStep(oldState => oldState + 1)
         }
     }
@@ -175,7 +181,7 @@ function Quizz(props) {
                     }
                     <div style={{ display: 'flex' }}>
                         {
-                            activeStep === (props.lessonSelect.quizz.length - 1) ? (
+                            activeStep === (currentLesson.quizz.length - 1) ? (
                                 <div onClick={(e) => handleClickSubmit(e        )} className='btn-back'>
                                     Submit
                                 </div>

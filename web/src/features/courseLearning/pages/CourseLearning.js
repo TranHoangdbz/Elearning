@@ -174,10 +174,7 @@ function CourseLearning() {
         <Container spacing={2} style={{ marginTop: '40px' }} maxWidth='xl'>
             <Grid spacing={1} container>
                 <Grid item lg={8} md={12} sm={12}>
-                    <LayoutLeftCourseLearning 
-                        lesson={lessons[selectLesson]} 
-                        lessonSelect={mockLesson[selectLesson]}
-                    ></LayoutLeftCourseLearning>
+                    <LayoutLeftCourseLearning/>
                 </Grid>
                 <Grid item lg={4} md={12} sm={12}>
                     <div className='layout-right'>
