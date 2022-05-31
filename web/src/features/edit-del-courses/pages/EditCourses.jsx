@@ -1,13 +1,88 @@
-import React  from 'react';
+import React, {useRef, useState}  from 'react';
 import './editcourse.css';
 import CancelOutlinedIcon from '@mui/icons-material/CancelOutlined';
-import { TextField, FormControl, Select, InputLabel, MenuItem } from '@mui/material';
+import { 
+    TextField, FormControl, Select, InputLabel, 
+    MenuItem, CircularProgress, Button
+} from '@mui/material';
+import axios, { CancelToken, isCancel } from "axios";
 const EditCourses = () => {
     const [course, setCourse] = React.useState('');
-    const [popup, setPopup] = React.useState(true);
+    // get value of name
+    const [name_value, setName_value] = useState("");
+    const nameValue  = e =>{
+        setName_value (e.target.value);
+    };
+    // checkvaildate
+    const [validate, setValidate] = useState(false);
+    const [nameErr, setNameErr] = useState('');
+    
+    const checkvaildate =() =>{
+        console.log(name_value);
+        if (name_value == "" ) {
+            setNameErr("Tên đang trống")
+        } else {
+            setNameErr("")
+            setPopup(true);
+        }
+    }
+    // mở thông báo
+    const [popup, setPopup] = React.useState(false);
     const handleChange = (event) => {
         setCourse(event.target.value);
     };
+
+    // nhập file 
+    const [uploadPercentage, setUploadPercentage] = useState(0);
+    const cancelFileUpload = useRef(null);
+
+    const uploadFile = ({ target: { files } }) => {
+        let data = new FormData();
+        data.append("file", files[0]);
+        const options = {
+            onUploadProgress: progressEvent => {
+                const { loaded, total } = progressEvent;
+
+                let percent = Math.floor((loaded * 100) / total);
+
+                if (percent < 100) {
+                    setUploadPercentage(percent);
+                }
+            },
+            cancelToken: new CancelToken(
+                cancel => (cancelFileUpload.current = cancel)
+            )
+        };
+
+        axios
+            .post(
+                "link_vo_day_back",
+                data,
+                options
+            )
+            .then(res => {
+                console.log(res);
+                setUploadPercentage(100);
+
+                setTimeout(() => {
+                    setUploadPercentage(0);
+                }, 1000);
+            })
+            .catch(err => {
+                console.log(err);
+
+                if (isCancel(err)) {
+                    alert(err.message);
+                }
+                setUploadPercentage(0);
+            });
+    };
+    // Khúc này chưa thêm
+    const cancelUpload = () => {
+        if (cancelFileUpload.current)
+            cancelFileUpload.current("User has canceled the file upload.");
+    };
+
   return (
     <div className='editLesson'>
         <div className="editLesson-inner">       
@@ -17,16 +92,18 @@ const EditCourses = () => {
             </div>
             <div className="edit__body">
                <p className="title">Name</p>
-               <TextField   
-                    label="Lesson name"
+               <TextField  
+                    value={name_value} 
+                    onChange={nameValue}
+                    error ={nameErr}
                     id="outlined-size-small"
                     size="small"
                     inputProps={{style: {fontSize: 14}}}
-                    
+                    FormHelperTextProps={{style: {fontSize: 12}}}
+                    helperText={nameErr}
                 />
                <p className="title">Description</p>
                <TextField   
-                    label="Lesson description"
                     name="Lesson description"
                     fullWidth
                     multiline={true}
@@ -38,13 +115,13 @@ const EditCourses = () => {
                 />
                 <p className="title">Select courses</p>
                 <FormControl sx={{ m: 1, minWidth: 120 }} size="small">
-                    <InputLabel id="demo-select-small">Course</InputLabel>
+                    
                     <Select
                         style={{width: 250, fontSize: 14,}}
                         labelId="demo-select-small"
                         id="demo-select-small"
                         value={course}
-                        label="Course"
+                        
                         onChange={handleChange}
                         
                     >
@@ -60,30 +137,35 @@ const EditCourses = () => {
                     <div className="video_components">
                         <div className="video_header">
                             <p className="title">Thumbnail</p>
-                            <button className="btnn_select">
-                                Select Image
-                            </button>
+                            <label htmlFor="fileThumbnail" className="btnn_select" >Select Image </label>
+                            <input type='file' id='fileThumbnail' onChange={uploadFile} style={{display:'none'}} />
                         </div>
-                        <div className="video_body">
 
+                        <div className="video_body">
+                            {uploadPercentage > 0 && (
+                                <CircularProgress color="success" variant="determinate" value={100} />
+                            )}
+                            {/* <img src={URL.createObjectURL() } style={{ height: 280, width: 120 }}  /> */}
                         </div>
                     </div>
                     <div className="video_components">
                         <div className="video_header">
                             <p className="title">Video</p>
-                            <button className="btnn_select">
-                                Select Video
-                            </button>
+                            <label htmlFor="fileVideo"  >Select Video </label>
+                            <Button className="btnn_select" variant="contained">Contained</Button>
+                            <input type='file' id='fileVideo' onChange={uploadFile} style={{display:'none'}} />
                         </div>
                         <div className="video_body">
-
+                            {uploadPercentage > 0 && (
+                                <CircularProgress color="success" variant="determinate" value={100} />
+                            )}
                         </div>
                         
                     </div>
                     
                 </div>
                 <button className="btn_save"
-                    onClick={()=> setPopup(true)}    
+                    onClick={checkvaildate}    
                 >
                     Save all
                 </button>

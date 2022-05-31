@@ -1,0 +1,7 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="app_name">uit_elearning</string>
+    <string name="facebook_app_id">763297304660754</string>
+    <string name="fb_login_protocol_scheme">fb763297304660754</string>
+    <string name="facebook_client_token">b515a6cd5135665c6826b099e5c0de10</string>
+</resources>
