@@ -107,44 +107,16 @@ function AddLessonModal({ open, setOpen }) {
     } else if (lesson.thumbnail === "" || !lesson.thumbnail) {
       setSubmit(true);
     } else {
-      let data = {
-        lessonCode: lesson.lessonCode,
-        name: lesson.name,
-        description: lesson.description,
-        video: videoPreview,
-        quizz: [],
-        thumbnail: thumbnailPreview,
-        lessonVolume: null,
-      };
-      // let data = new FormData();
+      let data = new FormData();
 
-      // data.append(
-      //   "body",
-      //   new Blob(
-      //     [
-      //       JSON.stringify({
-      //         lessonCode: lesson.lessonCode,
-      //         name: lesson.name,
-      //         description: lesson.description,
-      //         lessonVolume: lesson.lessonVolume,
-      //         quizz: lesson.quizz,
-      //       }),
-      //     ],
-      //     {
-      //       type: "application/json",
-      //     }
-      //   )
-      // );
-
-      // data.append("lessonCode", lesson.lessonCode);
-      // data.append("name", lesson.name);
-      // data.append("description", lesson.description);
-      // data.append("video", lesson.video);
-      // data.append("thumnail", lesson.description);
-      // data.append("lessonVolumn", lesson.description);
+      data.append("lessonCode", lesson.lessonCode);
+      data.append("name", lesson.name);
+      data.append("description", lesson.description);
+      data.append("video", lesson.video);
+      data.append("thumnail", lesson.thumbnail);
+      data.append("lessonVolumn", lesson.lessonVolume);
       // data.append("quizz", lesson.quizz);
       dispatch(createLesson(data));
-      alert("Thêm mới bài giảng thành công");
       handleCloseModal();
     }
   };

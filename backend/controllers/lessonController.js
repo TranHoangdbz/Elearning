@@ -77,16 +77,9 @@ const getById = async (req, res) => {
 
 const create = async (req, res) => {
   try {
-    const {
-      lessonCode,
-      name,
-      description,
-      video,
-      thumbnail,
-      lessonVolume,
-      quizz,
-    } = req.body;
-
+    const { lessonCode, name, description, lessonVolume } = req.body;
+    const thumbnail = req.files.thumbnail;
+    const video = req.files.video;
     const videoUrl = await handleUpload(video);
     const thumbnailUrl = await handleUpload(thumbnail);
 
@@ -97,7 +90,6 @@ const create = async (req, res) => {
       video: videoUrl,
       thumbnail: thumbnailUrl,
       lessonVolumne: lessonVolume,
-      quizz: quizz,
     });
 
     const result = await newItem.save();
