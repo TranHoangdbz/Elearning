@@ -53,9 +53,23 @@ function Form() {
     const handleClose = () => setOpen(false);
 
     // submit
-    const handleSubmit = () => {
-        if(handleBlur()) {
-            handleOpen()
+    const [modalContent, setModalContent] = useState({
+        status: "fail",
+        mes: "Some error",
+    });
+    const [disabledButton, setDisabledButton] = useState(false);
+    const handleSubmit = async () => {
+        if (handleBlur()) {
+            try {
+                setDisabledButton(true);
+                const getNewPassword = await helpers.getNewPassword(inputValue);
+                setModalContent(getNewPassword);
+                setDisabledButton(false);
+            } catch (e) {
+                console.log(e);
+            } finally {
+                handleOpen();
+            }
         }
         //
     };
@@ -83,15 +97,26 @@ function Form() {
 
                     <div className={`${styles.submitGroup}`}>
                         <button
+                            disabled={disabledButton}
                             type="submit"
-                            className={`${styles.submitButton}`}
+                            className={
+                                styles[
+                                    "submitButton" +
+                                        (disabledButton ? "_disable" : "")
+                                ]
+                            }
                             onClick={handleSubmit}
                         >
                             Get new password
                         </button>
                     </div>
 
-                    <Modal open={open} onClose={handleClose}></Modal>
+                    <Modal
+                        open={open}
+                        onClose={handleClose}
+                        status={modalContent.status}
+                        mes={modalContent.mes}
+                    ></Modal>
                 </div>
             </div>
         </React.Fragment>

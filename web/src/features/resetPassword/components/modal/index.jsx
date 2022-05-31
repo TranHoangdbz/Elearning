@@ -1,4 +1,7 @@
 import React from "react";
+import {useNavigate} from "react-router-dom";
+import { useSelector, useDispatch } from "react-redux";
+import {closeModal} from "../../resetPasswordSlice"
 
 import styles from "./modal.module.scss";
 
@@ -7,12 +10,26 @@ import Box from "@mui/material/Box";
 import Typography from "@mui/material/Typography";
 import CheckCircleIcon from "@mui/icons-material/CheckCircle";
 
-function ModalContent({ open, onClose }) {
+import {SIGN_IN} from "../../../../routes"
+
+function ModalContent() {
+
+    const navigate = useNavigate()
+
+    const open = useSelector(state => state.resetPassword.modalOpen);
+    const dispatch = useDispatch()
+    const handleClose = () => dispatch(closeModal());
+
+    const handleNavigate = () => {
+        handleClose()
+        navigate(SIGN_IN)
+    }
+
     return (
         <React.Fragment>
             <Modal
                 open={open}
-                onClose={onClose}
+                onClose={handleClose}
                 aria-labelledby="modal-modal-title"
                 aria-describedby="modal-modal-description"
             >
@@ -27,7 +44,7 @@ function ModalContent({ open, onClose }) {
                     >
                         Password has been reset successfully, please sign in now.
                     </Typography>
-                    <div className={`${styles.submitGroup}`}>
+                    <div className={`${styles.submitGroup}`} onClick={handleNavigate}>
                         <button
                             className={`${styles.submitButton}`}
                         >

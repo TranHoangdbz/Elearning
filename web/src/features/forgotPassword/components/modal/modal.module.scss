@@ -22,18 +22,32 @@
         font-weight: 600;
         font-size: 32px;
         line-height: 39px;
+        text-transform: capitalize;
         /* identical to box height */
 
         display: flex;
         align-items: center;
 
-        color: #0ead1e;
+        &_success {
+            @extend .title;
+            color: #0ead1e;
+        }
+        &_fail {
+            @extend .title;
+            color: red;
+        }
     }
     .icon {
         width: 35px;
         height: 35px;
-
-        color: #0ead1e;
+        &_success {
+            @extend .icon;
+            color: #0ead1e;
+        }
+        &_fail {
+            @extend .icon;
+            color: red;
+        }
     }
     .description {
         font-weight: 400;

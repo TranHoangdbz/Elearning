@@ -8,7 +8,7 @@ const style = {
     },
     panel_2: {
         height: '100%',
-        width:'100%'
+        width: '100%'
     },
     leftStack: {
         p: 2,
@@ -33,7 +33,7 @@ const style = {
     },
     leftStack_totalLessons: {
         pt: 1,
-        pl: 2,
+        pl: 1,
         color: 'black',
         fontWeight: 'bold'
     },
@@ -51,21 +51,29 @@ const style = {
         p: 2,
         height: '100%',
         width: '80%',
-        mb:2
+        mb: 2
     },
     rightStack_imgCourse: {
-        width: '100%'
+        width: '100%',
+        marginBottom: 5
     },
     rightStack_registerButton: {
         fontSize: 12,
         backgroundColor: '#040E53'
     },
     rightStack_avatarLecturer: {
-      height: 80,
-      width: 80,
+        height: 80,
+        width: 80,
     },
-    rightStack_nameLecturer:{
-        m:1
+    rightStack_nameLecturer: {
+        m: 1
+    },
+    rightStack_authorInfo: {
+        justifyContent: 'center',
+        alignItems: 'center',
+        justifySelf: 'center',
+        height: '40vh',
+        mt: 2
     }
 }
 export default style;
