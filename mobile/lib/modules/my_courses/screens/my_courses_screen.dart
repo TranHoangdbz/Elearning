@@ -78,11 +78,17 @@ class MyCoursesScreen extends GetView<MyCoursesController> {
                 ],
               ),
             ),
-            CourseList('Current Courses'),
+            const CourseList(
+              category: 'Current Courses',
+              courses: [],
+            ),
             const SizedBox(
               height: 32,
             ),
-            CourseList('Completed Courses'),
+            const CourseList(
+              category: 'Completed Courses',
+              courses: [],
+            ),
             // const SizedBox(
             //   height: 32,
             // ),
