@@ -4,7 +4,6 @@ import '../components/CourseLearning.scss';
 import { Container, Grid, Avatar } from '@mui/material'
 import StarIcon from '@mui/icons-material/Star';
 import CardCourse from '../components/CardCourse';
-// import axios from 'axios'
 import LayoutLeftCourseLearning from '../components/LayoutLeftCourseLearning';
 import URL_API from '../../../services/API/config';
 import AjaxHelper from '../../../services/index';
@@ -50,6 +49,7 @@ function CourseLearning() {
 
     // Lấy thử current course
     const currentCourse = useSelector((state) => {return state.courseLearning.currentCourse});
+    const currentLesson = useSelector((state) => {return state.courseLearning.currentLessons});
     console.log("currentCourse", currentCourse)
 
     const [mockLesson, setMockLesson] = useState([
@@ -156,6 +156,8 @@ function CourseLearning() {
     ])
 
     const handleClickLesson = (index) => {
+        // Get lesson hiện tại ở đây
+
         setSelectLesson(index)
     }
 
