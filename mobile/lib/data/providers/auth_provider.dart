@@ -135,27 +135,13 @@ class AuthenticationProvider {
     required String hash,
     required Function(Map<String, dynamic>) onResponse,
   }) async {
-    //String authKey = AppStrings.authKey;
     if (email.isNotEmpty && hash.isNotEmpty) {
-      // IOWebSocketChannel channel;
       try {
-        //   // Create connection.
-        //   channel = IOWebSocketChannel.connect(
-        //       '${AppStrings.protocol}://${AppStrings.host}:${AppStrings.port}/login$email');
-
-        //   // Data that will be sended to Node.js
-        //   String login =
-        //       "{'auth':'$authKey','cmd':'quickLogin','email':'$email','hash':'$hash'}";
-        //   channel.sink.add(login);
-        //   channel.stream.listen((event) async {
-        //     var data = json.decode(event);
-        //     channel.sink.close();
-        //     return onResponse(data);
-        //   });
+        await login(email: email, password: hash, onResponse: onResponse);
       } catch (e) {
         Map<String, dynamic> data = {
           'error': true,
-          'message': 'Sign in failed',
+          'message': 'Login failed with unkown error',
           'result': null,
         };
         onResponse(data);
