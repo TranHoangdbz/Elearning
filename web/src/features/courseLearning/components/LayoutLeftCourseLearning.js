@@ -1,8 +1,10 @@
 import React from 'react';
 import './CourseLearning.scss'
 import OverviewAndQuizz from './OverviewAndQuizz';
+import { useSelector, useDispatch } from 'react-redux';
 
 function LayoutLeftCourseLearning(props) {
+    const currentCourse = useSelector((state) => {return state.courseLearning.currentCourse});
     return (
         <div className="layout-left">
             <iframe
@@ -11,7 +13,7 @@ function LayoutLeftCourseLearning(props) {
                 src={props.lessonSelect.video}
             >
             </iframe>
-            <OverviewAndQuizz course={props.course} lesson={props.lesson} lessonSelect={props.lessonSelect}></OverviewAndQuizz>
+            <OverviewAndQuizz lesson={props.lesson} lessonSelect={props.lessonSelect}></OverviewAndQuizz>
         </div>
     );
 }

@@ -10,6 +10,7 @@ import { useState, useEffect, useRef } from "react";
 function Overview(props) {
     const dispatch = useDispatch();
     const [value, setValue] = React.useState(0);
+    const currentCourse = useSelector((state) => {return state.courseLearning.currentCourse});
 
     const comments = useSelector((state) => {
         console.log("state", state);
@@ -25,10 +26,10 @@ function Overview(props) {
     return (
         <div>
             <div style={{ fontFamily: "'Montserrat', san-serif" }} className='description'>
-                {props.course.description}
+                {currentCourse.description}
             </div>
             <div style={{ fontFamily: "'Montserrat', san-serif" }} className='quantity-discussions'>
-                {props.course.discussion ? props.course.discussion.length : "0"} Discussions
+                {currentCourse.discussion ? currentCourse.discussion.length : "0"} Discussions
             </div>
             <div className='model-rating'>
                 <div className='custom'>
@@ -61,7 +62,7 @@ function Overview(props) {
                         className='btn-send'
                         onClick={()=>{
                             dispatch(addComment({data:"ok"}));
-                            console.log(props.course);
+                            console.log(currentCourse);
                         }}
                     >
                         Send
@@ -76,15 +77,12 @@ function Overview(props) {
                 </button> */}
                 <div className='chat-user'>
                     {
-                        props.course && props.course.discussion
-                        ?   props.course.discussion.map((value, index) => {
+                        currentCourse && currentCourse.discussion
+                        ?   currentCourse.discussion.map((value, index) => {
                                 return <CommentCard comment={value}></CommentCard>
                             })
                         : (null)
                     }
-                    {/* <CommentCard componentChild={false}></CommentCard>
-                    <CommentCard componentChild={<CommentCard componentChild={<CommentCard></CommentCard>}></CommentCard>}></CommentCard>
-                    <CommentCard componentChild={<CommentCard></CommentCard>}></CommentCard> */}
                 </div>
             </div>
         </div>

@@ -29,17 +29,15 @@ function CourseLearning() {
     const currentCourseID = path.length > 1 ?  path[path.length-1] : "628e51cbb64e260717ce07b2";
 
     const [selectLesson, setSelectLesson] = useState(0) 
-    const [course, setCourse] = useState({})
     const [lessons, setLessons] = useState([])
 
+    // Get all content of the current course
     useEffect(() => {
         // let id = '628e51cbb64e260717ce07b2'
         const fetchCourse = async () => {
             await AjaxHelper.get(URL_API.URL_GET_COURSE_BY_ID + '/' + currentCourseID)
                 .then(res => {
                     console.log(res.data.data)
-                    // console.log(res.data.data.lessons)
-                    setCourse(res.data.data);
                     setLessons(res.data.data.lessons);
                     dispatch(setCurrentCourse(res.data.data));
                 })
@@ -202,14 +200,14 @@ function CourseLearning() {
                         <div style={{ display: 'flex', justifyContent: 'space-between', paddingLeft: '25px', paddingRight: '25px' }}>
                             <div style={{ display: 'flex', marginTop: '10px' }}>
                                 <Avatar height={50} width={50} alt="Remy Sharp" 
-                                    src={course.teacher ? course.teacher.profilePicture : ""}
+                                    src={currentCourse.teacher ? currentCourse.teacher.profilePicture : ""}
                                 />
                                 <div style={{ display: 'flex', flexDirection: 'column', marginLeft: '10px', justifyContent: 'center' }}>
                                     <div className='name' style={{ fontFamily: "'Montserrat', san-serif" }}>
-                                        {course.teacher ? course.teacher.fullName : ""}
+                                        {currentCourse.teacher ? currentCourse.teacher.fullName : ""}
                                     </div>
                                     <div className='major' style={{ fontFamily: "'Montserrat', san-serif" }}>
-                                        {course.teacher ? course.teacher.title : ""}
+                                        {currentCourse.teacher ? currentCourse.teacher.title : ""}
                                     </div>
                                 </div>
                             </div>
