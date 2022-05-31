@@ -12,10 +12,11 @@ class CourseItem extends StatelessWidget {
   // const CourseItem({Key? key}) : super(key: key);
 
   Course course;
-  CourseItem(this.course);
+  CourseItem({required this.course, Key? key}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
+    num noLessons = course.lessons.length;
     return Material(
       elevation: 4,
       borderRadius: BorderRadius.circular(20),
@@ -36,8 +37,7 @@ class CourseItem extends StatelessWidget {
                           topLeft: Radius.circular(20),
                           topRight: Radius.circular(20)),
                       child: Image.network(
-                        course.courseImage ??
-                            'https://picsum.photos/250/250?image=2',
+                        course.courseImage,
                         fit: BoxFit.cover,
                       ),
                     ),
@@ -45,17 +45,19 @@ class CourseItem extends StatelessWidget {
                   Expanded(
                     flex: 4,
                     child: Padding(
-                      padding: const EdgeInsets.only(top: 15, left: 20),
+                      padding:
+                          const EdgeInsets.only(top: 15, left: 20, right: 20),
                       child: Column(
                         crossAxisAlignment: CrossAxisAlignment.start,
                         children: [
-                          CourseTeacher(),
+                          CourseTeacher(teacher: course.teacher),
                           const SizedBox(
                             height: 8,
                           ),
                           Text(
                             course.courseName,
                             style: TextStyles.textStylePrimaryColor12w600,
+                            overflow: TextOverflow.ellipsis,
                           ),
                           const SizedBox(
                             height: 5,
@@ -67,17 +69,17 @@ class CourseItem extends StatelessWidget {
                                 style: TextStyles.textStylePrimaryColor12w300,
                               ),
                               const SizedBox(
-                                width: 12,
+                                width: 4,
                               ),
                               const Icon(
                                 Icons.circle,
                                 size: 8,
                               ),
                               const SizedBox(
-                                width: 8,
+                                width: 4,
                               ),
                               Text(
-                                '7 lessons',
+                                '$noLessons lesson${noLessons > 1 ? 's' : ''}',
                                 style: TextStyles.textStylePrimaryColor12w600,
                               ),
                             ],
