@@ -32,8 +32,10 @@ function ReplyCommentCard(props) {
     return (
         <div className='chat-user-model'>
             <div className='chat-user-model__header'>
-                <Avatar sx={{ marginRight: '12px' }} height={36} width={36} alt="Remy Sharp" src="https://kenh14cdn.com/thumb_w/660/203336854389633024/2021/7/9/photo-1-16257989599561090737937.jpeg" />
-                <div style={{ fontFamily: "'Montserrat', san-serif" }} className='name'>John Keith</div>
+                <Avatar sx={{ marginRight: '12px' }} height={36} width={36} alt="Remy Sharp" src={props.comment.avatar} />
+                <div style={{ fontFamily: "'Montserrat', san-serif" }} className='name'>
+                    {props.comment.username}
+                </div>
                 <div style={{ fontFamily: "'Montserrat', san-serif" }} className='time'>
                     {props ? calculateTime(props.comment.time) : ""}
                 </div>
