@@ -195,7 +195,7 @@ const userController = {
             if (!isMatch) {
                 return res
                     .status(400)
-                    .json({ message: "Invalid login credentials" });
+                    .json({ message: "Incorrect password" });
             } else {
                 user.password = newPassword;
                 user.save();
@@ -212,55 +212,61 @@ const userController = {
         const { email } = req.body;
 
         try {
-            const user = await User.findOne({ email, verified: true });
+            const user = await User.findOne({ email, verified: true }).exec();
+
             if (!user) {
                 return res
                     .status(404)
                     .json({ message: "This email is not verified" });
             } else {
                 const newPassword = await user.generateRandomPassword();
-
                 // mailer
-                const accessToken = await oAuth2Client.getAccessToken();
+                // const accessToken = await oAuth2Client.getAccessToken();
 
-                const transporter = nodemailer.createTransport({
-                    // config mail server
-                    host: "smtp.gmail.com",
-                    port: 465,
-                    secure: true,
-                    auth: {
-                        type: "OAuth2",
-                        user: "ShanectTeam@gmail.com",
-                        clientId: CLIENT_ID,
-                        clientSecret: CLIENT_SECRET,
-                        refreshToken: REFRESH_TOKEN,
-                        accessToken: accessToken,
-                    },
-                    tls: {
-                        rejectUnauthorized: false,
-                    },
-                });
+                // const transporter = nodemailer.createTransport({
+                //     // config mail server
+                //     host: "smtp.gmail.com",
+                //     port: 465,
+                //     secure: true,
+                //     auth: {
+                //         type: "OAuth2",
+                //         user: "ShanectTeam@gmail.com",
+                //         clientId: CLIENT_ID,
+                //         clientSecret: CLIENT_SECRET,
+                //         refreshToken: REFRESH_TOKEN,
+                //         accessToken: accessToken,
+                //     },
+                //     tls: {
+                //         rejectUnauthorized: false,
+                //     },
+                // });
 
-                const content = `<p>New password for your account is <b>${newPassword}<b/></p>`;
+                // const content = `<p>New password for your account is <b>${newPassword}<b/></p>`;
 
-                const mainOptions = {
-                    from: "ProCourses E-learning",
-                    to: email,
-                    subject: "New password for Account in ProCourse",
-                    text: "Your text is here",
-                    html: content,
-                };
+                // const mainOptions = {
+                //     from: "ProCourses E-learning",
+                //     to: email,
+                //     subject: "New password for Account in ProCourse",
+                //     text: "Your text is here",
+                //     html: content,
+                // };
 
-                transporter.sendMail(mainOptions, function (err, info) {
-                    if (err) {
-                        return res.status(500).json({ msg: err.message });
-                    } else {
-                        user.password = newPassword;
-                        user.save();
-                        return res.status(200).json({
-                            mes: "A new password has been sent to your email/phone number, please check.",
-                        });
-                    }
+                // transporter.sendMail(mainOptions, function (err, info) {
+                //     if (err) {
+                //         return res.status(500).json({ msg: err.message });
+                //     } else {
+                //         user.password = newPassword;
+                //         user.save();
+                //         return res.status(200).json({
+                //             mes: "A new password has been sent to your email/phone number, please check.",
+                //         });
+                //     }
+                // });
+                console.log(newPassword);
+                user.password = newPassword;
+                user.save();
+                return res.status(200).json({
+                    mes: "A new password has been sent to your email/phone number, please check.",
                 });
                 //
             }
