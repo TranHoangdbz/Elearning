@@ -1,7 +1,7 @@
 import React from "react";
 import { useNavigate } from "react-router-dom";
 
-import { RESET_PASSWORD } from "../../../../routes";
+import { SIGN_IN } from "../../../../routes";
 
 import styles from "./modal.module.scss";
 
@@ -53,9 +53,9 @@ function ModalContent({ open, onClose, status, mes }) {
                     <div className={`${styles.submitGroup}`}>
                         <button
                             className={`${styles.submitButton}`}
-                            onClick={() => navigate(RESET_PASSWORD)}
+                            onClick={status === "success" ? () => navigate(SIGN_IN) : onClose}
                         >
-                            Reset password
+                            {status === "success" ? "Sign up" : "Close"}
                         </button>
                     </div>
                 </Box>
