@@ -177,7 +177,7 @@ function CourseDetail() {
                         id="demo-positioned-menu"
                         aria-labelledby="demo-positioned-button"
                         anchorEl={anchorEl}
-                        open={open && currentItem?._id == item._id}
+                        open={open && currentItem?._id === item._id}
                         onClose={handleClose}
                         anchorOrigin={{
                           vertical: "top",
@@ -200,14 +200,14 @@ function CourseDetail() {
                             course_url2: location.pathname,
                           }}
                         >
-                          <MenuItem onClick={handleClose}>Chỉnh sửa</MenuItem>
+                          <MenuItem onClick={handleClose}>Edit</MenuItem>
                         </Link>
                         <MenuItem
                           onClick={(e) => {
                             setOpenConfirm(true);
                           }}
                         >
-                          Xóa
+                          Delete
                         </MenuItem>
                       </Menu>
                     </Stack>

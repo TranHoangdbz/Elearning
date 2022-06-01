@@ -48,6 +48,7 @@
     display: flex;
     align-items: center;
     justify-content: space-between;
+    margin-top: 10px;
 }
 .edit__body .editcourse__video .video_components .video_header .btnn_select{
     padding: 10px;
