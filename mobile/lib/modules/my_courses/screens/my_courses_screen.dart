@@ -46,11 +46,13 @@ class MyCoursesScreen extends GetView<MyCoursesController> {
                     child: Column(
                       crossAxisAlignment: CrossAxisAlignment.start,
                       children: [
-                        Text(
-                          controller.getUserFullName(),
-                          textAlign: TextAlign.left,
-                          style: TextStyles.textStylePrimaryColor22w800,
-                          overflow: TextOverflow.ellipsis,
+                        FittedBox(
+                          fit: BoxFit.fitWidth,
+                          child: Text(
+                            controller.getUserFullName(),
+                            textAlign: TextAlign.left,
+                            style: TextStyles.textStylePrimaryColor22w800,
+                          ),
                         ),
                         const SizedBox(
                           height: 12,
@@ -180,9 +182,6 @@ class MyCoursesScreen extends GetView<MyCoursesController> {
                   );
                 }
               },
-            ),
-            const SizedBox(
-              height: 32,
             ),
           ],
         ),
