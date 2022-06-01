@@ -8,14 +8,15 @@ const passport = require('passport');
 const CLIENT_ID = '127746184739-mtd90vl8h27p5h4ngi9khj5lu70of7ne.apps.googleusercontent.com';
 const CLIENT_SECRET = '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';
 const REDIRECT_URI = 'https://developers.google.com/oauthplayground';
-const REFRESH_TOKEN = '1//04FHIxS0UcCT_CgYIARAAGAQSNwF-L9Ir5HCQiW8OLkSRsNKkEZw3d0rPU3eGf2AZntpGHxsjye3PUb_5iOccEFMLQ6L6aTnhBdk';
+const REFRESH_TOKEN = '1//04W1Qlq6A5l6UCgYIARAAGAQSNwF-L9Ir5zTrpOf6goy5NNBHr74ReCg8QTO2FRU9bshifaJblVikkkjauEtfAxyDSTcrfHku5Zk';
 
 const oAuth2Client = new google.auth.OAuth2(
     CLIENT_ID,
     CLIENT_SECRET,
     REDIRECT_URI
 );
-oAuth2Client.setCredentials({ refresh_token: REFRESH_TOKEN });
+oAuth2Client.setCredentials({ refresh_token: REFRESH_TOKEN});
+
 
 const userController = {
     register: async (req, res) => {
@@ -139,7 +140,7 @@ const userController = {
 
             return res.json({ user: newUser });
         } catch (err) {
-            return res.status(500).json({ message: err.message });
+            return res.status(500).json({ msg: err.message });
         }
     },
     verifyUser: async (req, res) => {
