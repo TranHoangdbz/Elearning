@@ -47,7 +47,7 @@ class MyCoursesScreen extends GetView<MyCoursesController> {
                       crossAxisAlignment: CrossAxisAlignment.start,
                       children: [
                         FittedBox(
-                          fit: BoxFit.fitWidth,
+                          fit: BoxFit.scaleDown,
                           child: Text(
                             controller.getUserFullName(),
                             textAlign: TextAlign.left,
