@@ -43,6 +43,7 @@ class MyCoursesScreen extends GetView<MyCoursesController> {
                     height: 24,
                   ),
                   Flexible(
+                    fit: FlexFit.loose,
                     child: Column(
                       crossAxisAlignment: CrossAxisAlignment.start,
                       children: [
@@ -57,22 +58,26 @@ class MyCoursesScreen extends GetView<MyCoursesController> {
                         const SizedBox(
                           height: 12,
                         ),
-                        ElevatedButton(
-                          onPressed: () {
-                            Get.toNamed(Routes.profileDetail);
-                          },
-                          child: Padding(
-                            padding: const EdgeInsets.all(10),
-                            child: Text(
-                              'Profile Detail',
-                              style: TextStyles.textStyleBackkgroundColor12w600,
+                        FittedBox(
+                          fit: BoxFit.contain,
+                          child: ElevatedButton(
+                            onPressed: () {
+                              Get.toNamed(Routes.profileDetail);
+                            },
+                            child: Padding(
+                              padding: const EdgeInsets.all(10),
+                              child: Text(
+                                'Profile Detail',
+                                style:
+                                    TextStyles.textStyleBackkgroundColor12w600,
+                              ),
                             ),
-                          ),
-                          style: ElevatedButton.styleFrom(
-                            primary: AppColors.primaryColor,
-                            onPrimary: AppColors.onPrimaryColor,
-                            shape: RoundedRectangleBorder(
-                              borderRadius: BorderRadius.circular(30),
+                            style: ElevatedButton.styleFrom(
+                              primary: AppColors.primaryColor,
+                              onPrimary: AppColors.onPrimaryColor,
+                              shape: RoundedRectangleBorder(
+                                borderRadius: BorderRadius.circular(30),
+                              ),
                             ),
                           ),
                         ),
