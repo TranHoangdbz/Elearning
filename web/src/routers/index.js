@@ -4,7 +4,10 @@ import routes from "../routes";
 import React from "react";
 
 // import page
-const HomeCoursePage = React.lazy(() => import("../components/homeCourseList"));
+const EditCourses = React.lazy(() =>
+    import("../features/edit-del-courses/pages/EditCourses")
+);
+const HomeCourseListPage = React.lazy(() => import("../features/home-course-list/index"));
 
 // waiting
 const loading = (
@@ -20,12 +23,12 @@ const Routers = () => {
                 <Route
                     path="/"
                     name="HomeCourse"
-                    element={<HomeCoursePage />}
+                    element={<HomeCourseListPage />}
                 />
                 <Route
                     path="/homeCourseList"
                     name="HomeCourse"
-                    element={<HomeCoursePage />}
+                    element={<HomeCourseListPage />}
                 />
                 <Route
                     index

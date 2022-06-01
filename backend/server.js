@@ -1,4 +1,4 @@
-// require('dotenv').config()
+require('dotenv').config()
 
 const express = require("express");
 var cors = require("cors");
@@ -19,6 +19,9 @@ mongoose.connect(
   "mongodb+srv://admin:admin@uit-elearning.uqfe4.mongodb.net/sample?retryWrites=true&w=majority"
 );
 const db = mongoose.connection;
+
+//mongoDB dependencies
+require('./models/teacher') 
 
 db.on("error", (error) => console.error(error));
 db.once("open", () => console.log("Connected to Database"));

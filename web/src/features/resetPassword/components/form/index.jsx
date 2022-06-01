@@ -1,5 +1,7 @@
 import React from "react";
 import { useState } from "react";
+import {useDispatch} from "react-redux";
+import {openModal} from "../../resetPasswordSlice"
 
 import styles from "./form.module.scss";
 
@@ -134,11 +136,8 @@ function Form() {
     };
 
     // open & close modal
-    const [open, setOpen] = useState(false);
-    const handleOpen = () => {
-        setOpen(true);
-    };
-    const handleClose = () => setOpen(false);
+    const dispatch = useDispatch()
+    const handleOpen = () => dispatch(openModal());
 
     // submit
     const handleSubmit = async () => {
@@ -256,7 +255,7 @@ function Form() {
                         </button>
                     </div>
 
-                    <Modal open={open} onClose={handleClose}></Modal>
+                    <Modal></Modal>
                 </div>
             </div>
         </React.Fragment>

@@ -10,5 +10,6 @@ router.post('/register', userController.register);
 router.post('/login', userController.login);
 
 router.put('/reset-password',authMiddleware,userController.resetPassword)
+router.put('/get-new-password', userController.getNewPassword);
 
 module.exports = router;
