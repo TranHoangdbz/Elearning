@@ -2,19 +2,19 @@ import { Paper } from "@mui/material";
 import React from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { getCourses } from "../../coursesManagerSlice";
-import CoursesTableContainer from "../coursesTableContainer";
-import CoursesTablePagination from "../coursesTablePagination";
-import EnhancedTableToolBar from "../enhancedTableToolbar";
+import CoursesTableContainer from "./coursesTableContainer";
+import CoursesTablePagination from "./coursesTablePagination";
+import EnhancedTableToolBar from "./enhancedTableToolbar";
 import styles from "./coursesTable.module.scss";
 
 function CoursesTable() {
   const dispatch = useDispatch();
 
-  const rowData = useSelector(state => state.coursesManager.data)
+  const rowData = useSelector(state => state.coursesManager.courses)
   
   React.useEffect(() => {
     dispatch(getCourses());
-  })
+  }, [dispatch])
 
   const [page, setPage] = React.useState(0);
   const [selected, setSelected] = React.useState([]);
@@ -25,19 +25,19 @@ function CoursesTable() {
 
   const handleSelectAllClick = (e) => {
     if (e.target.checked) {
-      const newSelecteds = rowData.map((item) => item.id);
+      const newSelecteds = rowData.map((item) => item.courseCode);
       setSelected(newSelecteds);
       return;
     }
     setSelected([]);
   };
 
-  const handleClick = (e, id) => {
-    const selectedIndex = selected.indexOf(id);
+  const handleClick = (e, courseCode) => {
+    const selectedIndex = selected.indexOf(courseCode);
     let newSelected = [];
 
     if (selectedIndex === -1) {
-      newSelected = newSelected.concat(selected, id);
+      newSelected = newSelected.concat(selected, courseCode);
     } else if (selectedIndex === 0) {
       newSelected = newSelected.concat(selected.slice(1));
     } else if (selectedIndex === selected.length - 1) {
@@ -52,7 +52,7 @@ function CoursesTable() {
     setSelected(newSelected);
   };
 
-  const isSelected = (id) => selected.indexOf(id) !== -1;
+  const isSelected = (courseCode) => selected.indexOf(courseCode) !== -1;
 
   return (
     <Paper className={`${styles.coursestable}`} elevation={3}>

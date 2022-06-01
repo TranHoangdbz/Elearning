@@ -1,6 +1,7 @@
 import { ArrowBack, Delete, Edit, MoreVert } from "@mui/icons-material";
 import {
   Button,
+  Dialog,
   IconButton,
   List,
   ListItem,
@@ -12,28 +13,41 @@ import {
 } from "@mui/material";
 import { Box } from "@mui/system";
 import React from "react";
-import { useSelector } from "react-redux";
-import { useNavigate } from "react-router-dom";
+import { useDispatch, useSelector } from "react-redux";
+import { useNavigate, Link, useLocation } from "react-router-dom";
+import {
+  deleteLessonById,
+  getLessonsByCourse,
+} from "../../coursesManagerSlice";
 import styles from "./courseDetail.module.scss";
-
+import CancelOutlinedIcon from "@mui/icons-material/CancelOutlined";
 function CourseDetail() {
+  const dispatch = useDispatch();
   const navigate = useNavigate();
 
   const url = window.location.pathname;
   const path = url.split("/").filter((x) => x);
 
   const courseIndex = useSelector(
-    (state) => state.coursesManager.data
+    (state) => state.coursesManager.courses
   ).findIndex((object) => {
-    return object.id === path[2];
+    return object._id === path[2];
   });
 
-  const courseData = useSelector((state) => state.coursesManager.data)[
+  const courseData = useSelector((state) => state.coursesManager.courses)[
     courseIndex
   ];
 
-  const [anchorEl, setAnchorEl] = React.useState(null);
+  const lessons = useSelector((state) => state.coursesManager.lessons);
 
+  React.useEffect(() => {
+    dispatch(getLessonsByCourse(courseData._id));
+  }, [courseData]);
+
+  const [anchorEl, setAnchorEl] = React.useState(null);
+  const [currentItem, setCurrentItem] = React.useState();
+  const [openConfirm, setOpenConfirm] = React.useState(false);
+  const location = useLocation();
   const open = Boolean(anchorEl);
 
   const handleClick = (e) => {
@@ -42,6 +56,11 @@ function CourseDetail() {
 
   const handleClose = () => {
     setAnchorEl(null);
+  };
+
+  const handleDelete = () => {
+    dispatch(deleteLessonById(currentItem?._id));
+    setOpenConfirm(false);
   };
 
   return (
@@ -120,7 +139,7 @@ function CourseDetail() {
             className={`${styles.list}`}
             sx={{ margin: "0px", padding: "0px" }}
           >
-            {courseData.lessons.map((item) => {
+            {lessons.map((item) => {
               return (
                 <ListItem>
                   <Paper className={`${styles.listitem}`} elevation={3}>
@@ -128,7 +147,7 @@ function CourseDetail() {
                       <img
                         alt="listitemiamge"
                         className={`${styles.listitemimage}`}
-                        src={item.video}
+                        src={item.thumbnail}
                       />
 
                       <Stack
@@ -147,7 +166,10 @@ function CourseDetail() {
                         }
                         aria-haspopup="true"
                         aria-expanded={open ? "true" : undefined}
-                        onClick={handleClick}
+                        onClick={(e) => {
+                          handleClick(e);
+                          setCurrentItem(item);
+                        }}
                       >
                         <MoreVert />
                       </IconButton>
@@ -155,7 +177,7 @@ function CourseDetail() {
                         id="demo-positioned-menu"
                         aria-labelledby="demo-positioned-button"
                         anchorEl={anchorEl}
-                        open={open}
+                        open={open && currentItem?._id === item._id}
                         onClose={handleClose}
                         anchorOrigin={{
                           vertical: "top",
@@ -167,8 +189,26 @@ function CourseDetail() {
                         }}
                         elevation={1}
                       >
-                        <MenuItem onClick={handleClose}>Chỉnh sửa</MenuItem>
-                        <MenuItem onClick={handleClose}>Xóa</MenuItem>
+                        <Link
+                          to="/edit-courses"
+                          state={{
+                            _id: item._id,
+                            name: item.name,
+                            description: item.description,
+                            thumbnail: item.thumbnail,
+                            course_url: item.video,
+                            course_url2: location.pathname,
+                          }}
+                        >
+                          <MenuItem onClick={handleClose}>Edit</MenuItem>
+                        </Link>
+                        <MenuItem
+                          onClick={(e) => {
+                            setOpenConfirm(true);
+                          }}
+                        >
+                          Delete
+                        </MenuItem>
                       </Menu>
                     </Stack>
                   </Paper>
@@ -178,6 +218,46 @@ function CourseDetail() {
           </List>
         </Stack>
       </Stack>
+      <Dialog
+        open={openConfirm}
+        onClose={() => setOpenConfirm(false)}
+        aria-labelledby="alert-dialog-title"
+        aria-describedby="alert-dialog-description"
+      >
+        <div className={`${styles.popup}`}>
+          <div className={`${styles.header}`}>
+            <h2 className={`${styles.header__title}`}>Confirm action</h2>
+            <button
+              className={`${styles.header__right}`}
+              onClick={() => {
+                setOpenConfirm(false);
+              }}
+            >
+              <CancelOutlinedIcon color="secondary" fontSize="large" />{" "}
+            </button>
+          </div>
+          <p>Are you sure want to delete?</p>
+
+          <div className={`${styles.footer}`}>
+            <div className={`${styles.footer__left}`}></div>
+            <div className={`${styles.footer__right}`}>
+              <button
+                className={`${styles.btn__cancel}`}
+                onClick={() => {
+                  setOpenConfirm(false);
+                }}
+              >
+                {" "}
+                Cancel{" "}
+              </button>
+              <button className={`${styles.btn__ok}`} onClick={handleDelete}>
+                {" "}
+                Ok{" "}
+              </button>
+            </div>
+          </div>
+        </div>
+      </Dialog>
     </Paper>
   );
 }
