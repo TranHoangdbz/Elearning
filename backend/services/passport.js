@@ -1,0 +1,76 @@
+require('dotenv').config();
+
+const User = require('../models/user');
+const passport = require('passport');
+const GoogleStrategy = require('passport-google-oauth2').Strategy;
+const FacebookStrategy = require('passport-facebook').Strategy;
+
+passport.use(
+    new GoogleStrategy(
+        {
+            clientID: process.env.GOOGLE_CLIENT_ID,
+            clientSecret: process.env.GOOGLE_CLIENT_SECRET,
+            callbackURL: process.env.GOOGLE_CALLBACK_URL,
+            passReqToCallback: true,
+        }, async (request, accessToken, refreshToken, profile, done) => {
+            try {
+                const existingUser = await User.findOne({ googleId: profile.id });
+                if (existingUser) {
+                    return done(null, existingUser);
+                }
+
+                const newUser = new User({
+                    googleId: profile.id,
+                    fullName: profile.name.familyName + ' ' + profile.name.givenName,
+                    email: profile.email,
+                    profilePicture: profile.picture,
+                    verified: true,
+                })
+
+                await newUser.save();
+                return done(null, newUser);
+
+            } catch (err) {
+                return done(err, false);
+            }
+        }
+    )
+);
+
+passport.use(
+    new FacebookStrategy(
+        {
+            clientID: process.env.FACEBOOK_CLIENT_ID,
+            clientSecret: process.env.FACEBOOK_CLIENT_SECRET,
+            callbackURL: process.env.FACEBOOK_CALLBACK_URL,
+        }, async (request, accessToken, refreshToken, profile, done) => {
+            try {
+                const existingUser = await User.findOne({ facebookId: profile.id });
+                if (existingUser) {
+                    return done(null, existingUser);
+                }
+
+                const newUser = new User({
+                    facebookId: profile.id,
+                    fullName: profile.displayName,
+                    email: 'empty',
+                    verified: true,
+                })
+
+                await newUser.save();
+                return done(null, newUser);
+
+            } catch (err) {
+                return done(err, false);
+            }
+        }
+    )
+);
+
+passport.serializeUser((user, done) => {
+    done(null, user);
+});
+
+passport.deserializeUser((id, done) => {
+    done(null, id);
+});
