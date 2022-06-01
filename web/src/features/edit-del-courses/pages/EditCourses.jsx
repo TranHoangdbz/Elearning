@@ -27,14 +27,8 @@ const EditCourses = (props) => {
     const cancelFileUpload = useRef(null);
 
     const checkVaildate = () => {
-        var format = /[ `!@#$%^&*()_+\-=\[\]{};':"\\|,.<>\/?~]/;
-        console.log(format.test(name))
         if (name === "") {
             setNameErr("Name is empty")
-            return;
-        }
-        if (format.test(name)) {
-            setNameErr("Name contains special characters")
             return;
         }
         setNameErr("")
