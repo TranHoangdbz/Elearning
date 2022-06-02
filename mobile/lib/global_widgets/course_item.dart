@@ -17,6 +17,9 @@ class CourseItem extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     num noLessons = course.lessons.length;
+    num courseVolume = course.lessons.fold(
+        0, (previousValue, element) => previousValue + element.lessonVolume);
+
     return Material(
       elevation: 4,
       borderRadius: BorderRadius.circular(20),
@@ -65,7 +68,7 @@ class CourseItem extends StatelessWidget {
                           Row(
                             children: [
                               Text(
-                                '1 hours 12 mins',
+                                '$courseVolume minute${courseVolume > 1 ? 's' : ''}',
                                 style: TextStyles.textStylePrimaryColor12w300,
                               ),
                               const SizedBox(

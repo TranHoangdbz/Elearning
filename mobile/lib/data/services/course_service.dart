@@ -45,4 +45,8 @@ class CourseService {
   getAllCategories() {
     return courses.map((e) => e.category).toSet();
   }
+
+  getCourseById(id) {
+    return courses.where((e) => e.id == id).first;
+  }
 }
