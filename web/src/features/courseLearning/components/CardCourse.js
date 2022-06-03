@@ -26,13 +26,13 @@ function CardCourse(props) {
                     : 'course'}
         >
             <div style={{ fontFamily: "'Montserrat', san-serif" }} >
-                {props.index + 1}.  {props.lesson.description ? props.lesson.description : 'Error'}
+                {props.index + 1}.  {props.lesson.name ? props.lesson.name : 'Error'}
             </div>
             <div style={{ fontFamily: "'Montserrat', san-serif" }} >
                 {props.lesson.lessonVolume} min
             </div>
             <div className='layout-lock'>
-                <LockIcon />
+                <LockIcon fontSize={"large"}/>
             </div>
         </div>
     );

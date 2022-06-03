@@ -34,30 +34,60 @@ function CourseLearning() {
     // Get all content of the current course
     useEffect(async() => {
         // let id = '628e51cbb64e260717ce07b2'
-        const fetchCourse = async () => {
-            await AjaxHelper.get(URL_API.URL_SYSTEM_V1 + '/discussions/lesson-quizz/' + currentCourseID)
-                .then(res => {
-                    // console.log("res", res)
-                    //setLessons(res.data.data.lessons);
-                    dispatch(setCurrentCourse(res.data.currentCourse));
-                })
-                .catch(err => {
-                    console.log(err)
-                })
+        var currentCourseTempt ;
+        await AjaxHelper.get(URL_API.URL_SYSTEM_V1 + '/discussions/lesson-quizz/' + currentCourseID)
+            .then(res => {
+                // console.log("res", res)
+                //setLessons(res.data.data.lessons);
+                currentCourseTempt = res.data.currentCourse;
+                dispatch(setCurrentCourse(res.data.currentCourse));
+                console.log("Hàm lấy cousre")
+            })
+            .catch(err => {
+                console.log(err)
+            })
+        
+        const getCurrentIndexInit = (userID) => {
+            if(currentCourse != {}){
+                var currentLesson = currentCourseTempt.lessons;
+                console.log("currentLesson", currentLesson);
+                var index = 0;
+                if(!currentLesson) return 0;
+
+                for(var  i = 0; i < currentLesson.length; i++){
+                    var j = 0;
+                    for(; j < currentLesson[i].passed.length; j++){
+                        if(currentLesson[i].passed[j].user == userID){
+                            break;
+                        }
+                    }
+                    if(j >= currentLesson[i].passed.length){
+                        return i;
+                    }
+                    else index = i;
+                }
+                return index;
+            }
+            else {
+                console.log("acc");
+                return 0;
+            }
         }
-        fetchCourse()
         const fetchUserInfo = async () => {
             await AjaxHelper.get(URL_API.URL_SYSTEM_V1 + '/discussions/user/' + currentUserID)
                 .then(res => {
                     // console.log("res", res.data.data)
                     //setLessons(res.data.data.lessons);
                     dispatch(setCurrentUserInfo(res.data.data));
+                    console.log("Hàm lấy user");
+                    // console.log(getCurrentIndexInit(res.data.data._id))
+                    dispatch(changeCurrentLessonIndex(getCurrentIndexInit(res.data.data._id)));
                 })
                 .catch(err => {
                     console.log(err)
                 })
         }
-        fetchUserInfo()
+        await fetchUserInfo()
     }, [])
 
 
@@ -99,8 +129,6 @@ function CourseLearning() {
         }
         else return 0;
     }
-
-    console.log(getCurrentIndex());
 
     // const currentLearnIndex = 0;
 

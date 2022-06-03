@@ -2,6 +2,7 @@ const mongoose = require("mongoose");
 const Course = require("../models/course");
 const Quizz = require("../models/quizz");
 const User = require("../models/user");
+const lesson = require("../models/lesson");
 
 class discussionController {
     getLessonandQuizzByCourseID = async(req ,res) => {
@@ -155,6 +156,60 @@ class discussionController {
                 })
             })
         
+    }
+
+    passTheQuizz = async(req, res) => {
+        console.log("req.body", req.body);
+        // Find current lesson
+        var currentLesson;
+        await lesson.findById(req.body.lessonID)
+            .then((data) => {
+                currentLesson = data;
+            })
+            .catch((error) => {
+                return res.status(404).send({
+                    success: false,
+                    message: "Lesson of quizz not found!"
+                })
+            })
+        // console.log("currentLesson", currentLesson);
+        var findID = false;
+        for(var i = 0 ; i < currentLesson.passed.length; i++){
+            if(currentLesson.passed[i].user==req.body.userID){
+                findID = true;
+                break;
+            }
+        }
+        if(!findID)
+            currentLesson.passed.push({
+                user: req.body.userID,
+                passed: true,
+            })
+        else {
+            return res.status(400).send({
+                success: false,
+                message: "Error when update lesson"
+            })
+            return;
+        }
+
+        await lesson.findByIdAndUpdate(req.body.lessonID, {
+            passed: currentLesson.passed
+        })
+            .then((data) => {
+                res.status(200).send({
+                    success: false,
+                    message: "Add passed student successful"
+                })
+            })
+            .catch((error) => {
+                return res.status(400).send({
+                    success: false,
+                    message: "Error when update lesson"
+                })
+            })
+
+
     }
 
     addComment = async(req, res ) => {

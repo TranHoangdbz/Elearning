@@ -4,16 +4,24 @@ import LockIcon from '@mui/icons-material/Lock';
 import { Checkbox, FormControlLabel, FormGroup, Radio, RadioGroup } from '@mui/material'
 import axios from 'axios';
 import { useSelector, useDispatch } from 'react-redux';
-
+import URL_API from '../../../services/API/config';
+import AjaxHelper from '../../../services/index';
 
 const label = { inputProps: { 'aria-label': 'Checkbox demo' } };
+const initValueQuizz = () => {
+    var res = [];
+    for(var i = 0; i < 100; i++){
+        res.push([false, false, false, false]);
+    }
+    return res;
+}
 
 function Quizz() {
     const [activeStep, setActiveStep] = React.useState(0);
     const currentLesson = useSelector(state => {
         return state.courseLearning.currentCourse.lessons[state.courseLearning.currentLessonIndex]}
     );
-    const [yourChoice, setYourChoice] = useState(currentLesson.quizz.map((value, key) => [false, false, false, false]))
+    const [yourChoice, setYourChoice] = useState(initValueQuizz())
     
     const handleClickAnswer = (e) => {
         if (e.target.checked) {
@@ -27,7 +35,9 @@ function Quizz() {
         }
     }
 
-    const handleClickSubmit = () => {
+    const currentUserInfo = useSelector((state) => {return state.courseLearning.currentUserInfo});
+
+    const handleClickSubmit = async() => {
         let isSuccess = true
         currentLesson.quizz.forEach((quizz, index) => {
             let soDapAnDung = 0;
@@ -50,13 +60,19 @@ function Quizz() {
         })
         if (isSuccess) {
             console.log("Thành công");
-            alert("Bạn đẫ hoàn thành bài test");
+            alert("Congratulation! You have passed the test!");
             window.location.reload();
             // APi check hoàn thành bài học ở đây
-
+            const dataToSend = {
+                lessonID: currentLesson._id,
+                userID: currentUserInfo._id,
+            }
+            console.log("data to add", dataToSend)
+            await AjaxHelper.post(URL_API.URL_SYSTEM_V1 + '/discussions/quizz-passed/', dataToSend)
+            
         } else {
             console.log("Thất bại");
-            alert("Bạn đã trả lời sai bài test, bạn phải học lại từ đầu");
+            alert("Sorry. You have to score 100% in order to pass the test. Try again");
             window.location.reload();
         }
     }
@@ -76,8 +92,7 @@ function Quizz() {
     return (
         <div className='quizz'>
             <div style={{ fontFamily: "'Montserrat', san-serif" }} className='title'>Attention</div>
-            <div style={{ fontFamily: "'Montserrat', san-serif" }} className='description1'>Score a lession’s quizz with an accuracy of at least 70% to unlock the next lession.
-                You cannot go back to previous question once you move to another one.
+            <div style={{ fontFamily: "'Montserrat', san-serif" }} className='description1'>Score a lession’s quizz with an accuracy of 100% to unlock the next lesson.
             </div>
             <div style={{ marginTop: '15px' }}>
                 <div style={{ paddingLeft: '20px', paddingRight: '20px', display: 'flex', justifyContent: 'space-between', height: '50px', alignItems: 'center', backgroundColor: '#040E53', color: 'white' }}>
