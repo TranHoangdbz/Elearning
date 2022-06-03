@@ -8,6 +8,7 @@ import AjaxHelper from '../../../services/index';
 import {setCurrentCourse} from '../courseLearningSlice.js';
 import ReplyCommentCard from './ReplyCommentCard';
 import { FiMoreHorizontal } from "react-icons/fi";
+import { MdThumbUp } from "react-icons/md";
 
 function CommentCard(props) {
     // console.log("commentProps", props);
@@ -79,6 +80,25 @@ function CommentCard(props) {
             })
     }
 
+    const likeComment = async() => {
+        var dataToLike = {
+            commentID: props.comment.comment._id,
+            courseID: currentCourse._id,
+            userID: currentUserInfo._id,
+            parrentCommentID: "",
+        }
+        // console.log("dataToLike", dataToLike);
+
+        await AjaxHelper.post(URL_API.URL_SYSTEM_V1 + '/discussions/comment/like', dataToLike)
+        .then(res => {
+            dispatch(setCurrentCourse(res.data.currentCourse));
+            // cmtContentRef.current.value="";
+            // setDisplayAnswer(false);
+        })
+        .catch(err => {
+        })
+    }
+
     return (
         <div className='chat-user-model'>
             <div className='chat-user-model__header'>
@@ -101,10 +121,29 @@ function CommentCard(props) {
                     {props.comment.comment ? props.comment.comment.content : ""}
                 </div>
                 <div className='like-cmt'>
-                    <div style={{ marginRight: '27px', cursor: 'pointer' }}>
-                        <ThumbUpOutlinedIcon></ThumbUpOutlinedIcon>
-                    </div>
-                    <div style={{ marginRight: '27px', transform: 'translateY(8%)', cursor: 'pointer' }}>
+                    {
+                        props.comment.comment && props.comment.comment.likes.includes(currentUserInfo._id) 
+                        ?   <div 
+                                className="like-cmt-button unlike"
+                                onClick={() => {
+                                    // unlikeComment();
+                                }}
+                                style={{ marginRight: '27px', cursor: 'pointer' }}
+                            >
+                                <MdThumbUp size={16}></MdThumbUp>
+                            </div>
+                        :   <div 
+                                className="like-cmt-button"
+                                onClick={() => {
+                                    likeComment();
+                                }}
+                                style={{ marginRight: '27px', cursor: 'pointer' }}
+                            >
+                                <ThumbUpOutlinedIcon></ThumbUpOutlinedIcon>
+                            </div>
+                    }
+                    
+                    <div style={{ marginRight: '27px', transform: 'translateY(8%)', cursor: 'pointer' }}> 
                         <ForumOutlinedIcon
                             onClick = {() => {
                                 setDisplayAnswer(!displayAnswer);

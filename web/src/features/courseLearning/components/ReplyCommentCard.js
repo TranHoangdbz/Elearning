@@ -55,6 +55,25 @@ function ReplyCommentCard(props) {
             })
     }
 
+    const likeComment = async() => {
+        var dataToLike = {
+            commentID: props.comment._id,
+            courseID: currentCourse._id,
+            userID: currentUserInfo._id,
+            parrentCommentID: props.parrentCommentID,
+        }
+        // console.log("dataToLike", dataToLike);
+
+        await AjaxHelper.post(URL_API.URL_SYSTEM_V1 + '/discussions/comment/like', dataToLike)
+        .then(res => {
+            dispatch(setCurrentCourse(res.data.currentCourse));
+            // cmtContentRef.current.value="";
+            // setDisplayAnswer(false);
+        })
+        .catch(err => {
+        })
+    }
+
     return (
         <div className='chat-user-model'>
             <div className='chat-user-model__header'>
@@ -71,7 +90,10 @@ function ReplyCommentCard(props) {
                     {props ? props.comment.content : ""}
                 </div>
                 <div className='like-cmt'>
-                    <div style={{ marginRight: '27px', cursor: 'pointer' }}>
+                    <div 
+                        onClick={()=>{likeComment()}}
+                        style={{ marginRight: '27px', cursor: 'pointer' }}
+                    >
                         <ThumbUpOutlinedIcon></ThumbUpOutlinedIcon>
                     </div>
                     <div style={{ fontFamily: "'Montserrat', san-serif" }} className='like'>{props ? props.comment.likes.length : "0"} likes</div>
