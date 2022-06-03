@@ -7,6 +7,7 @@ import URL_API from '../../../services/API/config';
 import AjaxHelper from '../../../services/index';
 import {setCurrentCourse} from '../courseLearningSlice.js';
 import ReplyCommentCard from './ReplyCommentCard';
+import { FiMoreHorizontal } from "react-icons/fi";
 
 function CommentCard(props) {
     // console.log("commentProps", props);
@@ -58,6 +59,26 @@ function CommentCard(props) {
             .catch(err => {
             })
     }
+
+    const [isOpenManage, setIsOpenManage] = useState(false);
+
+    const deleteComment = async() => {
+        var dataToDelete = {
+            parrentCommentID : "",
+            commentID: props.comment.comment._id,
+            courseID: currentCourse._id
+        }
+        // console.log("dataToDelete", dataToDelete);
+        await AjaxHelper.post(URL_API.URL_SYSTEM_V1 + '/discussions/comment/delete', dataToDelete)
+            .then(res => {
+                dispatch(setCurrentCourse(res.data.currentCourse));
+                // cmtContentRef.current.value="";
+                // setDisplayAnswer(false);
+            })
+            .catch(err => {
+            })
+    }
+
     return (
         <div className='chat-user-model'>
             <div className='chat-user-model__header'>
@@ -90,8 +111,42 @@ function CommentCard(props) {
                             }}
                         ></ForumOutlinedIcon>
                     </div>
-                    <div style={{ fontFamily: "'Montserrat', san-serif" }} className='like'>{props.comment.comment ? props.comment.comment.likes.length : '0'} likes</div>
+                    <div style={{ fontFamily: "'Montserrat', san-serif" }} className='like'>{props.comment.comment ? props.comment.comment.likes.length + 1: '0'} likes</div>
                 </div>
+                <div className="manage-container">
+                    {
+                        currentUserInfo._id === props.comment.comment.user ?
+                        <FiMoreHorizontal 
+                            className='icon-more'
+                            size={20}
+                            onClick={()=> {
+                                setIsOpenManage(!isOpenManage);
+                            }}
+                        /> 
+                        :null
+                    }
+                    {
+                        isOpenManage ? 
+                        
+                            <div className="manage-item-container">
+                                <div className='manage-item'
+                                    onClick={() => {
+                                        deleteComment();
+                                    }}
+                                >
+                                    Delete comment
+                                </div>
+                                <div className='manage-item'>
+                                    Edit comment
+                                </div>
+                            </div>
+                            
+                        
+                        : (null)
+                    }
+                    
+                </div>
+                
                 {
                     displayAnswer 
                     ? 
@@ -128,6 +183,7 @@ function CommentCard(props) {
                     })
                     : null
                 }
+                
             </div>
         </div>
     );

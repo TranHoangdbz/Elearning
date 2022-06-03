@@ -385,3 +385,35 @@
 .css-1uf8f5m-MuiFormControlLabel-root .MuiFormControlLabel-label {
     font-size: 14px;
 }
+
+.chat-user-model__content {
+    position: relative;
+    .manage-container{
+        position: absolute;
+        right: 0;
+        top: -44px;
+        text-align: right;
+        
+        font-size: 12px;
+        .icon-more{
+            border-radius: 100%;
+            &:hover{
+                cursor: pointer;
+                background-color: #e3efef;
+            }
+        }
+        .manage-item-container{
+            box-shadow: rgba(0, 0, 0, 0.15) 1.95px 1.95px 2.6px;
+            width: 140px;
+            border-radius: 8px;
+            .manage-item{
+                padding: 4px 10px;
+                &:hover{
+                    background-color: #ebebeb;
+                    cursor: pointer;
+                }
+            }
+        }
+        
+    }
+}
