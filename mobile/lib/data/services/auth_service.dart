@@ -126,7 +126,6 @@ class AuthenticationService {
         SharedPreferences prefs = await SharedPreferences.getInstance();
         await prefs.setBool('authenticated', true);
         await prefs.setString('userEmail', currentUser!.email);
-        await prefs.setString('userHash', currentUser!.password);
         await prefs.setString('userFullName', currentUser!.fullName ?? '');
         await prefs.setString(
             'userPhoneNumber', currentUser!.phoneNumber ?? '');

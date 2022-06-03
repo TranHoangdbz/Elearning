@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 import 'package:uit_elearning/data/services/auth_service.dart';
 
 class LoginController extends GetxController {
@@ -25,6 +26,9 @@ class LoginController extends GetxController {
         email: email,
         password: password,
       );
+
+      SharedPreferences prefs = await SharedPreferences.getInstance();
+      await prefs.setString('userHash', password);
     }
   }
 
