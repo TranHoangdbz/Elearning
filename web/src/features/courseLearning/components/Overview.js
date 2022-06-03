@@ -6,6 +6,9 @@ import CommentCard from './CommentCard';
 import {useDispatch, useSelector} from 'react-redux';
 import {addComment} from '../courseLearningSlice';
 import { useState, useEffect, useRef } from "react";
+import URL_API from '../../../services/API/config';
+import AjaxHelper from '../../../services/index';
+import {setCurrentCourse} from '../courseLearningSlice.js';
 
 function Overview(props) {
     const dispatch = useDispatch();
@@ -33,7 +36,15 @@ function Overview(props) {
             userID: currentUserInfo._id,
             courseID: currentCourse._id
         }
-        console.log("dataToAdd", dataToAdd);
+        // console.log("dataToAdd", dataToAdd);
+
+        await AjaxHelper.post(URL_API.URL_SYSTEM_V1 + '/discussions/comment/', dataToAdd)
+            .then(res => {
+                dispatch(setCurrentCourse(res.data.currentCourse));
+                cmtContentRef.current.value="";
+            })
+            .catch(err => {
+            })
     }
 
     return (
