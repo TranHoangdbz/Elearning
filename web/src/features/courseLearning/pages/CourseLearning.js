@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react';
+import React, { useEffect} from 'react';
 import { useSelector, useDispatch } from 'react-redux';
 import '../components/CourseLearning.scss';
 import { Container, Grid, Avatar } from '@mui/material'
@@ -23,9 +23,14 @@ function CourseLearning() {
     // console.log("path", path);
     const currentUserID = useSelector((state) => {return state.courseLearning.currentUserID});
     const currentCourseID = path.length > 1 ?  path[path.length-1] : "628e51cbb64e260717ce07b2";
-    const [selectLesson, setSelectLesson] = useState(0) 
-    const [lessons, setLessons] = useState([])
-
+    // const [selectLesson, setSelectLesson] = useState(0) 
+    // const [lessons, setLessons] = useState([])
+    // Lấy thử current course
+    const currentCourse = useSelector((state) => {return state.courseLearning.currentCourse});
+    console.log("currentCourse", currentCourse);
+    
+    const currentUserInfo = useSelector((state) => {return state.courseLearning.currentUserInfo});
+    console.log("currentUserInfo", currentUserInfo);
     // Get all content of the current course
     useEffect(() => {
         // let id = '628e51cbb64e260717ce07b2'
@@ -55,12 +60,6 @@ function CourseLearning() {
         fetchUserInfo()
     }, [])
 
-    // Lấy thử current course
-    const currentCourse = useSelector((state) => {return state.courseLearning.currentCourse});
-    console.log("currentCourse", currentCourse);
-    
-    const currentUserInfo = useSelector((state) => {return state.courseLearning.currentUserInfo});
-    console.log("currentUserInfo", currentUserInfo);
 
     
     const handleClickLesson = (index) => {

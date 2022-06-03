@@ -18,11 +18,23 @@ function Overview(props) {
     }) || [];
 
     // console.log("comments", comments);
-    const cmtContentRef = useRef(null);
+    
 
     // var currentLessonID = "628f9cb6495c3273aae3408c";
     const currentUserInfo = useSelector((state) => {return state.courseLearning.currentUserInfo});
     console.log("currentUserInfo", currentUserInfo);
+
+    const cmtContentRef = useRef(null);
+
+    const addNewComment = async() => {
+        var dataToAdd = {
+            parrentCommentID: "",
+            content: cmtContentRef.current.value,
+            userID: currentUserInfo._id,
+            courseID: currentCourse._id
+        }
+        console.log("dataToAdd", dataToAdd);
+    }
 
     return (
         <div>
@@ -67,8 +79,9 @@ function Overview(props) {
                     <div 
                         className='btn-send'
                         onClick={()=>{
-                            dispatch(addComment({data:"ok"}));
-                            console.log(currentCourse);
+                            // dispatch(addComment({data:"ok"}));
+                            // console.log(currentCourse);
+                            addNewComment();
                         }}
                     >
                         Send

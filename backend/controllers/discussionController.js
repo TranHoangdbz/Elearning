@@ -1,5 +1,4 @@
 const mongoose = require("mongoose");
-const { framework } = require("passport");
 const Course = require("../models/course");
 const Quizz = require("../models/quizz");
 const User = require("../models/user");
@@ -156,6 +155,69 @@ class discussionController {
                 })
             })
         
+    }
+
+    addComment = async(req, res ) => {
+        console.log("req.body", req.body);
+
+        var currentCourse;
+        await Course.findById(req.body.courseID)
+            .then((data) => {
+                currentCourse = data
+            })
+            .catch((error) => {
+                return res.status(404).send({
+                    success: false,
+                    message: "Course not found"
+                })
+            })
+        // console.log(currentCourse);
+        if(req.body.parrentCommentID == "") {
+            var currentDiscussion = currentCourse.discussion;
+            currentDiscussion.push({
+                _id: mongoose.Types.ObjectId(),
+                comment: {
+                    _id: mongoose.Types.ObjectId(),
+                    user: req.body.userID,
+                    content: req.body.content,
+                    time: new Date(),
+                    likes: []
+                },
+                repliedComments: []
+            })
+            console.log(currentDiscussion);
+            await Course.findByIdAndUpdate(req.body.courseID, {
+                discussion: currentDiscussion
+            })
+                .then((data) => {
+                    
+                })
+                .catch(() => {
+                    return res.status(400).send({
+                        success: false,
+                        message: "Can't update course!"
+                    })
+                })
+            await Course.findById(req.body.courseID)
+                .then((data) => {
+                    return res.status(200).send({
+                        success: true,
+                        message: "Add comment successfully!",
+                        data: data
+                    })
+                })
+                .catch((error) => {
+                    return res.status(404).send({
+                        success: false,
+                        message: "Course not found"
+                    })
+                })
+        }
+        
+        else 
+        res.status(200).send({
+            run: true
+        })
     }
 }
 
