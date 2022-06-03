@@ -8,7 +8,7 @@ class discussionController {
     getLessonandQuizzByCourseID = async(req ,res) => {
         // console.log("req.body", req.body);s
         // console.log("req.params.id", req.params.id);
-        try {
+        // try {
             const id = mongoose.Types.ObjectId(req?.params?.id);
             var currentCourse;
             await Course.findById(req.params.id).populate("lessons").populate("teacher")
@@ -86,9 +86,9 @@ class discussionController {
                         if(currentDiscussion[i].repliedComments[j].user.toString() == userData[k]._id.toString()){
                             replyRefine.push({
                                 ...currentDiscussion[i].repliedComments[j],
-                                username: userData[j].fullName,
-                                userID: userData[j]._id,
-                                avatar: userData[j].profilePicture,
+                                username: userData[k].fullName,
+                                userID: userData[k]._id,
+                                avatar: userData[k].profilePicture,
                             })
                             break;
                         }
@@ -121,12 +121,12 @@ class discussionController {
             })
 
 
-        } catch (error) {   
-            return res.status(500).json({
-                success: false,
-                message: error.message,
-            });
-        }
+        // } catch (error) {   
+        //     return res.status(400).json({
+        //         success: false,
+        //         message: error.message,
+        //     });
+        // }
         
     }
 
@@ -253,110 +253,144 @@ class discussionController {
                         message: "Can't update course!"
                     })
                 })
-                // Trả về tất cả thông tin của khoá học
-                try {
-                    var currentCourse;
-                    await Course.findById(req.body.courseID).populate("lessons").populate("teacher")
-                        .then(data => {
-                            currentCourse = data;
-                        })
-                        .catch(error => {
-                            throw new Error("This course does not exist!");
-                        })
-                    var currentLessonList = currentCourse.lessons; 
-                    var allQuizzs;
-                    
-                    await Quizz.find()
-                        .then((data)=>{
-                            allQuizzs = data;
-                        })
-                        .catch((error)=> {
-                            throw new Error("Can't find quizzs");
-                        })
-                    // Sau khi get all quizz thì sau đó quăng vào từng lesson
-                    var temptLessonList = [] ;
-                    for(var i = 0; i < currentLessonList.length; i++){
-                        var tempQuizz = [];
-                        for(var k = 0; k < currentLessonList[i].quizz.length; k++){
-                            for(var j = 0; j < allQuizzs.length; j++){    
-                                if(currentLessonList[i].quizz[k].toString() == allQuizzs[j]._id.toString()){
-                                    tempQuizz.push({
-                                        _id: currentLessonList[i].quizz[k],
-                                        quizzCode: allQuizzs[j].quizzCode,
-                                        question:  allQuizzs[j].question,
-                                        choice:  allQuizzs[j].choice,
-                                        answer: allQuizzs[j].answer,
-                                    });
-                                    break;
-                                }
-                            }
-                        }
-                        temptLessonList.push({
-                            ...currentLessonList[i]._doc,
-                            quizz: tempQuizz,
-                        })
-                    }   
-        
-                    // Lấy được các lesson giờ lấy thêm phần các bình luận
-                    var currentDiscussion = currentCourse.discussion;
-                    var userData;
-                    await User.find()
-                        .then(data => {
-                            userData = data;
-                        })
-                        .catch((err)=> {
-                            
-                        })
-        
-                    var newDiscussion = []; 
-                    for(var i = 0; i < currentDiscussion.length; i++){
-                        var tempt = {};
-                        var replyRefine = [];
-                        for(var j = 0; j < currentDiscussion[i].repliedComments.length; j++){
-                            for(var k = 0; k < userData.length; k++){
-                                if(currentDiscussion[i].repliedComments[j].user.toString() == userData[k]._id.toString()){
-                                    replyRefine.push({
-                                        ...currentDiscussion[i].repliedComments[j],
-                                        username: userData[j].fullName,
-                                        userID: userData[j]._id,
-                                        avatar: userData[j].profilePicture,
-                                    })
-                                    break;
-                                }
-                            }
-                        }
-                        for(var j = 0; j < userData.length; j++){
-                            if(currentDiscussion[i].comment.user.toString() == userData[j]._id.toString()){
-                                tempt.comment = {
-                                    ...currentDiscussion[i].comment,
-                                    username: userData[j].fullName,
-                                    userID: userData[j]._id,
-                                    avatar: userData[j].profilePicture,
-                                    repliedComments: replyRefine,
-                                }
-                                break;
-                            }
-                        }
-                        newDiscussion.push(tempt);
-                    }
-                    
-                    res.status(200).send({
-                        success: true,
-                        message: "Add comment successfully!",     
-                        currentCourse: {
-                            ...currentCourse._doc,
-                            lessons: temptLessonList,
-                            discussion: newDiscussion,
-                        }
+                
+        }
+        else{
+            // console.log("req.body", req.body);
+            var currentDiscussion = JSON.parse(JSON.stringify(currentCourse.discussion));
+            for(var i = 0; i < currentDiscussion.length; i++){
+                // console.log(currentDiscussion[i].comment._id.toString(), req.body.parrentCommentID)
+                if(currentDiscussion[i].comment._id.toString() == req.body.parrentCommentID){
+                    currentDiscussion[i].repliedComments.push({
+                        _id: mongoose.Types.ObjectId(),
+                        user: req.body.userID,
+                        content: req.body.content,
+                        time: new Date(),
+                        likes: []
                     })
-        
-        
-                } catch (error) {   
-                    return res.status(404).send({
-                        success: false,
-                        message: "Course not found"
-                    })
+                    // console.log("Tìm ra rồi");
+                    break;
                 }
+                
+            }
+            // console.log(currentDiscussion, currentDiscussion);
+            await Course.findByIdAndUpdate(req.body.courseID, {
+                discussion: currentDiscussion
+            })
+                .then((data) => {
+                    
+                })
+                .catch(() => {
+                    return res.status(400).send({
+                        success: false,
+                        message: "Can't update course!"
+                    })
+                })
+                
+        }
+        // Trả về tất cả thông tin của khoá học
+        try {
+            var currentCourse;
+            await Course.findById(req.body.courseID).populate("lessons").populate("teacher")
+                .then(data => {
+                    currentCourse = data;
+                })
+                .catch(error => {
+                    throw new Error("This course does not exist!");
+                })
+            var currentLessonList = currentCourse.lessons; 
+            var allQuizzs;
+            
+            await Quizz.find()
+                .then((data)=>{
+                    allQuizzs = data;
+                })
+                .catch((error)=> {
+                    throw new Error("Can't find quizzs");
+                })
+            // Sau khi get all quizz thì sau đó quăng vào từng lesson
+            var temptLessonList = [] ;
+            for(var i = 0; i < currentLessonList.length; i++){
+                var tempQuizz = [];
+                for(var k = 0; k < currentLessonList[i].quizz.length; k++){
+                    for(var j = 0; j < allQuizzs.length; j++){    
+                        if(currentLessonList[i].quizz[k].toString() == allQuizzs[j]._id.toString()){
+                            tempQuizz.push({
+                                _id: currentLessonList[i].quizz[k],
+                                quizzCode: allQuizzs[j].quizzCode,
+                                question:  allQuizzs[j].question,
+                                choice:  allQuizzs[j].choice,
+                                answer: allQuizzs[j].answer,
+                            });
+                            break;
+                        }
+                    }
+                }
+                temptLessonList.push({
+                    ...currentLessonList[i]._doc,
+                    quizz: tempQuizz,
+                })
+            }   
+
+            // Lấy được các lesson giờ lấy thêm phần các bình luận
+            var currentDiscussion = currentCourse.discussion;
+            var userData;
+            await User.find()
+                .then(data => {
+                    userData = data;
+                })
+                .catch((err)=> {
+                    
+                })
+
+            var newDiscussion = []; 
+            for(var i = 0; i < currentDiscussion.length; i++){
+                var tempt = {};
+                var replyRefine = [];
+                for(var j = 0; j < currentDiscussion[i].repliedComments.length; j++){
+                    for(var k = 0; k < userData.length; k++){
+                        if(currentDiscussion[i].repliedComments[j].user.toString() == userData[k]._id.toString()){
+                            replyRefine.push({
+                                ...currentDiscussion[i].repliedComments[j],
+                                username: userData[k].fullName,
+                                userID: userData[k]._id,
+                                avatar: userData[k].profilePicture,
+                            })
+                            break;
+                        }
+                    }
+                }
+                for(var j = 0; j < userData.length; j++){
+                    if(currentDiscussion[i].comment.user.toString() == userData[j]._id.toString()){
+                        tempt.comment = {
+                            ...currentDiscussion[i].comment,
+                            username: userData[j].fullName,
+                            userID: userData[j]._id,
+                            avatar: userData[j].profilePicture,
+                            repliedComments: replyRefine,
+                        }
+                        break;
+                    }
+                }
+                newDiscussion.push(tempt);
+            }
+            
+            res.status(200).send({
+                success: true,
+                message: "Add comment successfully!",     
+                currentCourse: {
+                    ...currentCourse._doc,
+                    lessons: temptLessonList,
+                    discussion: newDiscussion,
+                }
+            })
+
+
+        } catch (error) {   
+            return res.status(404).send({
+                success: false,
+                message: "Course not found"
+            })
         }
     }
 }

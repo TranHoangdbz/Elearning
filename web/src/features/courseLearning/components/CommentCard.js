@@ -1,12 +1,16 @@
-import React from 'react';
+import React, {useState, useRef} from 'react';
+import {useDispatch, useSelector} from 'react-redux';
 import { Avatar } from '@mui/material'
 import ThumbUpOutlinedIcon from '@mui/icons-material/ThumbUpOutlined';
 import ForumOutlinedIcon from '@mui/icons-material/ForumOutlined';
+import URL_API from '../../../services/API/config';
+import AjaxHelper from '../../../services/index';
+import {setCurrentCourse} from '../courseLearningSlice.js';
 import ReplyCommentCard from './ReplyCommentCard';
 
 function CommentCard(props) {
     // console.log("commentProps", props);
-    
+    const dispatch = useDispatch();
     const calculateTime = (timeString) => {
         const postTime = new Date(timeString);
         var diff = Math.abs(new Date() - postTime);
@@ -30,6 +34,30 @@ function CommentCard(props) {
         }
     }
     
+    const [displayAnswer, setDisplayAnswer] = useState(false);
+    console.log("props.comment.comment", props.comment.comment);
+    const currentCourse = useSelector((state) => {return state.courseLearning.currentCourse});
+    const currentUserInfo = useSelector((state) => {return state.courseLearning.currentUserInfo});
+    const cmtContentRef = useRef(null);
+
+    const addNewComment = async() => {
+        var dataToAdd = {
+            parrentCommentID: props.comment.comment._id,
+            content: cmtContentRef.current.value,
+            userID: currentUserInfo._id,
+            courseID: currentCourse._id
+        }
+        console.log("dataToAdd", dataToAdd);
+
+        await AjaxHelper.post(URL_API.URL_SYSTEM_V1 + '/discussions/comment/', dataToAdd)
+            .then(res => {
+                dispatch(setCurrentCourse(res.data.currentCourse));
+                cmtContentRef.current.value="";
+                setDisplayAnswer(false);
+            })
+            .catch(err => {
+            })
+    }
     return (
         <div className='chat-user-model'>
             <div className='chat-user-model__header'>
@@ -56,10 +84,44 @@ function CommentCard(props) {
                         <ThumbUpOutlinedIcon></ThumbUpOutlinedIcon>
                     </div>
                     <div style={{ marginRight: '27px', transform: 'translateY(8%)', cursor: 'pointer' }}>
-                        <ForumOutlinedIcon></ForumOutlinedIcon>
+                        <ForumOutlinedIcon
+                            onClick = {() => {
+                                setDisplayAnswer(!displayAnswer);
+                            }}
+                        ></ForumOutlinedIcon>
                     </div>
                     <div style={{ fontFamily: "'Montserrat', san-serif" }} className='like'>{props.comment.comment ? props.comment.comment.likes.length : '0'} likes</div>
                 </div>
+                {
+                    displayAnswer 
+                    ? 
+                    <div className='enter-chat' style={{marginBottom: '20px'}}>
+                        <Avatar 
+                            sx={{ marginRight: '12px' }} 
+                            height={36} width={36} 
+                            alt="Remy Sharp" 
+                            src={currentUserInfo ? currentUserInfo.profilePicture : ""}
+                        />
+                        <input 
+                            className='chat-input' 
+                            type={'text'}
+                            ref = {cmtContentRef} 
+                        >
+                            
+                        </input>
+                        <div 
+                            className='btn-send'
+                            onClick={()=>{
+                                // dispatch(addComment({data:"ok"}));
+                                // console.log(currentCourse);
+                                addNewComment();
+                            }}
+                        >
+                            Send
+                        </div>
+                    </div>
+                    : null
+                }
                 {
                     props.comment.comment ? props.comment.comment.repliedComments.map((value, index,key) => {
                         return (<ReplyCommentCard comment={value}/>);
