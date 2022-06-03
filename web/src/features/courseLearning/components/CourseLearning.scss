@@ -353,7 +353,7 @@
             }
         }
 
-        .unclock.course {
+        .unlock.course {
             background-color: #040E53;
             color: white;
             cursor: pointer;
@@ -363,8 +363,26 @@
             }
         }
 
-        .unclock.course:hover {
+        .unlock.course:hover {
+            opacity: .8;
+        }
+
+        .unlock.course.unactive {
+            color: #040E53;
+            background-color: #e5e5e5;
+            cursor: pointer;
+
+            .layout-lock {
+                display: none;
+            }
+        }
+
+        .unlock.course:hover.unactive {
             opacity: .8;
         }
     }
+}
+
+.css-1uf8f5m-MuiFormControlLabel-root .MuiFormControlLabel-label {
+    font-size: 14px;
 }

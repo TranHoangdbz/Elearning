@@ -7,16 +7,29 @@ function CardCourse(props) {
     const handleClickCourse = () => {
         props.handleClickLesson(props.index)
     }
+
+    console.log("Card course props", props);
     const currentLesson = useSelector(state => {
         return state.courseLearning.currentCourse.lessons[state.courseLearning.currentLessonIndex]}
     );
+
+    const currentIndex = useSelector(state => {
+        return state.courseLearning.currentLessonIndex
+    });
+
+
     return (
-        <div onClick={handleClickCourse} style={{ display: 'flex', justifyContent: 'space-between' }} className={/*props.course.unClock ?*/ 'course unclock'}>
+        <div onClick={handleClickCourse} style={{ display: 'flex', justifyContent: 'space-between' }} 
+            className={
+                props.type == 'open' 
+                    ? currentIndex == props.index ? 'course unlock' : 'course unlock unactive'
+                    : 'course'}
+        >
             <div style={{ fontFamily: "'Montserrat', san-serif" }} >
                 {props.index + 1}.  {props.lesson.description ? props.lesson.description : 'Error'}
             </div>
             <div style={{ fontFamily: "'Montserrat', san-serif" }} >
-                {currentLesson.lessonVolume} min
+                {props.lesson.lessonVolume} min
             </div>
             <div className='layout-lock'>
                 <LockIcon />

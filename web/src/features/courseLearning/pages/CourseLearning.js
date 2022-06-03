@@ -32,7 +32,7 @@ function CourseLearning() {
     const currentUserInfo = useSelector((state) => {return state.courseLearning.currentUserInfo});
     console.log("currentUserInfo", currentUserInfo);
     // Get all content of the current course
-    useEffect(() => {
+    useEffect(async() => {
         // let id = '628e51cbb64e260717ce07b2'
         const fetchCourse = async () => {
             await AjaxHelper.get(URL_API.URL_SYSTEM_V1 + '/discussions/lesson-quizz/' + currentCourseID)
@@ -64,6 +64,7 @@ function CourseLearning() {
     
     const handleClickLesson = (index) => {
         // Get lesson hiện tại ở đây
+        if(getCurrentIndex() >= index)
         dispatch(changeCurrentLessonIndex(index));
     }
 
@@ -76,7 +77,34 @@ function CourseLearning() {
         return Math.round(sum*10 / ratingArray.length) / 10
     }
 
+    const getCurrentIndex = () => {
+        if(currentCourse != {}){
+            var currentLesson = currentCourse.lessons;
+            console.log("currentLesson", currentLesson);
+            var index = 0;
+            if(!currentLesson) return 0;
+            for(var  i = 0; i < currentLesson.length; i++){
+                var j = 0;
+                for(; j < currentLesson[i].passed.length; j++){
+                    if(currentLesson[i].passed[j].user == currentUserInfo._id){
+                        break;
+                    }
+                }
+                if(j >= currentLesson[i].passed.length){
+                    return i;
+                }
+                else index = i;
+            }
+            return index;
+        }
+        else return 0;
+    }
 
+    console.log(getCurrentIndex());
+
+    // const currentLearnIndex = 0;
+
+    
 
     return (
         <Container spacing={2} style={{ marginTop: '40px' }} maxWidth='xl'>
@@ -117,9 +145,9 @@ function CourseLearning() {
                                     </div>
                                 </div>
                             </div>
-                            <div className='enroll' style={{ display: 'flex', justifyContent: 'center', alignItems: 'center', marginRight: '10px', fontFamily: "'Montserrat', san-serif" }}>
+                            {/* <div className='enroll' style={{ display: 'flex', justifyContent: 'center', alignItems: 'center', marginRight: '10px', fontFamily: "'Montserrat', san-serif" }}>
                                 Enroll
-                            </div>
+                            </div> */}
                         </div>
                         <div style={{ display: 'flex', paddingLeft: '25px', marginTop: '12px', paddingRight: '25px' }}>
                             <div style={{ fontFamily: "'Montserrat', san-serif" }} className='description'>
@@ -129,7 +157,14 @@ function CourseLearning() {
                         <div className='list-course'>
                             {
                                 currentCourse.lessons ? currentCourse.lessons.map((lesson, index, key) => (
-                                    <CardCourse handleClickLesson={handleClickLesson} key={index} index={index} lesson={lesson}></CardCourse>
+                                    <CardCourse 
+                                        handleClickLesson={handleClickLesson} 
+                                        key={index} index={index} 
+                                        lesson={lesson}
+                                        type={getCurrentIndex() >= index ? "open" : "lock"}
+                                    >
+                                    
+                                    </CardCourse>
                                 )) : null
                             }
                         </div>

@@ -111,7 +111,7 @@ function Quizz() {
                                                         />
                                                     }
                                                     label={currentLesson.quizz[activeStep].choice[0]}
-                                                    sx={{ marginBottom: '30px' }}
+                                                    sx={{ marginBottom: '30px' , fontSize: '14px'}}
                                                 />
                                             </div>
                                             <div>
@@ -123,7 +123,7 @@ function Quizz() {
                                                             color="secondary" />
                                                     }
                                                     label={currentLesson.quizz[activeStep].choice[1]}
-                                                    sx={{ marginBottom: '30px' }}
+                                                    sx={{ marginBottom: '30px' , fontSize: '14px'}}
                                                 />
                                             </div>
                                             <div>
@@ -135,7 +135,7 @@ function Quizz() {
                                                             color="secondary" />
                                                     }
                                                     label={currentLesson.quizz[activeStep].choice[2]}
-                                                    sx={{ marginBottom: '30px' }}
+                                                    sx={{ marginBottom: '30px' , fontSize: '14px'}}
                                                 />
                                             </div>
                                             <div>
@@ -147,7 +147,7 @@ function Quizz() {
                                                             color="secondary" />
                                                     }
                                                     label={currentLesson.quizz[activeStep].choice[3]}
-                                                    sx={{ marginBottom: '30px' }}
+                                                    sx={{ marginBottom: '30px', fontSize: '14px' }}
                                                 />
                                             </div>
                                         </div>
@@ -194,13 +194,13 @@ function Quizz() {
                         }
                     </div>
                 </div>
-                <div className='course unlock' style={{ position: 'relative', paddingLeft: '20px', paddingRight: '20px', display: 'flex', justifyContent: 'space-between', height: '50px', alignItems: 'center', backgroundColor: 'rgb(186, 187, 196)', color: 'black' }}>
+                {/* <div className='course unlock' style={{ position: 'relative', paddingLeft: '20px', paddingRight: '20px', display: 'flex', justifyContent: 'space-between', height: '50px', alignItems: 'center', backgroundColor: 'rgb(186, 187, 196)', color: 'black' }}>
                     <div style={{ fontFamily: "'Montserrat', san-serif", fontWeight: '500', fontSize: '12px', lineHeight: '15px' }}>2. Exception filters</div>
                     <div style={{ fontFamily: "'Montserrat', san-serif", fontWeight: '500', fontSize: '12px', lineHeight: '15px' }}>10 question</div>
                     <div className='lock'>
                         <LockIcon />
                     </div>
-                </div>
+                </div> */}
             </div>
         </div>
     );
