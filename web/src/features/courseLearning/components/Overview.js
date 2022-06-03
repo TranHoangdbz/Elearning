@@ -13,15 +13,16 @@ function Overview(props) {
     const currentCourse = useSelector((state) => {return state.courseLearning.currentCourse});
 
     const comments = useSelector((state) => {
-        console.log("state", state);
+        // console.log("state", state);
         return [];
     }) || [];
 
-    console.log("comments", comments);
+    // console.log("comments", comments);
     const cmtContentRef = useRef(null);
 
-    var currentLessonID = "628f9cb6495c3273aae3408c";
-    
+    // var currentLessonID = "628f9cb6495c3273aae3408c";
+    const currentUserInfo = useSelector((state) => {return state.courseLearning.currentUserInfo});
+    console.log("currentUserInfo", currentUserInfo);
 
     return (
         <div>
@@ -50,7 +51,12 @@ function Overview(props) {
             </div>
             <div className='chat'>
                 <div className='enter-chat'>
-                    <Avatar sx={{ marginRight: '12px' }} height={36} width={36} alt="Remy Sharp" src="https://kenh14cdn.com/thumb_w/660/203336854389633024/2021/7/9/photo-1-16257989599561090737937.jpeg" />
+                    <Avatar 
+                        sx={{ marginRight: '12px' }} 
+                        height={36} width={36} 
+                        alt="Remy Sharp" 
+                        src={currentUserInfo ? currentUserInfo.profilePicture : ""}
+                    />
                     <input 
                         className='chat-input' 
                         type={'text'}

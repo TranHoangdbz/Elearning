@@ -129,6 +129,34 @@ class discussionController {
         }
         
     }
+
+    getUserInformation = async(req, res) => {
+        // console.log("req.body", req.body);
+        // console.log("req.params.id", req.params.id)
+
+        User.findById(req.params.id).exec()
+            .then((data) => {
+                if(data)
+                    return res.status(200).send({
+                        run: true,
+                        success: true,
+                        data: data
+                    })
+                else
+                    return res.status(200).send({
+                        success: false,
+                        run: true,
+                        message: "User not found",
+                    })
+            })
+            .catch((error) =>{
+                res.status(400).send({
+                    run: false,
+                    message: "Can't get user",
+                })
+            })
+        
+    }
 }
 
 module.exports =  new discussionController();

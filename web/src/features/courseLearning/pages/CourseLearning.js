@@ -7,26 +7,22 @@ import CardCourse from '../components/CardCourse';
 import LayoutLeftCourseLearning from '../components/LayoutLeftCourseLearning';
 import URL_API from '../../../services/API/config';
 import AjaxHelper from '../../../services/index';
-import {setCurrentCourse, changeCurrentLessonIndex} from '../courseLearningSlice.js';
-
-const mockCourses = [
-    {
-        stt: 1,
-        unClock: true,
-        name: 'A summary about .NET',
-        time: '5min'
-    },
-]
+import {
+    setCurrentCourse, 
+    changeCurrentLessonIndex,
+    setCurrentUserInfo
+} from '../courseLearningSlice.js';
 
 function CourseLearning() {
+
+
     const dispatch = useDispatch();
 
     const url = window.location.pathname;
     const path = url.split("/").filter((x) => x);
-    console.log("path", path);
-
+    // console.log("path", path);
+    const currentUserID = useSelector((state) => {return state.courseLearning.currentUserID});
     const currentCourseID = path.length > 1 ?  path[path.length-1] : "628e51cbb64e260717ce07b2";
-
     const [selectLesson, setSelectLesson] = useState(0) 
     const [lessons, setLessons] = useState([])
 
@@ -36,7 +32,7 @@ function CourseLearning() {
         const fetchCourse = async () => {
             await AjaxHelper.get(URL_API.URL_SYSTEM_V1 + '/discussions/lesson-quizz/' + currentCourseID)
                 .then(res => {
-                    console.log("res", res)
+                    // console.log("res", res)
                     //setLessons(res.data.data.lessons);
                     dispatch(setCurrentCourse(res.data.currentCourse));
                 })
@@ -45,12 +41,28 @@ function CourseLearning() {
                 })
         }
         fetchCourse()
+        const fetchUserInfo = async () => {
+            await AjaxHelper.get(URL_API.URL_SYSTEM_V1 + '/discussions/user/' + currentUserID)
+                .then(res => {
+                    // console.log("res", res.data.data)
+                    //setLessons(res.data.data.lessons);
+                    dispatch(setCurrentUserInfo(res.data.data));
+                })
+                .catch(err => {
+                    console.log(err)
+                })
+        }
+        fetchUserInfo()
     }, [])
 
     // Lấy thử current course
     const currentCourse = useSelector((state) => {return state.courseLearning.currentCourse});
     console.log("currentCourse", currentCourse);
+    
+    const currentUserInfo = useSelector((state) => {return state.courseLearning.currentUserInfo});
+    console.log("currentUserInfo", currentUserInfo);
 
+    
     const handleClickLesson = (index) => {
         // Get lesson hiện tại ở đây
         dispatch(changeCurrentLessonIndex(index));
@@ -64,6 +76,8 @@ function CourseLearning() {
         });
         return Math.round(sum*10 / ratingArray.length) / 10
     }
+
+
 
     return (
         <Container spacing={2} style={{ marginTop: '40px' }} maxWidth='xl'>

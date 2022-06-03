@@ -1,9 +1,9 @@
 import React from 'react';
-import { Rating, Avatar } from '@mui/material'
+import {Avatar } from '@mui/material'
 import ThumbUpOutlinedIcon from '@mui/icons-material/ThumbUpOutlined';
 import ForumOutlinedIcon from '@mui/icons-material/ForumOutlined';
 function ReplyCommentCard(props) {
-    console.log("replycommentProps", props);
+    // console.log("replycommentProps", props);
     const calculateTime = (timeString) => {
         // console.log("timeString", timeString);
         const postTime = new Date(timeString);

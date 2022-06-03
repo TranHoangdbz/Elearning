@@ -1,11 +1,11 @@
 import React from 'react';
-import { Rating, Avatar } from '@mui/material'
+import { Avatar } from '@mui/material'
 import ThumbUpOutlinedIcon from '@mui/icons-material/ThumbUpOutlined';
 import ForumOutlinedIcon from '@mui/icons-material/ForumOutlined';
 import ReplyCommentCard from './ReplyCommentCard';
 
 function CommentCard(props) {
-    console.log("commentProps", props);
+    // console.log("commentProps", props);
     
     const calculateTime = (timeString) => {
         const postTime = new Date(timeString);
@@ -34,22 +34,22 @@ function CommentCard(props) {
         <div className='chat-user-model'>
             <div className='chat-user-model__header'>
                 <Avatar sx={{ marginRight: '12px' }} height={36} width={36} alt="Remy Sharp" 
-                    src={props.comment.comment.avatar}
+                    src={props.comment.comment ? props.comment.comment.avatar : ""}
                 />
                 <div style={{ fontFamily: "'Montserrat', san-serif" }} className='name'>
                     {
-                        props.comment.comment.username
+                        props.comment.comment ? props.comment.comment.username : ""
                     }   
                 </div>
                 <div style={{ fontFamily: "'Montserrat', san-serif" }} className='time'>
                     {
-                        props.comment ? calculateTime(props.comment.comment.time) : ""
+                        props.comment.comment ? calculateTime(props.comment.comment.time) : ""
                     }
                 </div>
             </div>
             <div className='chat-user-model__content'>
                 <div className='content'>
-                    {props.comment ? props.comment.comment.content : ""}
+                    {props.comment.comment ? props.comment.comment.content : ""}
                 </div>
                 <div className='like-cmt'>
                     <div style={{ marginRight: '27px', cursor: 'pointer' }}>
@@ -58,12 +58,13 @@ function CommentCard(props) {
                     <div style={{ marginRight: '27px', transform: 'translateY(8%)', cursor: 'pointer' }}>
                         <ForumOutlinedIcon></ForumOutlinedIcon>
                     </div>
-                    <div style={{ fontFamily: "'Montserrat', san-serif" }} className='like'>{props.comment ? props.comment.comment.likes.length : '0'} likes</div>
+                    <div style={{ fontFamily: "'Montserrat', san-serif" }} className='like'>{props.comment.comment ? props.comment.comment.likes.length : '0'} likes</div>
                 </div>
                 {
-                    props.comment.comment.repliedComments.map((value, index,key) => {
+                    props.comment.comment ? props.comment.comment.repliedComments.map((value, index,key) => {
                         return (<ReplyCommentCard comment={value}/>);
                     })
+                    : null
                 }
             </div>
         </div>
