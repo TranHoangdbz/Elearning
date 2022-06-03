@@ -159,7 +159,7 @@ class discussionController {
     }
 
     passTheQuizz = async(req, res) => {
-        console.log("req.body", req.body);
+        // console.log("req.body", req.body);
         // Find current lesson
         var currentLesson;
         await lesson.findById(req.body.lessonID)
@@ -213,7 +213,7 @@ class discussionController {
     }
 
     addComment = async(req, res ) => {
-        console.log("req.body", req.body);
+        // console.log("req.body", req.body);
 
         var currentCourse;
         await Course.findById(req.body.courseID)
@@ -240,7 +240,7 @@ class discussionController {
                 },
                 repliedComments: []
             })
-            console.log(currentDiscussion);
+            // console.log(currentDiscussion);
             await Course.findByIdAndUpdate(req.body.courseID, {
                 discussion: currentDiscussion
             })

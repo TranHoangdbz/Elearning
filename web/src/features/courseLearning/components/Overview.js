@@ -1,11 +1,8 @@
 import React from 'react';
 import { Rating, Avatar } from '@mui/material'
-import ThumbUpOutlinedIcon from '@mui/icons-material/ThumbUpOutlined';
-import ForumOutlinedIcon from '@mui/icons-material/ForumOutlined';
 import CommentCard from './CommentCard';
 import {useDispatch, useSelector} from 'react-redux';
-import {addComment} from '../courseLearningSlice';
-import { useState, useEffect, useRef } from "react";
+import {useRef } from "react";
 import URL_API from '../../../services/API/config';
 import AjaxHelper from '../../../services/index';
 import {setCurrentCourse} from '../courseLearningSlice.js';
@@ -14,16 +11,6 @@ function Overview(props) {
     const dispatch = useDispatch();
     const [value, setValue] = React.useState(0);
     const currentCourse = useSelector((state) => {return state.courseLearning.currentCourse});
-
-    const comments = useSelector((state) => {
-        // console.log("state", state);
-        return [];
-    }) || [];
-
-    // console.log("comments", comments);
-    
-
-    // var currentLessonID = "628f9cb6495c3273aae3408c";
     const currentUserInfo = useSelector((state) => {return state.courseLearning.currentUserInfo});
     console.log("currentUserInfo", currentUserInfo);
 

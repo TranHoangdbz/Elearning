@@ -1,9 +1,7 @@
-import React, { useEffect, useState } from 'react';
+import React, {useState } from 'react';
 import './CourseLearning.scss'
-import LockIcon from '@mui/icons-material/Lock';
-import { Checkbox, FormControlLabel, FormGroup, Radio, RadioGroup } from '@mui/material'
-import axios from 'axios';
-import { useSelector, useDispatch } from 'react-redux';
+import { Checkbox, FormControlLabel} from '@mui/material'
+import { useSelector} from 'react-redux';
 import URL_API from '../../../services/API/config';
 import AjaxHelper from '../../../services/index';
 
@@ -24,12 +22,11 @@ function Quizz() {
     const [yourChoice, setYourChoice] = useState(initValueQuizz())
     
     const handleClickAnswer = (e) => {
+        var newChoice = yourChoice;
         if (e.target.checked) {
-            var newChoice = yourChoice;
             newChoice[activeStep][e.target.value] = true;
             setYourChoice(newChoice);
         } else {
-            var newChoice = yourChoice;
             newChoice[activeStep][e.target.value] = false;
             setYourChoice(newChoice);
         }
@@ -41,16 +38,15 @@ function Quizz() {
         let isSuccess = true
         currentLesson.quizz.forEach((quizz, index) => {
             let soDapAnDung = 0;
-            yourChoice[index].map((value, key) => {
-                if (value == true) {
-                    soDapAnDung += 1
+            yourChoice[index].forEach((value, key) => {
+                if (value === true) {
+                    soDapAnDung += 1;
                 }
             })
-            if (quizz.answer.length == soDapAnDung) {
-                quizz.answer.map((right, key) => {
-                    if (yourChoice[index][right] == false) {
-                        isSuccess = false
-                        return
+            if (quizz.answer.length === soDapAnDung) {
+                quizz.answer.forEach((right, key) => {
+                    if (yourChoice[index][right] === false) {
+                        isSuccess = false;
                     }
                 })
             } else {
@@ -113,7 +109,7 @@ function Quizz() {
                             currentLesson.quizz.map((value, index) => {
                                     return (
                                         <div style={{
-                                                display: index==activeStep ? 'block' : 'none'
+                                                display: index===activeStep ? 'block' : 'none'
                                             }}
                                         >
                                             <div>
@@ -174,7 +170,7 @@ function Quizz() {
                 <div style={{ display: 'flex', justifyContent: 'center', backgroundColor: 'rgba(4, 14, 83, 0.04)', paddingTop: '20px' }}>
                     {
                         currentLesson.quizz.map((value, index, key) => {
-                            if (index == activeStep) {
+                            if (index === activeStep) {
                                 return (
                                     <div className='dot active'></div>
                                 )
@@ -188,7 +184,7 @@ function Quizz() {
                 </div>
                 <div style={{ padding: '30px', paddingTop: '0', display: 'flex', justifyContent: 'space-between', backgroundColor: 'rgba(4, 14, 83, 0.04)' }}>
                     {
-                        activeStep == 0 ? (<div></div>) : (
+                        activeStep === 0 ? (<div></div>) : (
                             <div onClick={handleClickBack} className='btn-back'>
                                 Back
                             </div>
@@ -197,7 +193,7 @@ function Quizz() {
                     <div style={{ display: 'flex' }}>
                         {
                             activeStep === (currentLesson.quizz.length - 1) ? (
-                                <div onClick={(e) => handleClickSubmit(e        )} className='btn-back'>
+                                <div onClick={(e) => handleClickSubmit(e)} className='btn-back'>
                                     Submit
                                 </div>
                             ) : (

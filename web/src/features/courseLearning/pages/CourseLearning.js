@@ -32,32 +32,20 @@ function CourseLearning() {
     const currentUserInfo = useSelector((state) => {return state.courseLearning.currentUserInfo});
     console.log("currentUserInfo", currentUserInfo);
     // Get all content of the current course
-    useEffect(async() => {
+    useEffect(() => {
         // let id = '628e51cbb64e260717ce07b2'
         var currentCourseTempt ;
-        await AjaxHelper.get(URL_API.URL_SYSTEM_V1 + '/discussions/lesson-quizz/' + currentCourseID)
-            .then(res => {
-                // console.log("res", res)
-                //setLessons(res.data.data.lessons);
-                currentCourseTempt = res.data.currentCourse;
-                dispatch(setCurrentCourse(res.data.currentCourse));
-                console.log("Hàm lấy cousre")
-            })
-            .catch(err => {
-                console.log(err)
-            })
-        
         const getCurrentIndexInit = (userID) => {
-            if(currentCourse != {}){
+            if(currentCourse !== {}){
                 var currentLesson = currentCourseTempt.lessons;
-                console.log("currentLesson", currentLesson);
+                // console.log("currentLesson", currentLesson);
                 var index = 0;
                 if(!currentLesson) return 0;
 
                 for(var  i = 0; i < currentLesson.length; i++){
                     var j = 0;
                     for(; j < currentLesson[i].passed.length; j++){
-                        if(currentLesson[i].passed[j].user == userID){
+                        if(currentLesson[i].passed[j].user === userID){
                             break;
                         }
                     }
@@ -73,7 +61,18 @@ function CourseLearning() {
                 return 0;
             }
         }
-        const fetchUserInfo = async () => {
+        const fetchCourseAndUser = async() => {
+            await AjaxHelper.get(URL_API.URL_SYSTEM_V1 + '/discussions/lesson-quizz/' + currentCourseID)
+                .then(res => {
+                    // console.log("res", res)
+                    //setLessons(res.data.data.lessons);
+                    currentCourseTempt = res.data.currentCourse;
+                    dispatch(setCurrentCourse(res.data.currentCourse));
+                    // console.log("Hàm lấy cousre")
+                })
+                .catch(err => {
+                    console.log(err)
+                })
             await AjaxHelper.get(URL_API.URL_SYSTEM_V1 + '/discussions/user/' + currentUserID)
                 .then(res => {
                     // console.log("res", res.data.data)
@@ -87,7 +86,7 @@ function CourseLearning() {
                     console.log(err)
                 })
         }
-        await fetchUserInfo()
+        fetchCourseAndUser();
     }, [])
 
 
@@ -108,7 +107,7 @@ function CourseLearning() {
     }
 
     const getCurrentIndex = () => {
-        if(currentCourse != {}){
+        if(currentCourse !== {}){
             var currentLesson = currentCourse.lessons;
             console.log("currentLesson", currentLesson);
             var index = 0;
@@ -116,7 +115,7 @@ function CourseLearning() {
             for(var  i = 0; i < currentLesson.length; i++){
                 var j = 0;
                 for(; j < currentLesson[i].passed.length; j++){
-                    if(currentLesson[i].passed[j].user == currentUserInfo._id){
+                    if(currentLesson[i].passed[j].user === currentUserInfo._id){
                         break;
                     }
                 }
