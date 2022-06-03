@@ -173,7 +173,10 @@ function CommentCard(props) {
                 </div>
                 <div className="manage-container">
                     {
-                        currentUserInfo._id === props.comment.comment.user ?
+
+                        props.comment.comment && props.comment.comment.user &&
+                        (typeof props.comment.comment.user != 'undefined')  
+                        && currentUserInfo._id === props.comment.comment.user ?
                         <FiMoreHorizontal 
                             className='icon-more'
                             size={20}

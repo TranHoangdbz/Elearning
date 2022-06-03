@@ -8,7 +8,7 @@ const CLIENT_ID =
 const CLIENT_SECRET = "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";
 const REDIRECT_URI = "https://developers.google.com/oauthplayground";
 const REFRESH_TOKEN =
-    "1//04FHIxS0UcCT_CgYIARAAGAQSNwF-L9Ir5HCQiW8OLkSRsNKkEZw3d0rPU3eGf2AZntpGHxsjye3PUb_5iOccEFMLQ6L6aTnhBdk";
+    "1//04W1Qlq6A5l6UCgYIARAAGAQSNwF-L9Ir5zTrpOf6goy5NNBHr74ReCg8QTO2FRU9bshifaJblVikkkjauEtfAxyDSTcrfHku5Zk";
 
 const oAuth2Client = new google.auth.OAuth2(
     CLIENT_ID,
@@ -183,6 +183,7 @@ const userController = {
                 token,
             });
         } catch (err) {
+            console.log(err);
             return res.status(500).json({ msg: err.message });
         }
     },
@@ -193,9 +194,7 @@ const userController = {
         try {
             const isMatch = await bcrypt.compare(password, user.password);
             if (!isMatch) {
-                return res
-                    .status(400)
-                    .json({ message: "Invalid login credentials" });
+                return res.status(400).json({ message: "Incorrect password" });
             } else {
                 user.password = newPassword;
                 user.save();
@@ -212,7 +211,8 @@ const userController = {
         const { email } = req.body;
 
         try {
-            const user = await User.findOne({ email, verified: true });
+            const user = await User.findOne({ email, verified: true }).exec();
+
             if (!user) {
                 return res
                     .status(404)
@@ -220,7 +220,6 @@ const userController = {
             } else {
                 const newPassword = await user.generateRandomPassword();
 
-                // mailer
                 const accessToken = await oAuth2Client.getAccessToken();
 
                 const transporter = nodemailer.createTransport({
@@ -262,9 +261,9 @@ const userController = {
                         });
                     }
                 });
-                //
             }
         } catch (err) {
+            console.log(err)
             return res.status(500).json({ msg: err.message });
         }
     },

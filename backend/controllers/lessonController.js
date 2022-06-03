@@ -1,6 +1,10 @@
 const mongoose = require("mongoose");
 const Lesson = require("../models/lesson");
 const Course = require("../models/course");
+const uploadFile = require("../middleware/upload");
+const cloudinary = require('../middleware/cloudinary');
+const fs = require('fs')
+const { BASE_API_URL } = require("../constants");
 
 const getAll = async (req, res) => {
   try {
@@ -169,6 +173,63 @@ const updateById = async (req, res) => {
   }
 };
 
+const handleUpload = async (files) => {
+  if (files) {
+    const { path } = files[0]
+    const newPath = await cloudinary.uploader.upload(path, {
+      resource_type: 'auto',
+    }).catch(error => {
+      throw Error(error.message)
+    })
+    fs.unlinkSync(path)
+    return newPath.url;
+  }
+  return '';
+}
+
+const updateFieldLesson = async (req, res) => {
+  const lessonId = req.params.id;
+  const thumbnail = req.files.thumbnail;
+  const video = req.files.video;
+  const { name, description } = req.body;
+  // const { path } = video[0]
+  // res.status(200).send({ lessonId, video: path, thumbnail, description, lessonVolume })
+
+  try {
+    Lesson.findById(lessonId, async function (err, doc) {
+      if (err) {
+        //console.log('error here')
+        res.status(500).json({ error: "Query err - " + err.message });
+        return;
+      }
+
+      doc.name = name;
+      doc.description = description;
+
+      //exchange file
+      const thumbnailUrl = await handleUpload(thumbnail);
+      const videoUrl = await handleUpload(video);
+      
+      if (thumbnailUrl !== '') {
+        doc.thumbnail = thumbnailUrl
+      }
+
+      if (videoUrl !== '') {
+        doc.video = videoUrl;
+      }
+
+      doc.save()
+        .then((result) => {
+          res.status(200).send(result);
+        }).catch(err => {
+          res.status(500).json({ error: "Save err - " + err.message });
+        })
+    })
+  } catch (err) {
+    res.status(500).json({ error: err.message });
+  }
+}
+
 const deleteById = async (req, res) => {
   try {
     const id = mongoose.Types.ObjectId(req?.params?.id);
@@ -206,5 +267,6 @@ module.exports = {
   getById,
   create,
   updateById,
+  updateFieldLesson,
   deleteById,
 };

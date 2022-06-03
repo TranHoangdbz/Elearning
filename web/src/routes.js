@@ -16,7 +16,6 @@ const ForgotPasswordPage = React.lazy(() =>
 const ResetPasswordPage = React.lazy(() => import("./features/resetPassword"));
 const CoursesManagerPage = React.lazy(() => import("./features/coursesManager"))
 const EditCourses = React.lazy(() => import("./features/edit-del-courses/pages/EditCourses"))
-
 //router path
 
 export const COURSE_LEARNING = "/course-learning";
@@ -25,6 +24,7 @@ export const SIGN_IN = "/sign-in";
 export const SIGN_UP = "/sign-up";
 export const DEMO = '/demo';
 export const RESET_PASSWORD = "/reset-password";
+export const EDIT_COURSES = "/edit-courses";
 
 const publicRoute = [
     {
@@ -75,6 +75,11 @@ const teacherRoute = [
         name: "Reset password",
         element: <ResetPasswordPage />,
     },
+    {
+        path: EDIT_COURSES,
+        name: "Edit courses",
+        element: <EditCourses/>
+    }
 ];
 
 const adminRoute = [

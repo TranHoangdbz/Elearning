@@ -2,8 +2,6 @@
 
     width: 100%;
     height: 120vh;
-    top: 0;
-    left: 0;
     background-color: gray;
     display: flex;
     justify-content: center;
@@ -48,16 +46,18 @@
 
 .edit__body .editcourse__video .video_components .video_header{
     display: flex;
+    align-items: center;
+    justify-content: space-between;
+    margin-top: 10px;
 }
 .edit__body .editcourse__video .video_components .video_header .btnn_select{
-    margin-left: auto;
-    margin-right: 2px;
-    padding: 5px;
+    padding: 10px;
     font-size: 16px;
     color: #fff;
     background-color: #1A5276;
     border-radius: 10px;
     border-style: none;
+    cursor: pointer;
     box-shadow: 2px 2px 3px #99A3A4;
 }
 .edit__body .editcourse__video .video_components .video_body{
@@ -66,11 +66,14 @@
     height: 280px;
     border-radius: 10px;
     border-style: none;
+    justify-content: center;
+    align-items: center;
+    display: flex;
    
 }
+
 .edit__body .btn_save{
     margin-top: 20px;
-
     float: right;
     padding: 10px;
     font-size: 16px;
@@ -79,6 +82,7 @@
     border-radius: 10px;
     border-style: none;
     box-shadow: 2px 2px 2px #99A3A4;
+    cursor: pointer;
 }
 
 .editLesson .editLesson-inner .nopopup{
@@ -94,11 +98,12 @@
     bottom: 0;
     position: fixed;
     background-color: #BFC9CA;
+    display: flex;
+    justify-content: center;
+    align-items: center;
 }
 .overlay .popup{
     position: absolute;
-    top: 40%;
-    left: 30%;
     padding: 20px;
     width: 100%;
     max-width: 400px;

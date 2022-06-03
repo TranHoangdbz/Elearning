@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:get/get.dart';
 
 import '../routes/pages.dart';
@@ -14,10 +15,13 @@ class MyApp extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return GetMaterialApp(
-      initialRoute: Routes.home,
-      getPages: Pages.pages,
-      defaultTransition: Transition.cupertino,
+    return ScreenUtilInit(
+      minTextAdapt: true,
+      child: GetMaterialApp(
+        initialRoute: Routes.splash,
+        getPages: Pages.pages,
+        defaultTransition: Transition.cupertino,
+      ),
     );
   }
 }
