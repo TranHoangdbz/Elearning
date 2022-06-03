@@ -6,10 +6,11 @@ import { FiMoreHorizontal } from "react-icons/fi";
 import URL_API from '../../../services/API/config';
 import AjaxHelper from '../../../services/index';
 import {setCurrentCourse} from '../courseLearningSlice.js';
+import { MdThumbUp } from "react-icons/md";
 
 function ReplyCommentCard(props) {
     const dispatch = useDispatch();
-    console.log("replycommentProps", props);
+    // console.log("replycommentProps", props);
     const calculateTime = (timeString) => {
         // console.log("timeString", timeString);
         const postTime = new Date(timeString);
@@ -74,6 +75,25 @@ function ReplyCommentCard(props) {
         })
     }
 
+    const unlikeComment = async() => {
+        var dataToUnLike = {
+            commentID: props.comment._id,
+            courseID: currentCourse._id,
+            userID: currentUserInfo._id,
+            parrentCommentID: props.parrentCommentID,
+        }
+        // console.log("dataToLike", dataToLike);
+
+        await AjaxHelper.post(URL_API.URL_SYSTEM_V1 + '/discussions/comment/dislike', dataToUnLike)
+        .then(res => {
+            dispatch(setCurrentCourse(res.data.currentCourse));
+            // cmtContentRef.current.value="";
+            // setDisplayAnswer(false);
+        })
+        .catch(err => {
+        })
+    }
+
     return (
         <div className='chat-user-model'>
             <div className='chat-user-model__header'>
@@ -90,12 +110,27 @@ function ReplyCommentCard(props) {
                     {props ? props.comment.content : ""}
                 </div>
                 <div className='like-cmt'>
-                    <div 
-                        onClick={()=>{likeComment()}}
-                        style={{ marginRight: '27px', cursor: 'pointer' }}
-                    >
-                        <ThumbUpOutlinedIcon></ThumbUpOutlinedIcon>
-                    </div>
+                    {
+                        props.comment && props.comment.likes.includes(currentUserInfo._id) 
+                        ?   <div 
+                                className="like-cmt-button unlike"
+                                onClick={() => {
+                                    unlikeComment();
+                                }}
+                                style={{ marginRight: '27px', cursor: 'pointer' }}
+                            >
+                                <MdThumbUp size={16}></MdThumbUp>
+                            </div>
+                        :   <div 
+                                className="like-cmt-button"
+                                onClick={() => {
+                                    likeComment();
+                                }}
+                                style={{ marginRight: '27px', cursor: 'pointer' }}
+                            >
+                                <ThumbUpOutlinedIcon></ThumbUpOutlinedIcon>
+                            </div>
+                    }
                     <div style={{ fontFamily: "'Montserrat', san-serif" }} className='like'>{props ? props.comment.likes.length : "0"} likes</div>
                 </div>
                 <div className="manage-container">

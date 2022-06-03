@@ -37,7 +37,7 @@ function CommentCard(props) {
     }
     
     const [displayAnswer, setDisplayAnswer] = useState(false);
-    console.log("props.comment.comment", props.comment.comment);
+    // console.log("props.comment.comment", props.comment.comment);
     const currentCourse = useSelector((state) => {return state.courseLearning.currentCourse});
     const currentUserInfo = useSelector((state) => {return state.courseLearning.currentUserInfo});
     const cmtContentRef = useRef(null);
@@ -99,6 +99,25 @@ function CommentCard(props) {
         })
     }
 
+    const unlikeComment = async() => {
+        var dataToUnLike = {
+            commentID: props.comment.comment._id,
+            courseID: currentCourse._id,
+            userID: currentUserInfo._id,
+            parrentCommentID: "",
+        }
+        // console.log("dataToLike", dataToLike);
+
+        await AjaxHelper.post(URL_API.URL_SYSTEM_V1 + '/discussions/comment/dislike', dataToUnLike)
+        .then(res => {
+            dispatch(setCurrentCourse(res.data.currentCourse));
+            // cmtContentRef.current.value="";
+            // setDisplayAnswer(false);
+        })
+        .catch(err => {
+        })
+    }
+
     return (
         <div className='chat-user-model'>
             <div className='chat-user-model__header'>
@@ -126,7 +145,7 @@ function CommentCard(props) {
                         ?   <div 
                                 className="like-cmt-button unlike"
                                 onClick={() => {
-                                    // unlikeComment();
+                                    unlikeComment();
                                 }}
                                 style={{ marginRight: '27px', cursor: 'pointer' }}
                             >
