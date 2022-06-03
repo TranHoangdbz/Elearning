@@ -7,6 +7,8 @@ import 'package:uit_elearning/modules/authentication/screens/authentication_scre
 import 'package:uit_elearning/modules/authentication/screens/forget_password_screen.dart';
 import 'package:uit_elearning/modules/authentication/screens/login_screen.dart';
 import 'package:uit_elearning/modules/authentication/screens/sign_up_screen.dart';
+import 'package:uit_elearning/modules/do_quizz/controllers/quizz_binding.dart';
+import 'package:uit_elearning/modules/do_quizz/screens/quizz_screen.dart';
 import 'package:uit_elearning/modules/home/controllers/home_binding.dart';
 import 'package:uit_elearning/modules/profile/screens/profile_detail_screen.dart';
 import 'package:uit_elearning/modules/splash/controllers/splash_binding.dart';
@@ -50,6 +52,11 @@ abstract class Pages {
     GetPage(
       name: Routes.profileDetail,
       page: () => const ProfileDetailScreen(),
+    ),
+    GetPage(
+      name: Routes.quizz,
+      page: () => const QuizzScreen(),
+      binding: QuizzBinding(),
     ),
   ];
 }

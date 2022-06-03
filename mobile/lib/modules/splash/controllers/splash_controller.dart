@@ -1,5 +1,6 @@
 import 'package:get/get.dart';
 import 'package:shared_preferences/shared_preferences.dart';
+import 'package:uit_elearning/data/services/auth_service.dart';
 import '../../../routes/routes.dart';
 
 class SplashController extends GetxController {
@@ -14,7 +15,8 @@ class SplashController extends GetxController {
     SharedPreferences prefs = await SharedPreferences.getInstance();
     bool? loggedIn = prefs.getBool('authenticated');
 
-    if (loggedIn == true) {
+    if (loggedIn == true &&
+        AuthenticationService.instance.currentUser != null) {
       Get.offNamed(Routes.home);
     } else {
       Get.offNamed(Routes.auth);

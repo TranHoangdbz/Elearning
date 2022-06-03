@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:uit_elearning/data/services/auth_service.dart';
+import 'package:uit_elearning/modules/do_quizz/screens/quizz_screen.dart';
 import 'package:uit_elearning/routes/routes.dart';
 
 import '../../../constants/app_colors.dart';
@@ -8,7 +9,6 @@ import '../../../constants/text_styles.dart';
 import '../../../data/models/course.dart';
 import '../controllers/my_courses_controller.dart';
 import '../../../global_widgets/course_list.dart';
-import '../../../constants/text_styles.dart';
 
 class MyCoursesScreen extends GetView<MyCoursesController> {
   const MyCoursesScreen({Key? key}) : super(key: key);
@@ -86,7 +86,9 @@ class MyCoursesScreen extends GetView<MyCoursesController> {
                   ),
                   const Spacer(),
                   IconButton(
-                    onPressed: () {},
+                    onPressed: () {
+                      Get.toNamed(Routes.quizz);
+                    },
                     icon: const Icon(Icons.settings),
                   )
                 ],
