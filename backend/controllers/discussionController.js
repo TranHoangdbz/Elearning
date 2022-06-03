@@ -432,7 +432,31 @@ class discussionController {
                 })
                 
         }
-
+        else {
+            var currentDiscussion = currentCourse.discussion;
+            for(var i = 0; i < currentDiscussion.length; i++){
+                if(currentDiscussion[i].comment._id.toString() == req.body.parrentCommentID){
+                    currentDiscussion[i].repliedComments = currentDiscussion[i].repliedComments.filter(function(item) {
+                        return item._id.toString() != req.body.commentID;
+                    });
+                    // console.log(currentDiscussion[i].repliedComments);
+                    // console.log("Tìm thấy rôi");
+                }
+            }
+            await Course.findByIdAndUpdate(req.body.courseID, {
+                discussion: currentDiscussion
+            })
+                .then((data) => {
+                    
+                })
+                .catch(() => {
+                    return res.status(400).send({
+                        success: false,
+                        message: "Can't update course!"
+                    })
+                })
+                
+        }
         // try {
             var currentCourse;
             await Course.findById(req.body.courseID).populate("lessons").populate("teacher")
@@ -520,8 +544,7 @@ class discussionController {
             }
             
             res.status(200).send({
-                success: true,
-                message: "Add comment successfully!",     
+                success: true,    
                 currentCourse: {
                     ...currentCourse._doc,
                     lessons: temptLessonList,

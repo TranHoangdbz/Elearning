@@ -111,7 +111,7 @@ function CommentCard(props) {
                             }}
                         ></ForumOutlinedIcon>
                     </div>
-                    <div style={{ fontFamily: "'Montserrat', san-serif" }} className='like'>{props.comment.comment ? props.comment.comment.likes.length + 1: '0'} likes</div>
+                    <div style={{ fontFamily: "'Montserrat', san-serif" }} className='like'>{props.comment.comment ? props.comment.comment.likes.length: '0'} likes</div>
                 </div>
                 <div className="manage-container">
                     {
@@ -179,7 +179,12 @@ function CommentCard(props) {
                 }
                 {
                     props.comment.comment ? props.comment.comment.repliedComments.map((value, index,key) => {
-                        return (<ReplyCommentCard comment={value}/>);
+                        return (
+                        <ReplyCommentCard 
+                            comment={value}
+                            parrentCommentID={props.comment.comment._id}
+                        />
+                        );
                     })
                     : null
                 }

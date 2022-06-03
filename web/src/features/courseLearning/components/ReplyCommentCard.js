@@ -1,9 +1,15 @@
-import React from 'react';
+import React, {useState} from 'react';
 import {Avatar } from '@mui/material'
+import {useDispatch, useSelector} from 'react-redux';
 import ThumbUpOutlinedIcon from '@mui/icons-material/ThumbUpOutlined';
-import ForumOutlinedIcon from '@mui/icons-material/ForumOutlined';
+import { FiMoreHorizontal } from "react-icons/fi";
+import URL_API from '../../../services/API/config';
+import AjaxHelper from '../../../services/index';
+import {setCurrentCourse} from '../courseLearningSlice.js';
+
 function ReplyCommentCard(props) {
-    // console.log("replycommentProps", props);
+    const dispatch = useDispatch();
+    console.log("replycommentProps", props);
     const calculateTime = (timeString) => {
         // console.log("timeString", timeString);
         const postTime = new Date(timeString);
@@ -28,6 +34,26 @@ function ReplyCommentCard(props) {
             return (Math.floor(diff/1000/60/60/24/365) +" years ago")
         }
     }
+    const currentCourse = useSelector((state) => {return state.courseLearning.currentCourse});
+    const currentUserInfo = useSelector((state) => {return state.courseLearning.currentUserInfo});
+    const [isOpenManage, setIsOpenManage] = useState(false);
+
+    const deleteComment = async() => {
+        var dataToDelete = {
+            parrentCommentID : props.parrentCommentID,
+            commentID: props.comment._id,
+            courseID: currentCourse._id
+        }
+        console.log("dataToDelete",dataToDelete);
+        await AjaxHelper.post(URL_API.URL_SYSTEM_V1 + '/discussions/comment/delete', dataToDelete)
+            .then(res => {
+                dispatch(setCurrentCourse(res.data.currentCourse));
+                // cmtContentRef.current.value="";
+                // setDisplayAnswer(false);
+            })
+            .catch(err => {
+            })
+    }
 
     return (
         <div className='chat-user-model'>
@@ -48,10 +74,40 @@ function ReplyCommentCard(props) {
                     <div style={{ marginRight: '27px', cursor: 'pointer' }}>
                         <ThumbUpOutlinedIcon></ThumbUpOutlinedIcon>
                     </div>
-                    <div style={{ marginRight: '27px', transform: 'translateY(8%)', cursor: 'pointer' }}>
-                        <ForumOutlinedIcon></ForumOutlinedIcon>
-                    </div>
-                    <div style={{ fontFamily: "'Montserrat', san-serif" }} className='like'>{props ? props.comment.likes.length : "3"} likes</div>
+                    <div style={{ fontFamily: "'Montserrat', san-serif" }} className='like'>{props ? props.comment.likes.length : "0"} likes</div>
+                </div>
+                <div className="manage-container">
+                    {
+                        currentUserInfo._id === props.comment.user ?
+                        <FiMoreHorizontal 
+                            className='icon-more'
+                            size={20}
+                            onClick={()=> {
+                                setIsOpenManage(!isOpenManage);
+                            }}
+                        /> 
+                        :null
+                    }
+                    {
+                        isOpenManage ? 
+                        
+                            <div className="manage-item-container">
+                                <div className='manage-item'
+                                    onClick={() => {
+                                        deleteComment();
+                                    }}
+                                >
+                                    Delete comment
+                                </div>
+                                <div className='manage-item'>
+                                    Edit comment
+                                </div>
+                            </div>
+                            
+                        
+                        : (null)
+                    }
+                    
                 </div>  
             </div>
         </div>
