@@ -9,8 +9,8 @@ router.get('/',
     )
 );
 router.get('/callback', 
-    passport.authenticate('google', 
-        { session: false }
+    passport.authenticate('google',
+        { session: false, }
     ), userController.callback
 );
 
