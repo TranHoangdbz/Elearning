@@ -1,17 +1,19 @@
-const express = require('express');
+const express = require("express");
 const router = express.Router();
-const passport = require('passport');
-const userController = require('../controllers/userController');
+const passport = require("passport");
+const userController = require("../controllers/userController");
 
-router.get('/', 
-    passport.authenticate('google', 
-        { scope: ['profile', 'email'] }
-    )
+router.get(
+  "/",
+  passport.authenticate("google", { scope: ["profile", "email"] })
 );
-router.get('/callback', 
-    passport.authenticate('google', 
-        { session: false }
-    ), userController.callback
+router.get(
+  "/callback",
+  passport.authenticate("google", {
+    failureRedirect: "http://localhost:3000/signin",
+    session: false,
+  }),
+  userController.callback
 );
 
 module.exports = router;
