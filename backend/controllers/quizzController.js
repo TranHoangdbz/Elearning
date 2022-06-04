@@ -6,6 +6,7 @@ const uploadFile = require("../middleware/upload");
 const cloudinary = require("../middleware/cloudinary");
 const fs = require("fs");
 const { BASE_API_URL } = require("../constants");
+const { generateId } = require("../utils/generateId.js")
 
 const getAll = async (req, res) => {
     try {
@@ -76,40 +77,41 @@ const getById = async (req, res) => {
     }
 };
 
-// const create = async (req, res) => {
-//     try {
-//         const { lessonCode, name, description, lessonVolume } = req.body;
-//         const thumbnail = req.files.thumbnail;
-//         const video = req.files.video;
-//         const videoUrl = await handleUpload(video);
-//         const thumbnailUrl = await handleUpload(thumbnail);
+const create = async (req, res) => {
+    const { question, choice, answer } = req.body;
+    if (question.length == 0 || choice.length == 0 || answer.length == 0) {
+        return res.status(400).json({
+            success: false,
+            message: "Missing data!",
+        });
+    }
+    try {
 
-//         const newItem = new Lesson({
-//             lessonCode: lessonCode,
-//             name: name,
-//             description: description,
-//             video: videoUrl,
-//             thumbnail: thumbnailUrl,
-//             lessonVolumne: lessonVolume,
-//         });
+        const newItem = new Quizz({
+            quizzCode: generateId(7),
+            question: question,
+            choice: choice,
+            answer: answer,
+        });
+        console.log(newItem)
 
-//         const result = await newItem.save();
+        const result = await newItem.save();
 
-//         if (result) {
-//             return res.status(201).json({
-//                 success: true,
-//                 message: "Create a new lesson successfully!",
-//             });
-//         } else {
-//             throw new Error("Failed to create a new lesson!");
-//         }
-//     } catch (error) {
-//         return res.status(500).json({
-//             success: false,
-//             message: error.message,
-//         });
-//     }
-// };
+        if (result) {
+            return res.status(200).json({
+                success: true,
+                message: "Create a new lesson successfully!",
+            });
+        } else {
+            throw new Error("Failed to create a new lesson!");
+        }
+    } catch (error) {
+        return res.status(500).json({
+            success: false,
+            message: error.message,
+        });
+    }
+};
 
 // const updateById = async (req, res) => {
 //     try {
@@ -263,7 +265,7 @@ module.exports = {
     getAll,
     getByLessonId,
     getById,
-    // create,
+    create,
     // updateById,
     // updateFieldLesson,
     // deleteById,
