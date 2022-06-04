@@ -3,6 +3,7 @@ const Course = require("../models/course");
 const Teacher = require("../models/teacher");
 const cloudinary = require("../middleware/cloudinary");
 const fs = require("fs");
+
 const getAll = async (req, res) => {
   try {
     const results = await Course.find({})
@@ -99,6 +100,44 @@ const create = async (req, res) => {
     });
   }
 };
+
+const createCourse = async (req, res) => {
+  try {
+    const thumbnail = req.files.thumbnail;
+    const video = req.files.video;
+    const { courseName, description, teacherId } = req.body;
+
+    const lastCourse = await Course.find({})
+      .sort({ _id: -1 })
+      .limit(1)
+      .lean()
+
+    const courseCodeIndex = lastCourse[0].courseCode.substring(6); //COURSE1 => 1
+
+    let course = await Course.create({
+      courseName,
+      description,
+      teacher: teacherId,
+      courseCode: `COURSE${Number(courseCodeIndex) + 1}`
+    })
+    const courseImage = await handleUpload(thumbnail);
+    const demoVideo = await handleUpload(video);
+    course.courseImage = courseImage;
+    course.demoVideo = demoVideo;
+
+    course.save().then(result => {
+      res.status(200).json({
+        success: true,
+        course: result,
+        message: "Course created!",
+      });
+    })
+  } catch (error) {
+    console.log(error);
+    res.status(500)
+      .json({ success: false, error: "Failed to create the course!" });
+  }
+}
 
 const updateById = async (req, res) => {
   try {
@@ -263,6 +302,7 @@ module.exports = {
   getAll,
   getById,
   create,
+  createCourse,
   updateById,
   deleteById,
   updateFieldCourse,
