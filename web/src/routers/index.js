@@ -1,11 +1,11 @@
-import { Route, Routes, Navigate } from "react-router-dom";
+import { Route, Routes, Navigate, Outlet } from "react-router-dom";
 import routes from "../routes";
 
 import React from "react";
 
 // import page
 const ExamPage = React.lazy(() => import("../components/exam"));
-
+const SigninSuccess = React.lazy(() => import("../features/auth/SigninSuccess"));
 // waiting
 const loading = (
     <div>
@@ -30,6 +30,9 @@ const Routers = () => {
                         )
                     );
                 })}
+                <Route path="/signinsuccess" element={<div><Outlet/></div>}>
+                    <Route path=":token" element={<SigninSuccess />}/>
+                </Route>
             </Routes>
         </React.Suspense>
     );
