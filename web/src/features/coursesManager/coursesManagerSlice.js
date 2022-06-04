@@ -46,6 +46,14 @@ export const createLesson = createAsyncThunk(
   }
 );
 
+export const getQuizzByLesson = createAsyncThunk(
+  "Quizzes/getQuizzByLesson",
+  async (params, thunkAPI) => {
+    const response = await API.get(URL_API.URL_GET_QUIZ_BY_LESSON_ID + params);
+    return response.data;
+  }
+);
+
 const coursesManagerSlice = createSlice({
   name: "coursesManager",
   initialState: {
@@ -127,6 +135,18 @@ const coursesManagerSlice = createSlice({
       state.message = "action.payload.message";
     },
     [createLesson.fulfilled]: (state, action) => {
+      state.success = action.payload.success;
+      state.message = action.payload.message;
+    },
+    [getQuizzByLesson.pending]: (state) => {
+      state.success = false;
+      state.message = "";
+    },
+    [getQuizzByLesson.rejected]: (state, action) => {
+      state.success = false;
+      state.message = action.payload.message
+    },
+    [getQuizzByLesson.fulfilled]: (state, action) => {
       state.success = action.payload.success;
       state.message = action.payload.message;
     },
