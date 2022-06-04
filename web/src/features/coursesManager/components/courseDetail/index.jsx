@@ -21,6 +21,7 @@ import {
 } from "../../coursesManagerSlice";
 import styles from "./courseDetail.module.scss";
 import CancelOutlinedIcon from "@mui/icons-material/CancelOutlined";
+import EditCourse from "../editCourse/EditCourse";
 function CourseDetail() {
   const dispatch = useDispatch();
   const navigate = useNavigate();
@@ -62,7 +63,15 @@ function CourseDetail() {
     dispatch(deleteLessonById(currentItem?._id));
     setOpenConfirm(false);
   };
+  // Open edit popup
+  const [openEditPopup,setOpenEditPopup] = React.useState(false);
+  const handleOpenEditPopup = () => {
+    setOpenEditPopup(true);
+  };
 
+  const handleCloseEditPopup = () => {
+    setOpenEditPopup(false);
+  };
   return (
     <Paper className={`${styles.coursedetail}`} elevation={3}>
       <Stack direction="column" spacing="8px">
@@ -86,6 +95,7 @@ function CourseDetail() {
               className={`${styles.button}`}
               variant="text"
               startIcon={<Edit />}
+              onClick = {()=>handleOpenEditPopup()}
             >
               Edit
             </Button>
@@ -257,6 +267,22 @@ function CourseDetail() {
             </div>
           </div>
         </div>
+      </Dialog>
+      <Dialog
+        open={openEditPopup}
+        fullScreen
+      >
+        
+        <button className={`${styles.header__right__}`} onClick={()=>handleCloseEditPopup()} > <CancelOutlinedIcon color="secondary" fontSize="large" /> </button>
+        <EditCourse 
+          _id = { courseData._id}
+          name= {courseData.courseName}
+          description = {courseData.description}
+          thumbnail = {courseData.courseImage}
+          course_url = { courseData.demoVideo}
+          course_url2={location.pathname} 
+        />
+        
       </Dialog>
     </Paper>
   );
