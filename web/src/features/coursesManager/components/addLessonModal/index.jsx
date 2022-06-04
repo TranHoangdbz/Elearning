@@ -113,7 +113,7 @@ function AddLessonModal({ open, setOpen }) {
       data.append("name", lesson.name);
       data.append("description", lesson.description);
       data.append("video", lesson.video);
-      data.append("thumnail", lesson.thumbnail);
+      data.append("thumbnail", lesson.thumbnail);
       data.append("lessonVolumn", lesson.lessonVolume);
       // data.append("quizz", lesson.quizz);
       dispatch(createLesson(data));
