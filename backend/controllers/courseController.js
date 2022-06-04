@@ -100,6 +100,35 @@ const create = async (req, res) => {
   }
 };
 
+const createCourse = async (req, res) => {
+  try {
+    const thumbnail = req.files.thumbnail;
+    const video = req.files.video;
+    const { courseName, description } = req.body;
+
+    let course = await Course.create({
+      courseName,
+      description
+    })
+    const courseImage = await handleUpload(thumbnail);
+    const demoVideo = await handleUpload(video);
+    course.courseImage = courseImage;
+    course.demoVideo = demoVideo;
+
+    course.save().then(result => {
+      res.status(200).json({
+        success: true,
+        course: result,
+        message: "Course created!",
+      });
+    })
+  } catch (error) {
+    console.log(error);
+    res.status(500)
+      .json({ success: false, error: "Failed to create the course!" });
+  }
+}
+
 const updateById = async (req, res) => {
   try {
     const id = mongoose.Types.ObjectId(req?.params?.id);
@@ -263,6 +292,7 @@ module.exports = {
   getAll,
   getById,
   create,
+  createCourse,
   updateById,
   deleteById,
   updateFieldCourse,

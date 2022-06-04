@@ -7,7 +7,6 @@ const courseSchema = new mongoose.Schema({
   // },
   courseCode: {
     type: String,
-    required: true,
     unique: true,
   },
   courseName: {
@@ -17,7 +16,6 @@ const courseSchema = new mongoose.Schema({
   },
   courseImage: {
     type: String,
-    required: true,
   },
   demoVideo: {
     type: String,
