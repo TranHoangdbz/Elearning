@@ -42,7 +42,7 @@ const User = new Schema(
     }, { timestamps: true, collection: 'users' }
 );
 
-User.pre('save', async (next) => {
+User.pre('save', async function (next) {
     const user = this;
     if (user.password) {
         if (user.isModified('password')) {
