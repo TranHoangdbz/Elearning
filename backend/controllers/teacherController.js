@@ -6,7 +6,7 @@ const getAll = async (req, res) => {
     
         return res.status(200).json({
           success: true,
-          message: "Get all courses successfully!",
+          message: "Get all teachers successfully!",
           data: teachers,
         });
       } catch (error) {
