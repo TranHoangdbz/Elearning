@@ -3,8 +3,6 @@ const bcrypt = require('bcrypt');
 const nodemailer = require('nodemailer');
 const { google } = require('googleapis');
 
-const passport = require('passport');
-
 const CLIENT_ID = '127746184739-mtd90vl8h27p5h4ngi9khj5lu70of7ne.apps.googleusercontent.com';
 const CLIENT_SECRET = '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';
 const REDIRECT_URI = 'https://developers.google.com/oauthplayground';
@@ -66,7 +64,7 @@ const userController = {
                         },
                     });
         
-                    const url = 'http://localhost:32/api/users/verify?id=' + user._id;
+                    const url = 'http://localhost:3000/verify?id=' + user._id;
         
                     const content = `<a href="${url}" target="_blank">Click here to verify your account</a>`;
                     
@@ -118,7 +116,7 @@ const userController = {
                 },
             });
 
-            const url = 'http://localhost:32/api/users/verify?id=' + newUser._id;
+            const url = 'http://localhost:3000/verify?id=' + newUser._id;
 
             const content = `<a href="${url}" target="_blank">Click here to verify your account</a>`;
             
@@ -200,7 +198,10 @@ const userController = {
     callback: async (req, res) => {
         const user = req.user;
         const token = await user.generateAuthToken();
-        return res.json({ user, token });
+        res.redirect(`http://localhost:3000/signinsuccess/${token}`);
+    },
+    test: async (req, res) => {
+        return res.json({ msg: 'Verify successfully.',});
     }
 };
 
