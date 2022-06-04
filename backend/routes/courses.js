@@ -1,7 +1,7 @@
 const express = require("express");
 const router = express.Router();
 const courseController = require("../controllers/courseController");
-
+const upload = require('../middleware/multer');
 router.get("/", courseController.getAll);
 router.get("/:id", courseController.getById);
 router.post("/", courseController.create);
