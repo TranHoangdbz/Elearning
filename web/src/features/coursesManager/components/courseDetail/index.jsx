@@ -1,11 +1,14 @@
 import { ArrowBack, Delete, Edit, MoreVert } from "@mui/icons-material";
 import {
+  Alert,
   Button,
+  Dialog,
   IconButton,
   List,
   ListItem,
   Menu,
   MenuItem,
+  Modal,
   Paper,
   Stack,
   Typography,
@@ -26,6 +29,18 @@ function CourseDetail() {
   const path = url.split("/").filter((x) => x);
 
   const [show, setShow] = React.useState(false);
+
+  const [alert, setAlert] = React.useState({
+    title: "",
+    open: false,
+  });
+
+  const handleShowAlert = (title) => {
+    setAlert({ title: title, open: true });
+    setTimeout(() => {
+      setAlert({ title: "", open: false });
+    }, 3000);
+  };
 
   const courseIndex = useSelector(
     (state) => state.coursesManager.courses
@@ -123,7 +138,7 @@ function CourseDetail() {
             variant="contained"
             onClick={() => setShow(!show)}
           >
-            Thêm bài học
+            Add new lesson
           </Button>
         </Stack>
         <Stack direction="row" spacing="12px">
@@ -199,7 +214,20 @@ function CourseDetail() {
           </List>
         </Stack>
       </Stack>
-      <AddLessonModal open={show} setOpen={setShow} />
+      <AddLessonModal
+        open={show}
+        setOpen={setShow}
+        handleShowAlert={handleShowAlert}
+      />
+      <Modal
+        open={alert.open}
+        hideBackdrop={true}
+        onClose={() => setAlert({ title: "", open: false })}
+      >
+        <Alert variant="filled" severity="success">
+          {alert.title}
+        </Alert>
+      </Modal>
     </Paper>
   );
 }
