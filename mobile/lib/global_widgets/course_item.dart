@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/rendering.dart';
 import 'package:get/get.dart';
+import 'package:uit_elearning/routes/routes.dart';
 
 import '../../../constants/text_styles.dart';
 import '../../../data/models/teacher.dart';
@@ -24,7 +25,9 @@ class CourseItem extends StatelessWidget {
       elevation: 4,
       borderRadius: BorderRadius.circular(20),
       child: GestureDetector(
-        // onTap: ,
+        onTap: () {
+          Get.toNamed(Routes.quizz, arguments: course.lessons);
+        },
         child: Column(
           children: [
             SizedBox(
@@ -53,7 +56,8 @@ class CourseItem extends StatelessWidget {
                       child: Column(
                         crossAxisAlignment: CrossAxisAlignment.start,
                         children: [
-                          CourseTeacher(teacher: course.teacher),
+                          if (course.teacher != null)
+                            CourseTeacher(teacher: course.teacher!),
                           const SizedBox(
                             height: 8,
                           ),

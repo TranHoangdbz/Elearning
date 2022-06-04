@@ -6,11 +6,11 @@ const QuizzSchema = new mongoose.Schema({
     required: true,
   },
   choice: {
-    type: String,
+    type: Array,
     required: true,
   },
   answer: {
-    type: String,
+    type: Array,
     required: true,
   },
 });

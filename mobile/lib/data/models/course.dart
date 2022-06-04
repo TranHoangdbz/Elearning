@@ -11,7 +11,7 @@ class Course extends BaseModel {
   final String demoVideo;
   final String category;
   final String description;
-  final Teacher teacher;
+  final Teacher? teacher;
   final List<Discussion>? discussion;
   final List<Rating>? rating;
   final List<Lesson> lessons;
@@ -39,7 +39,7 @@ class Course extends BaseModel {
         "demoVideo": demoVideo,
         "category": category,
         "description": description,
-        "teacher": teacher.toJson(),
+        "teacher": teacher == null ? null : teacher!.toJson(),
         "discussion": discussion == null
             ? null
             : List<dynamic>.from(discussion!.map((x) => x.toJson())),
@@ -51,13 +51,14 @@ class Course extends BaseModel {
 
   factory Course.fromJson(Map<String, dynamic> data) => Course(
         id: data["_id"],
-        courseCode: data["courseCode"],
-        courseImage: data["courseImage"],
-        courseName: data["courseName"],
-        demoVideo: data["demoVideo"],
-        category: data["category"],
-        description: data["description"],
-        teacher: Teacher.fromJson(data["teacher"]),
+        courseCode: data["courseCode"] ?? '',
+        courseImage: data["courseImage"] ?? '',
+        courseName: data["courseName"] ?? '',
+        demoVideo: data["demoVideo"] ?? '',
+        category: data["category"] ?? '',
+        description: data["description"] ?? '',
+        teacher:
+            data["teacher"] == null ? null : Teacher.fromJson(data["teacher"]),
         discussion: data["discussion"] == null
             ? null
             : List<Discussion>.from(

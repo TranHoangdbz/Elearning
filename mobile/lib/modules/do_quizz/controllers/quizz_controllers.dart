@@ -2,6 +2,7 @@ import 'package:collection/collection.dart';
 import 'package:get/get.dart';
 import 'package:uit_elearning/data/models/lesson.dart';
 import 'package:uit_elearning/data/models/quizz.dart';
+import 'package:uit_elearning/data/services/quizz_service.dart';
 
 class QuizzController extends GetxController {
   late List<Lesson> lessons;
@@ -9,65 +10,27 @@ class QuizzController extends GetxController {
   late Map<String, bool> checkAnswers;
   late Map<String, List<int>> quizAnswers;
   RxBool checked = false.obs;
+  RxList<Quiz> quizList = RxList<Quiz>();
 
   @override
-  void onInit() {
+  void onInit() async {
     selectedIndex.value = 0;
     checked.value = false;
     checkAnswers = {};
     quizAnswers = <String, List<int>>{};
-    lessons = [
-      Lesson(
-          description: '',
-          video: '',
-          quizz: [],
-          thumbnail: '',
-          name: 'A summary about .NET',
-          lessonVolume: 3),
-      Lesson(
-          description: '',
-          video: '',
-          quizz: [],
-          thumbnail: '',
-          name: 'Exception filters',
-          lessonVolume: 3),
-      Lesson(
-          description: '',
-          video: '',
-          quizz: [],
-          thumbnail: '',
-          name: 'ref keyword',
-          lessonVolume: 3),
-      Lesson(
-          description: '',
-          video: '',
-          quizz: [],
-          thumbnail: '',
-          name: 'Finalizers',
-          lessonVolume: 3),
-      Lesson(
-          description: '',
-          video: '',
-          quizz: [],
-          thumbnail: '',
-          name: 'Struct layout',
-          lessonVolume: 3),
-    ];
+    lessons = Get.arguments;
+    quizList.value = [];
+    updateQuizList();
     super.onInit();
   }
 
   onSelected(int index) {
     selectedIndex.value = index;
     reset();
+    updateQuizList();
   }
 
   onAnswer(Quiz quiz, bool checked, int value) {
-    // List<int> userAnswers = quizAnswers[quiz.id] ?? [];
-    // if (checked) {
-    //   userAnswers.add(value);
-    // } else {
-    //   userAnswers.remove(value);
-    // }
     if (quizAnswers.containsKey(quiz.id)) {
       if (!quizAnswers[quiz.id]!.contains(value)) {
         quizAnswers[quiz.id]!.add(value);
@@ -115,5 +78,22 @@ class QuizzController extends GetxController {
     checked.value = false;
     checkAnswers.clear();
     quizAnswers.clear();
+  }
+
+  updateQuizList() {
+    quizList.clear();
+    for (int i = 0; i < lessons[selectedIndex.value].quizz.length; i++) {
+      Quiz? result = QuizzService.instance
+          .getQuizById(lessons[selectedIndex.value].quizz[i]);
+      if (result != null) {
+        quizList.add(
+          result,
+        );
+      }
+    }
+  }
+
+  fetchAllQuizz() async {
+    return await QuizzService.instance.fetchQuizz();
   }
 }

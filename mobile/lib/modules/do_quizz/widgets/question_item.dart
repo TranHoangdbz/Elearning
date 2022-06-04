@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:get/get.dart';
 import 'package:uit_elearning/constants/text_styles.dart';
 import 'package:uit_elearning/data/models/quizz.dart';
 
@@ -32,54 +33,47 @@ class QuestionItem extends StatelessWidget {
   _buildChoices() {
     List<Widget> results = [];
     for (int i = 0; i < quiz.choices.length; i++) {
-      results.add(Row(
-        mainAxisAlignment: MainAxisAlignment.spaceBetween,
-        children: [
-          Row(
-            children: [
-              Checkbox(
-                value: checked
-                    ? (quiz.answers.contains(i) || userAnswers.contains(i))
-                    : userAnswers.contains(i),
-                onChanged: checked
-                    ? null
-                    : (value) {
-                        if (onAnswer != null) {
-                          onAnswer!(quiz, value!, i);
-                        }
-                        // if (value == true) {
-                        //   userAnswers.add(i);
-                        // } else {
-                        //   userAnswers.remove(i);
-                        // }
-                        // if (onAnswer != null) {
-                        //   Function deepEq =
-                        //       const DeepCollectionEquality.unordered().equals;
-                        //   onAnswer!(
-                        //     quiz,
-                        //     deepEq(userAnswers, quiz.answers),
-                        //   );
-                        // }
-                      },
+      results.add(
+        Row(
+          mainAxisAlignment: MainAxisAlignment.spaceBetween,
+          children: [
+            Expanded(
+              child: Row(
+                children: [
+                  Checkbox(
+                    value: checked
+                        ? (quiz.answers.contains(i) || userAnswers.contains(i))
+                        : userAnswers.contains(i),
+                    onChanged: checked
+                        ? null
+                        : (value) {
+                            if (onAnswer != null) {
+                              onAnswer!(quiz, value!, i);
+                            }
+                          },
+                  ),
+                  Flexible(
+                    child: Text(
+                      quiz.choices[i],
+                      style: TextStyles.textStyleOnBackgroundColor14w400,
+                    ),
+                  ),
+                ],
               ),
+            ),
+            if (checked && quiz.answers.contains(i))
               Text(
-                quiz.choices[i],
-                style: TextStyles.textStyleOnBackgroundColor14w400,
+                'Correct',
+                style: TextStyles.textStyleGreenColorDark14w600,
               ),
-            ],
-          ),
-          if (checked && quiz.answers.contains(i))
-            Text(
-              'Correct',
-              style: TextStyles.textStyleGreenColorDark14w600,
-            ),
-          if (checked && !quiz.answers.contains(i) && userAnswers.contains(i))
-            Text(
-              'Incorrect',
-              style: TextStyles.textStyleRedColor14w600,
-            ),
-        ],
-      ));
+            if (checked && !quiz.answers.contains(i) && userAnswers.contains(i))
+              Text(
+                'Incorrect',
+                style: TextStyles.textStyleRedColor14w600,
+              ),
+          ],
+        ),
+      );
     }
     return results;
   }

@@ -55,7 +55,7 @@ class _DoQuizScreenState extends State<DoQuizScreen> {
           ),
         ),
         CarouselIndicator(
-          count: widget.quizz.length,
+          count: widget.quizz.isEmpty ? 1 : widget.quizz.length,
           index: _index,
           color: AppColors.disabledColor,
           activeColor: AppColors.onDisabledColor,

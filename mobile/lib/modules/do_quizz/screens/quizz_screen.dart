@@ -4,6 +4,7 @@ import 'package:uit_elearning/constants/app_colors.dart';
 import 'package:uit_elearning/constants/text_styles.dart';
 import 'package:uit_elearning/data/models/lesson.dart';
 import 'package:uit_elearning/data/models/quizz.dart';
+import 'package:uit_elearning/data/services/auth_service.dart';
 import 'package:uit_elearning/global_widgets/expandable_widget.dart';
 import 'package:uit_elearning/modules/do_quizz/controllers/quizz_controllers.dart';
 import 'package:uit_elearning/modules/do_quizz/screens/do_quizz_screen.dart';
@@ -18,37 +19,57 @@ class QuizzScreen extends StatelessWidget {
 
     return Material(
       color: AppColors.backgroundColor,
-      child: ListView(
-        children: [
-          Text(
-            'Attention',
-            style: TextStyles.textStyleOnBackgroundColor18w700,
-          ),
-          const SizedBox(
-            height: 4,
-          ),
-          Text(
-            'Score a lession’s quizz with an accuracy of 100% to unlock the next lession.',
-            style: TextStyles.textStyleOnBackgroundColor12w500,
-          ),
-          const SizedBox(
-            height: 16,
-          ),
-          Obx(() {
-            return Column(
-              children: _buildQuizzTiles(
-                lessons: _controller.lessons,
-                selectedIndex: _controller.selectedIndex.value,
-                onSelected: _controller.onSelected,
-                onAnswer: _controller.onAnswer,
-                onCheck: _controller.onCheck,
-                quizAnswers: _controller.quizAnswers,
-                checked: _controller.checked.value,
-              ),
-            );
+      child: FutureBuilder(
+          future: _controller.fetchAllQuizz(),
+          builder: (BuildContext context, snapshot) {
+            if (snapshot.hasData) {
+              _controller.updateQuizList();
+              return ListView(
+                children: [
+                  Text(
+                    'Attention',
+                    style: TextStyles.textStyleOnBackgroundColor18w700,
+                  ),
+                  const SizedBox(
+                    height: 4,
+                  ),
+                  Text(
+                    'Score a lession’s quizz with an accuracy of 100% to unlock the next lession.',
+                    style: TextStyles.textStyleOnBackgroundColor12w500,
+                  ),
+                  const SizedBox(
+                    height: 16,
+                  ),
+                  Obx(() {
+                    return Column(
+                      children: _buildQuizzTiles(
+                        lessons: _controller.lessons,
+                        selectedIndex: _controller.selectedIndex.value,
+                        onSelected: _controller.onSelected,
+                        onAnswer: _controller.onAnswer,
+                        onCheck: _controller.onCheck,
+                        quizAnswers: _controller.quizAnswers,
+                        checked: _controller.checked.value,
+                        quizList: _controller.quizList,
+                      ),
+                    );
+                  }),
+                ],
+              );
+            } else if (snapshot.connectionState == ConnectionState.waiting) {
+              return const Center(
+                child: CircularProgressIndicator(),
+              );
+            } else if (snapshot.hasError) {
+              return const Center(
+                child: Text('An error has occured'),
+              );
+            } else {
+              return const Center(
+                child: Text('Empty'),
+              );
+            }
           }),
-        ],
-      ),
     );
   }
 
@@ -60,36 +81,37 @@ class QuizzScreen extends StatelessWidget {
     required Function() onCheck,
     required Map<String, List<int>> quizAnswers,
     required bool checked,
+    required List<Quiz> quizList,
   }) {
     List<Widget> results = [];
 
     for (int i = 0; i < lessons.length; i++) {
-      List<Quiz> quizz = [
-        Quiz(
-          id: 'aldoasdosaodasdadasd',
-          question:
-              'What character would you use to start a regular expression pattern at a word boundary?',
-          choices: [
-            'd',
-            '\\a',
-            '\\b',
-            '\\w',
-          ],
-          answers: [0, 2],
-        ),
-        Quiz(
-          id: 'aldoasdosaodasdsadadasasdadasd',
-          question:
-              'What character would you use to start a regular expression pattern at a word boundary?',
-          choices: [
-            'd',
-            '\\a',
-            '\\b',
-            '\\w',
-          ],
-          answers: [0, 2],
-        ),
-      ];
+      // List<Quiz> quizz = [
+      //   Quiz(
+      //     id: 'aldoasdosaodasdadasd',
+      //     question:
+      //         'What character would you use to start a regular expression pattern at a word boundary?',
+      //     choices: [
+      //       'd',
+      //       '\\a',
+      //       '\\b',
+      //       '\\w',
+      //     ],
+      //     answers: [0, 2],
+      //   ),
+      //   Quiz(
+      //     id: 'aldoasdosaodasdsadadasasdadasd',
+      //     question:
+      //         'What character would you use to start a regular expression pattern at a word boundary?',
+      //     choices: [
+      //       'd',
+      //       '\\a',
+      //       '\\b',
+      //       '\\w',
+      //     ],
+      //     answers: [0, 2],
+      //   ),
+      // ];
       results.add(Column(
         children: [
           QuizzTile(
@@ -110,7 +132,7 @@ class QuizzScreen extends StatelessWidget {
                 checked: checked,
                 onCheck: onCheck,
                 onAnswer: onAnswer,
-                quizz: quizz,
+                quizz: quizList,
                 quizAnswers: quizAnswers,
               );
             }),

@@ -11,4 +11,11 @@ class Quiz extends BaseModel {
     required this.choices,
     required this.answers,
   }) : super(id);
+
+  factory Quiz.fromJson(Map<String, dynamic> json) => Quiz(
+        id: json["_id"],
+        question: json["question"],
+        choices: List<String>.from(json["choice"].map((x) => x)),
+        answers: List<int>.from(json["answer"].map((x) => x)),
+      );
 }
