@@ -44,7 +44,7 @@ function Overview(props) {
             </div>
             <div className='model-rating'>
                 <div className='custom'>
-                    <div style={{ fontFamily: "'Montserrat', san-serif" }} className='title'>Finish 70% the lessions of this course to rate it</div>
+                    <div style={{ fontFamily: "'Montserrat', san-serif" }} className='title'>Finish 100% the lessions of this course to rate it</div>
                     <Rating
                         sx={{ margin: '15px 0' }}
                         name="simple-controlled"

@@ -423,3 +423,21 @@
         opacity: 0.5;
     }
 }
+
+.enter-chat-1{
+    margin-left: 0;
+    .user-avatar {
+        margin-left: -49px;
+    }
+    
+    .btn-send.btn-cancel{
+        margin-right: 12px;
+        color: #040E53 !important;
+        background-color: #F4F4F4 !important;
+    }
+
+}
+
+.chat-input{
+    width: calc(100% - 120px)!important;
+}

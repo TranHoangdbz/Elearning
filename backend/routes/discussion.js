@@ -10,6 +10,7 @@ router.post('/comment/delete', discussionController.deleteComment);
 router.post('/comment/like', discussionController.likeComment);
 router.post('/comment/dislike', discussionController.unlikeComment);
 
+router.put('/comment', discussionController.editComment)
 
 router.post('/quizz-passed', discussionController.passTheQuizz);
 module.exports = router;    

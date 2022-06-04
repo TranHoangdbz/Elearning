@@ -29,16 +29,17 @@ function CourseLearning() {
     const currentCourse = useSelector((state) => {return state.courseLearning.currentCourse});
     console.log("currentCourse", currentCourse);
     
-    const currentUserInfo = useSelector((state) => {return state.courseLearning.currentUserInfo});
+    const currentUserInfo = useSelector((state) => {
+        // console.log("state", state);
+        return state.courseLearning.currentUserInfo
+    });
     console.log("currentUserInfo", currentUserInfo);
     // Get all content of the current course
     useEffect(() => {
-        // let id = '628e51cbb64e260717ce07b2'
         var currentCourseTempt ;
         const getCurrentIndexInit = (userID) => {
             if(currentCourse !== {}){
                 var currentLesson = currentCourseTempt.lessons;
-                // console.log("currentLesson", currentLesson);
                 var index = 0;
                 if(!currentLesson) return 0;
 
@@ -64,22 +65,16 @@ function CourseLearning() {
         const fetchCourseAndUser = async() => {
             await AjaxHelper.get(URL_API.URL_SYSTEM_V1 + '/discussions/lesson-quizz/' + currentCourseID)
                 .then(res => {
-                    // console.log("res", res)
-                    //setLessons(res.data.data.lessons);
                     currentCourseTempt = res.data.currentCourse;
                     dispatch(setCurrentCourse(res.data.currentCourse));
-                    // console.log("Hàm lấy cousre")
                 })
                 .catch(err => {
                     console.log(err)
                 })
             await AjaxHelper.get(URL_API.URL_SYSTEM_V1 + '/discussions/user/' + currentUserID)
                 .then(res => {
-                    // console.log("res", res.data.data)
-                    //setLessons(res.data.data.lessons);
                     dispatch(setCurrentUserInfo(res.data.data));
                     console.log("Hàm lấy user");
-                    // console.log(getCurrentIndexInit(res.data.data._id))
                     dispatch(changeCurrentLessonIndex(getCurrentIndexInit(res.data.data._id)));
                 })
                 .catch(err => {

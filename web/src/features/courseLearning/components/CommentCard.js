@@ -1,4 +1,4 @@
-import React, {useState, useRef} from 'react';
+import React, {useState, useRef, useEffect} from 'react';
 import {useDispatch, useSelector} from 'react-redux';
 import { Avatar } from '@mui/material'
 import ThumbUpOutlinedIcon from '@mui/icons-material/ThumbUpOutlined';
@@ -75,6 +75,7 @@ function CommentCard(props) {
                 dispatch(setCurrentCourse(res.data.currentCourse));
                 // cmtContentRef.current.value="";
                 // setDisplayAnswer(false);
+                setIsOpenManage(false);
             })
             .catch(err => {
             })
@@ -118,96 +119,177 @@ function CommentCard(props) {
         })
     }
 
+    // Edit comment
+    const [isEditDocument, setIsEditDocument] = useState(false);
+
+    const toEditComment = async() => {
+        setIsEditDocument(true);
+        setIsOpenManage(false);
+    }
+
+    const cancelEdit = async() => {
+        setIsEditDocument(false);
+        cmtContentEditRef.current.value="";
+    }
+
+    var cmtContentEditRef = useRef(null);
+
+    const editDocument = async() => {
+        var dataToEdit = {
+            commentID: props.comment.comment._id,
+            courseID: currentCourse._id,
+            parrentCommentID: "",
+            content: cmtContentEditRef.current.value,
+        }
+        setIsEditDocument(false);
+        // console.log("dataToEdit", dataToEdit);
+        await AjaxHelper.put(URL_API.URL_SYSTEM_V1 + '/discussions/comment', dataToEdit)
+        .then(res => {
+            dispatch(setCurrentCourse(res.data.currentCourse));
+        })
+        .catch(err => {
+        })
+    }
+
     return (
         <div className='chat-user-model'>
-            <div className='chat-user-model__header'>
-                <Avatar sx={{ marginRight: '12px' }} height={36} width={36} alt="Remy Sharp" 
-                    src={props.comment.comment ? props.comment.comment.avatar : ""}
-                />
-                <div style={{ fontFamily: "'Montserrat', san-serif" }} className='name'>
-                    {
-                        props.comment.comment ? props.comment.comment.username : ""
-                    }   
-                </div>
-                <div style={{ fontFamily: "'Montserrat', san-serif" }} className='time'>
-                    {
-                        props.comment.comment ? calculateTime(props.comment.comment.time) : ""
-                    }
-                </div>
-            </div>
-            <div className='chat-user-model__content'>
-                <div className='content'>
-                    {props.comment.comment ? props.comment.comment.content : ""}
-                </div>
-                <div className='like-cmt'>
-                    {
-                        props.comment.comment && props.comment.comment.likes.includes(currentUserInfo._id) 
-                        ?   <div 
-                                className="like-cmt-button unlike"
-                                onClick={() => {
-                                    unlikeComment();
-                                }}
-                                style={{ marginRight: '27px', cursor: 'pointer' }}
-                            >
-                                <MdThumbUp size={16}></MdThumbUp>
-                            </div>
-                        :   <div 
-                                className="like-cmt-button"
-                                onClick={() => {
-                                    likeComment();
-                                }}
-                                style={{ marginRight: '27px', cursor: 'pointer' }}
-                            >
-                                <ThumbUpOutlinedIcon></ThumbUpOutlinedIcon>
-                            </div>
-                    }
-                    
-                    <div style={{ marginRight: '27px', transform: 'translateY(8%)', cursor: 'pointer' }}> 
-                        <ForumOutlinedIcon
-                            onClick = {() => {
-                                setDisplayAnswer(!displayAnswer);
-                            }}
-                        ></ForumOutlinedIcon>
+            {
+                isEditDocument ? null : 
+                <div className='chat-user-model__header'>
+                    <Avatar sx={{ marginRight: '12px' }} height={36} width={36} alt="Remy Sharp" 
+                        src={props.comment.comment ? props.comment.comment.avatar : ""}
+                    />
+                    <div style={{ fontFamily: "'Montserrat', san-serif" }} className='name'>
+                        {
+                            props.comment.comment ? props.comment.comment.username : ""
+                        }   
                     </div>
-                    <div style={{ fontFamily: "'Montserrat', san-serif" }} className='like'>{props.comment.comment ? props.comment.comment.likes.length: '0'} likes</div>
+                    <div style={{ fontFamily: "'Montserrat', san-serif" }} className='time'>
+                        {
+                            props.comment.comment ? calculateTime(props.comment.comment.time) : ""
+                        }
+                    </div>
                 </div>
-                <div className="manage-container">
-                    {
-
-                        props.comment.comment && props.comment.comment.user &&
-                        (typeof props.comment.comment.user != 'undefined')  
-                        && currentUserInfo._id === props.comment.comment.user ?
-                        <FiMoreHorizontal 
-                            className='icon-more'
-                            size={20}
-                            onClick={()=> {
-                                setIsOpenManage(!isOpenManage);
-                            }}
-                        /> 
-                        :null
-                    }
-                    {
-                        isOpenManage ? 
-                        
-                            <div className="manage-item-container">
-                                <div className='manage-item'
-                                    onClick={() => {
-                                        deleteComment();
-                                    }}
-                                >
-                                    Delete comment
-                                </div>
-                                <div className='manage-item'>
-                                    Edit comment
-                                </div>
-                            </div>
+            }
+                <div className='chat-user-model__content'>
+                    {!isEditDocument ? 
+                    [
+                        <div className='content'>
+                        {props.comment.comment ? props.comment.comment.content : ""}
+                        </div>,
+                        <div className='like-cmt'>
+                            {
+                                props.comment.comment && props.comment.comment.likes.includes(currentUserInfo._id) 
+                                ?   <div 
+                                        className="like-cmt-button unlike"
+                                        onClick={() => {
+                                            unlikeComment();
+                                        }}
+                                        style={{ marginRight: '27px', cursor: 'pointer' }}
+                                    >
+                                        <MdThumbUp size={16}></MdThumbUp>
+                                    </div>
+                                :   <div 
+                                        className="like-cmt-button"
+                                        onClick={() => {
+                                            likeComment();
+                                        }}
+                                        style={{ marginRight: '27px', cursor: 'pointer' }}
+                                    >
+                                        <ThumbUpOutlinedIcon></ThumbUpOutlinedIcon>
+                                    </div>
+                            }
                             
-                        
-                        : (null)
-                    }
-                    
-                </div>
-                
+                            <div style={{ marginRight: '27px', transform: 'translateY(8%)', cursor: 'pointer' }}> 
+                                <ForumOutlinedIcon
+                                    onClick = {() => {
+                                        setDisplayAnswer(!displayAnswer);
+                                    }}
+                                ></ForumOutlinedIcon>
+                            </div>
+                            <div style={{ fontFamily: "'Montserrat', san-serif" }} className='like'>{props.comment.comment ? props.comment.comment.likes.length: '0'} likes</div>
+                        </div>,
+                        <div className="manage-container">
+                            {
+
+                                props.comment.comment && props.comment.comment.user &&
+                                (typeof props.comment.comment.user != 'undefined')  
+                                && currentUserInfo._id === props.comment.comment.user ?
+                                <FiMoreHorizontal 
+                                    className='icon-more'
+                                    size={20}
+                                    onClick={()=> {
+                                        setIsOpenManage(!isOpenManage);
+                                    }}
+                                /> 
+                                :null
+                            }
+                            {
+                                isOpenManage ? 
+                                
+                                    <div className="manage-item-container">
+                                        <div className='manage-item'
+                                            onClick={() => {
+                                                deleteComment();
+                                            }}
+                                        >
+                                            Delete comment
+                                        </div>
+                                        <div className='manage-item'
+                                            onClick={() => {
+                                                toEditComment();
+                                            }}
+                                        >
+                                            Edit comment
+                                        </div>
+                                    </div>
+                                    
+                                
+                                : (null)
+                            }
+                            
+                        </div>
+                    ]
+                    :
+                    <div className='enter-chat enter-chat-1'>
+                        <Avatar 
+                            className="user-avatar"
+                            sx={{ marginRight: '12px' }} 
+                            height={36} width={36} 
+                            alt="Remy Sharp" 
+                            src={currentUserInfo ? currentUserInfo.profilePicture : ""}
+                        />
+                        <input 
+                            className='chat-input edit-content' 
+                            type={'text'}
+                            ref = {cmtContentEditRef} 
+                            defaultValue = {props.comment.comment ? props.comment.comment.content : ""}
+                        >
+                        </input>
+                        <div 
+                            className='btn-send btn-cancel'
+                            onClick={()=>{
+                                // dispatch(addComment({data:"ok"}));
+                                // console.log(currentCourse);
+                                // addNewComment();
+                                cancelEdit();
+                            }}
+                        >
+                            Cancel
+                        </div>
+                        <div 
+                            className='btn-send'
+                            onClick={()=>{
+                                // dispatch(addComment({data:"ok"}));
+                                // console.log(currentCourse);
+                                // addNewComment();
+                                editDocument();
+                            }}
+                        >
+                            Edit
+                        </div>
+                    </div>
+                }
                 {
                     displayAnswer 
                     ? 

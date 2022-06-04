@@ -1,5 +1,5 @@
 import * as React from 'react';
-import{ useState, useEffect } from 'react';
+// import{ useState, useEffect } from 'react';
 import PropTypes from 'prop-types';
 import Tabs from '@mui/material/Tabs';
 import Tab from '@mui/material/Tab';
@@ -7,9 +7,9 @@ import Typography from '@mui/material/Typography';
 import Box from '@mui/material/Box';
 import Overview from './Overview';
 import Quizz from './Quizz';
-import axios from 'axios';
-import config from '../../../services/API/config';
-import { useSelector, useDispatch } from 'react-redux';
+// import axios from 'axios';
+// import config from '../../../services/API/config';
+// import { useSelector, useDispatch } from 'react-redux';
 
 function TabPanel(props) {
     const { children, value, index, ...other } = props;
@@ -46,7 +46,7 @@ function a11yProps(index) {
 
 export default function OverviewAndQuizz() {
     const [value, setValue] = React.useState(0);
-    const currentCourse = useSelector((state) => {return state.courseLearning.currentCourse});
+    // const currentCourse = useSelector((state) => {return state.courseLearning.currentCourse});
 
     const handleChange = (event, newValue) => {
         setValue(newValue);
