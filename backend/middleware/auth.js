@@ -1,22 +1,23 @@
 const jwt = require('jsonwebtoken');
 const User = require('../models/user');
+const Admin = require('../models/admin');
 
 const auth = (req, res, next) => {
-    try {
-        const token = req.headers['procources-access-token'];
-        if (!token) return res.status(403).json({ msg: 'No token provided.' });
+  try {
+    const token = req.headers['procources-access-token'];
+    if (!token) return res.status(403).json({ msg: 'No token provided.' });
 
-        jwt.verify(token, process.env.JWT_KEY, (err, data) => {
-            if (err) return res.status(500).json({ msg: err });
+    jwt.verify(token, process.env.JWT_KEY, (err, data) => {
+      if (err) return res.status(500).json({ msg: err });
 
-            User.findById(data._id).then((user) => {
-                req.user = user;
-                next();
-            });
-        });
-    } catch (err) {
-        return res.status(500).json({ msg: err.message });
-    }
+      User.findById(data._id).then((user) => {
+        req.user = user;
+        next();
+      });
+    });
+  } catch (err) {
+    return res.status(500).json({ msg: err.message });
+  }
 };
 
 module.exports = auth;
