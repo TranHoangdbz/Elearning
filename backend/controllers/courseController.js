@@ -1,9 +1,14 @@
 const mongoose = require("mongoose");
 const Course = require("../models/course");
-
+const Teacher = require("../models/teacher");
+const cloudinary = require("../middleware/cloudinary");
+const fs = require("fs");
 const getAll = async (req, res) => {
   try {
-    const results = await Course.find({}).lean().populate("lessons").populate("teacher");
+    const results = await Course.find({})
+      .lean()
+      .populate("lessons")
+      .populate("teacher");
 
     return res.status(200).json({
       success: true,
@@ -18,13 +23,14 @@ const getAll = async (req, res) => {
   }
 };
 
-
 const getById = async (req, res) => {
   try {
     const id = mongoose.Types.ObjectId(req?.params?.id);
     const result = await Course.findOne({
       _id: id,
-    }).populate("lessons").populate("teacher")
+    })
+      .populate("lessons")
+      .populate("teacher");
 
     if (result) {
       return res.status(200).json({
@@ -188,10 +194,76 @@ const deleteById = async (req, res) => {
   }
 };
 
+const handleUpload = async (files) => {
+  if (files) {
+    const { path } = files[0];
+    const newPath = await cloudinary.uploader
+      .upload(path, {
+        resource_type: "auto",
+      })
+      .catch((error) => {
+        throw Error(error.message);
+      });
+    fs.unlinkSync(path);
+    return newPath.url;
+  }
+  return "";
+};
+
+const updateFieldCourse = async (req, res) => {
+  try {
+    const courseID = req.params.id;
+    const courseImage = req.files.courseImage;
+    const demoVideo = req.files.demoVideo;
+    const { courseName, category, description, teacher } = req.body;
+    const course = await Course.findById(courseID);
+    if (!course)
+      return res
+        .status(404)
+        .json({ success: false, message: "This course does not exists" });
+
+    if (courseName) course.courseName = courseName;
+    if (category) course.category = category;
+    if (description) course.description = description;
+    if (teacher) {
+      const existTeacher = await Teacher.findById(teacher);
+      if (!existTeacher)
+        return res
+          .status(404)
+          .json({ success: false, message: "This teacher does not exists!" });
+      else course.teacher = existTeacher._id;
+    }
+
+    const thumbnailUrl = await handleUpload(courseImage);
+    const videoUrl = await handleUpload(demoVideo);
+
+    if (thumbnailUrl !== "") {
+      course.courseImage = thumbnailUrl;
+    }
+
+    if (videoUrl !== "") {
+      course.demoVideo = videoUrl;
+    }
+
+    const savedCourse = await course.save();
+    res.status(200).json({
+      success: true,
+      course: savedCourse,
+      message: "Update the course successfully!",
+    });
+  } catch (error) {
+    console.log(error);
+    res
+      .status(500)
+      .json({ success: false, error: "Failed to update the course!" });
+  }
+};
+
 module.exports = {
   getAll,
   getById,
   create,
   updateById,
   deleteById,
+  updateFieldCourse,
 };
