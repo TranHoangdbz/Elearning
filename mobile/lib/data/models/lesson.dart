@@ -1,3 +1,5 @@
+import 'package:uit_elearning/data/models/passed.dart';
+
 import 'base_model.dart';
 
 class Lesson extends BaseModel {
@@ -8,6 +10,7 @@ class Lesson extends BaseModel {
   String name;
   int lessonVolume;
   int? v;
+  List<Passed>? passed;
 
   Lesson({
     String? id,
@@ -18,6 +21,7 @@ class Lesson extends BaseModel {
     required this.name,
     required this.lessonVolume,
     this.v,
+    this.passed,
   }) : super(id);
 
   factory Lesson.fromJson(Map<String, dynamic> json) => Lesson(
@@ -29,6 +33,9 @@ class Lesson extends BaseModel {
         name: json["name"],
         v: json["__v"],
         lessonVolume: json["lessonVolume"],
+        passed: json["passed"] == null
+            ? null
+            : List<Passed>.from(json["passed"].map((x) => Passed.fromJson(x))),
       );
 
   @override
@@ -41,5 +48,8 @@ class Lesson extends BaseModel {
         "__v": v,
         "name": name,
         "lessonVolume": lessonVolume,
+        "passed": passed == null
+            ? null
+            : List<dynamic>.from(passed!.map((x) => x.toJson())),
       };
 }

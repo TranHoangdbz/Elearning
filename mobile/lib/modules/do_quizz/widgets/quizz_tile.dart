@@ -1,3 +1,5 @@
+import 'dart:ui';
+
 import 'package:flutter/material.dart';
 import 'package:uit_elearning/constants/app_colors.dart';
 import 'package:uit_elearning/constants/text_styles.dart';
@@ -35,20 +37,31 @@ class QuizzTile extends StatelessWidget {
             alignment: Alignment.center,
             children: [
               Row(
-                mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                //mainAxisAlignment: MainAxisAlignment.spaceBetween,
                 children: [
-                  Text(
-                    title,
-                    style: textStyle,
+                  Expanded(
+                    flex: 2,
+                    child: Text(
+                      title,
+                      style: textStyle,
+                      textAlign: TextAlign.start,
+                    ),
                   ),
-                  Text(
-                    description,
-                    style: textStyle,
+                  if (isLocked && !isSelected)
+                    const Expanded(
+                        flex: 1,
+                        child:
+                            Icon(Icons.lock, color: AppColors.lockIconColor)),
+                  Expanded(
+                    flex: 2,
+                    child: Text(
+                      description,
+                      style: textStyle,
+                      textAlign: TextAlign.end,
+                    ),
                   ),
                 ],
               ),
-              if (isLocked && !isSelected)
-                const Icon(Icons.lock, color: AppColors.lockIconColor),
             ],
           ),
         ),

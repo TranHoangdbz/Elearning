@@ -25,9 +25,11 @@ class QuizzController extends GetxController {
   }
 
   onSelected(int index) {
-    selectedIndex.value = index;
-    reset();
-    updateQuizList();
+    if (index != selectedIndex.value) {
+      selectedIndex.value = index;
+      reset();
+      updateQuizList();
+    }
   }
 
   onAnswer(Quiz quiz, bool checked, int value) {

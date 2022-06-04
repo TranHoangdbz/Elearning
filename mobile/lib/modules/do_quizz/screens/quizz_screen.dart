@@ -84,34 +84,11 @@ class QuizzScreen extends StatelessWidget {
     required List<Quiz> quizList,
   }) {
     List<Widget> results = [];
+    String? userId = AuthenticationService.instance.currentUser == null
+        ? null
+        : AuthenticationService.instance.currentUser!.id;
 
     for (int i = 0; i < lessons.length; i++) {
-      // List<Quiz> quizz = [
-      //   Quiz(
-      //     id: 'aldoasdosaodasdadasd',
-      //     question:
-      //         'What character would you use to start a regular expression pattern at a word boundary?',
-      //     choices: [
-      //       'd',
-      //       '\\a',
-      //       '\\b',
-      //       '\\w',
-      //     ],
-      //     answers: [0, 2],
-      //   ),
-      //   Quiz(
-      //     id: 'aldoasdosaodasdsadadasasdadasd',
-      //     question:
-      //         'What character would you use to start a regular expression pattern at a word boundary?',
-      //     choices: [
-      //       'd',
-      //       '\\a',
-      //       '\\b',
-      //       '\\w',
-      //     ],
-      //     answers: [0, 2],
-      //   ),
-      // ];
       results.add(Column(
         children: [
           QuizzTile(
@@ -121,8 +98,12 @@ class QuizzScreen extends StatelessWidget {
             title: '${i + 1}. ${lessons[i].name}',
             description: '${lessons[i].quizz.length} question' +
                 (lessons[i].quizz.length > 1 ? 's' : ''),
-            //isLocked: i == 0 ? false : true,
-            isLocked: false,
+            isLocked: i == 0
+                ? false
+                : lessons[i - 1].passed == null || userId == null
+                    ? true
+                    : !lessons[i - 1].passed!.any((element) =>
+                        element.user.compareTo(userId) == 0 && element.passed),
             isSelected: i == selectedIndex ? true : false,
           ),
           ExpandableWidget(
