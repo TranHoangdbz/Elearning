@@ -1,5 +1,6 @@
 import { ArrowBack, Edit } from "@mui/icons-material";
 import { Button, Paper, Stack, Typography } from "@mui/material";
+import AddCircleOutlineIcon from '@mui/icons-material/AddCircleOutline';
 import { current } from "@reduxjs/toolkit";
 import React from "react";
 import { useDispatch, useSelector } from "react-redux";
@@ -111,6 +112,16 @@ function LessonDetail() {
           </Typography>
           <Typography>{currentLesson.description}</Typography>
         </Stack>
+
+        {/* View Quiz Nhom 8 */}
+        <Button className={`${styles.addQuesBtn}`} variant="contained" startIcon={<AddCircleOutlineIcon />}>
+          New Question
+        </Button>
+        <Typography variant="h5" fontWeight="bold">
+          Lesson Quiz:
+        </Typography>
+
+
       </Stack>
     </Paper>
   );
