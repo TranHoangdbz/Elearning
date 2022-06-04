@@ -1,0 +1,47 @@
+{
+  "project_info": {
+    "project_number": "171377997740",
+    "project_id": "uit-elearning",
+    "storage_bucket": "uit-elearning.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:171377997740:android:64825758ffc1136dbbec09",
+        "android_client_info": {
+          "package_name": "com.example.uit_elearning"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "171377997740-ha225ngh5mtnlneukhgbelp2jiv88cl5.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.example.uit_elearning",
+            "certificate_hash": "f15a7505564afbfc05e30f4ca538abfa45f28cef"
+          }
+        },
+        {
+          "client_id": "171377997740-cqnf589771uj3umm0eahbs0qadkp34c1.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyBmmyfjqbdHM1FEWxDO48f4CWJtFxNkIpY"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "171377997740-cqnf589771uj3umm0eahbs0qadkp34c1.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
