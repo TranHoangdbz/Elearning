@@ -6,11 +6,10 @@ import { useNavigate } from "react-router-dom";
 import * as yup from "yup";
 import AuthPageLayout from "./AuthPageLayout";
 import CTextField from "./components/CTextField";
-import { signin } from "./auth";
+import { callTest, signin } from "./auth";
 import { saveToken } from "./localStorage";
 import Toast from "./components/Toast";
 
-const facebook = require("../../assets/images/facebook.png");
 const google = require("../../assets/images/google.png");
 
 const cardStyle = {
@@ -107,6 +106,25 @@ function SignInPage() {
     },
   });
 
+  const signinWithGoogle = async () => {
+    const newWindow = window.open(
+      "http://localhost:32/auth/google",
+      "_blank",
+      "width=500,height=600"
+    );
+
+    if (newWindow) {
+      let timer = setInterval(() => {
+        if (newWindow.closed) {
+          if (timer) clearInterval(timer);
+          callTest();
+          console.log("Signin Success");
+          navigate("/exam");
+        }
+      }, 500);
+    }
+  };
+
   return (
     <AuthPageLayout isSignIn>
       <Box mx="auto" marginTop="56px" marginBottom="86px" position="relative">
@@ -151,18 +169,7 @@ function SignInPage() {
           </Divider>
           <Button
             sx={imageButtonStyle}
-            startIcon={
-              <Avatar
-                alt="facebook"
-                src={facebook}
-                sx={{ width: 31, height: 31, left: "-80px" }}
-              />
-            }
-          >
-            Continue With Facebook
-          </Button>
-          <Button
-            sx={imageButtonStyle}
+            onClick={signinWithGoogle}
             startIcon={
               <Avatar
                 alt="google"
