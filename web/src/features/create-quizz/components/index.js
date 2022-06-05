@@ -25,6 +25,7 @@ const CreateQuizz = (props) => {
             if (result.status == 200) {
                 console.log(result)
                 props.fetchNewData()
+                props.handleClose()
             }
             else {
                 console.log(result.status)
