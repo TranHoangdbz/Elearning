@@ -5,7 +5,7 @@ import { useParams } from "react-router-dom";
 import { verify } from "../auth";
 import AuthPageLayout from "./AuthPageLayout";
 import { saveToken } from "../localStorage";
-import { useDispatch, useSelector } from "react-redux";
+import { useDispatch } from "react-redux";
 import { setUser } from "../authSlice";
 
 const titleStyle = {
@@ -34,8 +34,6 @@ function VerifyAccount() {
   const [loading, setLoading] = useState(true);
   const [verified, setVerified] = useState(false);
 
-  const user = useSelector((state) => state.auth.user);
-
   useEffect(() => {
     const verifyAcc = async () => {
       try {
@@ -52,7 +50,7 @@ function VerifyAccount() {
       }
     };
     verifyAcc();
-  }, [params]);
+  }, []);
 
   return (
     <AuthPageLayout isSignIn={false} hideNavBar={true}>
@@ -69,7 +67,6 @@ function VerifyAccount() {
           {verified ? (
             <Card sx={cardStyle}>
               <p style={titleStyle}>Verify Succeeded!</p>
-              {user && <p>{user._id}</p>}
               <Link sx={{ display: "flex", justifyContent: "center" }} href="/">
                 Go Home Now
               </Link>
