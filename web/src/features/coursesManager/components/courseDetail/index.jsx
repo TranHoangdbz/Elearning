@@ -2,6 +2,11 @@ import { ArrowBack, Delete, Edit, MoreVert } from "@mui/icons-material";
 import {
   Alert,
   Button,
+  Dialog,
+  DialogActions,
+  DialogContent,
+  DialogContentText,
+  DialogTitle,
   IconButton,
   List,
   ListItem,
@@ -33,6 +38,16 @@ function CourseDetail() {
     title: "",
     open: false,
   });
+
+  const [deleteAlert, seDeleteAlert] = React.useState(false);
+
+  const handleOpenDeleteDialog = () => {
+    seDeleteAlert(true);
+  }
+
+  const handleCloseDeleteDialog = () => {
+    seDeleteAlert(false);
+  }
 
   const handleShowAlert = (title) => {
     setAlert({ title: title, open: true });
@@ -119,6 +134,8 @@ function CourseDetail() {
     );
     navigate("/coursesmanager/courseslist");
     dispatch(getCourses());
+    handleCloseDeleteDialog();
+    window.location.reload();
   };
 
   const [anchorEl, setAnchorEl] = React.useState(null);
@@ -170,7 +187,7 @@ function CourseDetail() {
               className={`${styles.button}`}
               variant="text"
               startIcon={<Delete />}
-              onClick={() => handleDeleteCourse()}
+              onClick={() => handleOpenDeleteDialog()}
             >
               Delete
             </Button>
@@ -308,6 +325,27 @@ function CourseDetail() {
           {alert.title}
         </Alert>
       </Modal>
+      <Dialog
+        open={deleteAlert}
+        onClose={handleCloseDeleteDialog}
+        aria-labelledby="alert-dialog-title"
+        aria-describedby="alert-dialog-description"
+      >
+        <DialogTitle id="alert-dialog-title">
+          {"Confirm delete course?"}
+        </DialogTitle>
+        <DialogContent>
+          <DialogContentText id="alert-dialog-description">
+            After delete, the course will be set to be inactive.
+          </DialogContentText>
+        </DialogContent>
+        <DialogActions>
+          <Button onClick={handleCloseDeleteDialog}>Cancel</Button>
+          <Button className={`${styles.confirmbutton}`} variant="contained" onClick={handleDeleteCourse} autoFocus>
+            OK
+          </Button>
+        </DialogActions>
+      </Dialog>
     </Paper>
   );
 }

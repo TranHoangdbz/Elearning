@@ -1,6 +1,12 @@
 import { MoreVert } from "@mui/icons-material";
 import {
+  Button,
   Checkbox,
+  Dialog,
+  DialogActions,
+  DialogContent,
+  DialogContentText,
+  DialogTitle,
   IconButton,
   Menu,
   MenuItem,
@@ -15,6 +21,7 @@ import React from "react";
 import { useDispatch } from "react-redux";
 import { useNavigate } from "react-router-dom";
 import { getCourses, setActiveCourse } from "../../../coursesManagerSlice";
+import styles from "./coursesTableContainer.module.scss";
 
 const tableHeadCells = [
   {
@@ -57,6 +64,16 @@ const tableHeadCells = [
 function CoursesTableContainer({ rowData, page, rowsPerPage }) {
   const dispatch = useDispatch();
   const navigate = useNavigate();
+
+  const [deleteAlert, seDeleteAlert] = React.useState(false);
+
+  const handleOpenDeleteDialog = () => {
+    seDeleteAlert(true);
+  };
+
+  const handleCloseDeleteDialog = () => {
+    seDeleteAlert(false);
+  };
 
   const [anchorEl, setAnchorEl] = React.useState(null);
   const [course, setCourse] = React.useState({ isActive: null });
@@ -155,7 +172,10 @@ function CoursesTableContainer({ rowData, page, rowsPerPage }) {
                             ? () => {
                                 handleViewCourse(course._id);
                               }
-                            : () => handleReverseCourse(course)
+                            : () => {
+                                handleOpenDeleteDialog();
+                              }
+                          // : () => handleReverseCourse(course)
                         }
                       >
                         {course.isActive ? "Xem" : "Hoàn tác"}
@@ -176,6 +196,32 @@ function CoursesTableContainer({ rowData, page, rowsPerPage }) {
           )}
         </TableBody>
       </Table>
+      <Dialog
+        open={deleteAlert}
+        onClose={handleCloseDeleteDialog}
+        aria-labelledby="alert-dialog-title"
+        aria-describedby="alert-dialog-description"
+      >
+        <DialogTitle id="alert-dialog-title">
+          {"Confirm delete course?"}
+        </DialogTitle>
+        <DialogContent>
+          <DialogContentText id="alert-dialog-description">
+            After delete, the course will be set to be inactive.
+          </DialogContentText>
+        </DialogContent>
+        <DialogActions>
+          <Button onClick={handleCloseDeleteDialog}>Cancel</Button>
+          <Button
+            className={`${styles.confirmbutton}`}
+            variant="contained"
+            onClick={() => handleReverseCourse(course)}
+            autoFocus
+          >
+            OK
+          </Button>
+        </DialogActions>
+      </Dialog>
     </TableContainer>
   );
 }
