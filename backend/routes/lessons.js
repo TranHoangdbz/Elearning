@@ -14,6 +14,10 @@ router.post(
   ]),
   lessonController.create
 );
+router.post(
+  "/add/quizz",
+  lessonController.addQuizToLesson
+);
 router.put("/:id", lessonController.updateById);
 router.patch(
   "/:id",

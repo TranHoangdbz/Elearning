@@ -101,6 +101,7 @@ const create = async (req, res) => {
             return res.status(200).json({
                 success: true,
                 message: "Create a new lesson successfully!",
+                data : result,
             });
         } else {
             throw new Error("Failed to create a new lesson!");
