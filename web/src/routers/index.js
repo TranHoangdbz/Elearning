@@ -5,7 +5,8 @@ import React from "react";
 
 // import page
 const ExamPage = React.lazy(() => import("../components/exam"));
-const SigninSuccess = React.lazy(() => import("../features/auth/SigninSuccess"));
+const SigninSuccess = React.lazy(() => import("../features/auth/pages/SigninSuccess"));
+const VerifyAccount = React.lazy(() => import("../features/auth/pages/VerifyAccount"));
 const EditCourses = React.lazy(() =>
     import("../features/edit-del-courses/pages/EditCourses")
 );
@@ -50,6 +51,9 @@ const Routers = () => {
                 })}
                 <Route path="/signinsuccess" element={<div><Outlet/></div>}>
                     <Route path=":token" element={<SigninSuccess />}/>
+                </Route>
+                <Route path="/user/verify" element={<div><Outlet/></div>}>
+                    <Route path=":id" element={<VerifyAccount />}/>
                 </Route>
                 {routes.commonRoute.map((route, idx) => {
                     return (

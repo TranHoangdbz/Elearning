@@ -16,3 +16,9 @@ export const callTest = async () => {
     const result = API.get('http://localhost:32/api/users/test', null, { headers: {"procources-access-token" : `${token}`} });
     console.log(result);
 }
+
+export const verify = async (id) => {
+    console.log(id);
+    const result = await API.get(`http://localhost:32/api/users/verify?id=${id}`);
+    return result;
+}
