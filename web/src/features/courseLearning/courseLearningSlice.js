@@ -31,7 +31,8 @@ export const {
     setCurrentCourse,
     changeCurrentLessonIndex,
     setCurrentUserInfo,
-    setUserLessonIndex
+    setUserLessonIndex,
+    setUserProgress
 } = courseLearningSlice.actions;
 
 export default courseLearningSlice.reducer

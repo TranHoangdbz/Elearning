@@ -91,6 +91,11 @@ function Quizz() {
     }) || false;
     const [isRedo, setIsRedo] = useState(false);
 
+    // Thông báo làm lại quizz nếu chưa đạt
+
+    // Hiển thị đáp án đúng sai khi làm bài quizz
+    
+
     return (
         <div className='quizz'>
             <div style={{ fontFamily: "'Montserrat', san-serif" }} className='title'>Attention</div>

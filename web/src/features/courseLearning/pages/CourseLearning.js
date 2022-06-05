@@ -11,7 +11,8 @@ import {
     setCurrentCourse, 
     changeCurrentLessonIndex,
     setCurrentUserInfo,
-    setUserLessonIndex
+    setUserLessonIndex,
+    setUserProgress
 } from '../courseLearningSlice.js';
 
 function CourseLearning() {
@@ -127,7 +128,6 @@ function CourseLearning() {
     }
 
     // const currentLearnIndex = 0;
-
     
 
     return (

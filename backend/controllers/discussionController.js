@@ -193,7 +193,6 @@ class discussionController {
                 success: false,
                 message: "Error when update lesson"
             })
-            return;
         }
 
         await lesson.findByIdAndUpdate(req.body.lessonID, {
@@ -201,7 +200,7 @@ class discussionController {
         })
             .then((data) => {
                 res.status(200).send({
-                    success: false,
+                    success: true,
                     message: "Add passed student successful"
                 })
             })
@@ -1080,6 +1079,47 @@ class discussionController {
         // res.status(200).send({
         //     success: true,
         // })
+    }
+
+    ratingCourse = async(req, res) => {
+        // console.log("req.body", req.body);
+        var currentCourse;
+        await Course.findById(req.body.courseID)
+            .then((data) => {
+                currentCourse = data
+            })
+            .catch((error) => {
+                return res.status(404).send({
+                    success: false,
+                    message: "Course not found"
+                })
+            })
+        // Loại bỏ rating cũ của người dùng
+        var currentRatingList = currentCourse.rating;
+        currentRatingList = currentRatingList.filter((item)=>{
+            return item.user.toString() != req.body.userID;
+        })
+
+        currentRatingList.push({
+            user: req.body.userID,
+            rate: req.body.rate
+        })
+
+        await Course.findByIdAndUpdate(req.body.courseID, {
+            rating: currentRatingList
+        })
+            .then((data) => {
+                return res.status(200).send({
+                    success: true,
+                    message: "Rating course successfully!"
+                })
+            })
+            .catch(() => {
+                return res.status(400).send({
+                    success: false,
+                    message: "Can't update course!"
+                })
+            })
     }
 }
 
