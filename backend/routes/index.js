@@ -12,7 +12,7 @@ function router(app) {
   app.use("/api/files", filesRouter);
   app.use("/api/discussions", discussionRouter);
 
-  app.use('api/auth/google', googleRouter);
+  app.use('/auth/google', googleRouter);
 }
 
 module.exports = router;
