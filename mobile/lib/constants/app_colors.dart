@@ -13,6 +13,7 @@ class AppColors {
   static const Color onBackgroundColor = Color(0xff000000);
   static const Color onBackgroundColorLight = Color(0xff110E0E);
   static const Color redColor = Color(0xffA90000);
+  static const Color blueColor = Color(0xff437DEC);
   static const Color greenColor = Color(0xff00C734);
   static const Color greenColorDark = Color(0xff006319);
   static const Color disabledColor = Color(0xffE4E4E4);
