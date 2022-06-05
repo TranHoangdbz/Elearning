@@ -29,7 +29,6 @@ const userController = {
 			return res.status(400).json({ msg: "The email is used for Google Account. Please Continue with Google!" });
 
 		if (user) {
-			console.log('found user');
 			if (user.verified) {
 				return res.status(400).json({ msg: "The email is used. Please sign up with another email!" });
 			} else {
@@ -61,8 +60,6 @@ const userController = {
 			phoneNumber,
 		});
 		await newUser.save();
-
-		console.log('save user');
 
 		const content = `<a href="${
 			"http://localhost:3000/user/verify/" + newUser._id
