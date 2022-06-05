@@ -25,7 +25,7 @@ const courseSchema = new mongoose.Schema({
   },
   description: {
     type: String,
-    required: true,
+    // required: true,
   },
   teacher: {
     type: mongoose.Schema.Types.ObjectId,

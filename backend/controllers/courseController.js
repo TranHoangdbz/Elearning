@@ -263,7 +263,6 @@ const updateFieldCourse = async (req, res) => {
         .json({ success: false, message: "This course does not exists" });
 
     if (courseName) course.courseName = courseName;
-    if (category) course.category = category;
     course.description = description || "";
     if (teacher) {
       const existTeacher = await Teacher.findById(teacher);
