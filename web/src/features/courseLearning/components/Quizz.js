@@ -50,7 +50,22 @@ function Quizz() {
     const handleClickSubmit = async() => {
         // console.log("Chạy lại ở đây rồi", new Date());
         // console.log("yourChoice", yourChoice);
-       
+    //    setFullAnswerCheck(true);
+        // Check đã check hết chưa
+        for(var i = 0; i < currentLesson.quizz.length; i++){
+            var isCheck = false;
+            for(var j = 0; j < 4; j++){
+                if(yourChoice[i][j] === true){
+                    isCheck = true;
+                    break;
+                }
+            }
+            if(isCheck === false){
+                setFullAnswerCheck(false);
+                return;
+            }
+        }
+
         setIsFinish(true);
         setIsRedo(false);
         setActiveStep(0);
@@ -147,7 +162,7 @@ function Quizz() {
         setIsFinish(false);
         setResultToShow(false);
         setScoreToDisplay(0);
-        isRedo(false);
+        setIsRedo(false);
         const getCurrentIndexInit = (userID) => {
             if(currentCourse !== {}){
                 var currentLesson = currentCourseTempt.lessons;
@@ -199,7 +214,7 @@ function Quizz() {
 
 
     // Xác nhận khi người dùng chưa click chọn đáp án ở câu đó
-
+    const [fullAnswerCheck, setFullAnswerCheck] = useState(false);
 
     return (
         <div className='quizz'>
@@ -219,7 +234,23 @@ function Quizz() {
                     {
                         <div style={{ paddingLeft: '60px', backgroundColor: 'rgba(4, 14, 83, 0.04)' }}>
                             <div> 
-                                {   
+                                { 
+                                    !fullAnswerCheck ? 
+                                        <div className="modal-warning">
+                                            <div className='heading'>
+                                                You have to at least check an answer in each question
+                                            </div>
+                                            <div className='btn-back bt-refine'
+                                                onClick={(e) => {
+                                                    setFullAnswerCheck(true);
+                                                }} 
+                                            >
+                                                Back
+                                            </div>
+                                        </div>
+
+                                    :
+
                                     isFinish && !isRedo? 
                                         <div className="show-result">
                                             {
@@ -240,17 +271,22 @@ function Quizz() {
                                                     onClick={(e) => {
                                                         setIsRedo(true);
                                                         setYourChoice(initValueQuizz());
+                                                        setIsFinish(false);
                                                     }} 
                                                 >
                                                     Redo
                                                 </div>
-                                                <div className='btn-back btn-redo btn-next'
-                                                    onClick={(e) => {
-                                                        moveToNextLesson();
-                                                    }} 
-                                                >
-                                                    Next lesson
-                                                </div>
+                                                {
+                                                    !resultToShow ? null :
+                                                    <div className='btn-back btn-redo btn-next'
+                                                        onClick={(e) => {
+                                                            moveToNextLesson();
+                                                        }} 
+                                                    >
+                                                        Next lesson
+                                                    </div>
+                                                }
+                                                
                                             </div>
                                             
                                         </div>
@@ -273,6 +309,7 @@ function Quizz() {
                                                                     onClick={(e) => handleClickAnswer(e)}  
                                                                     value={0}
                                                                     color="secondary"
+                                                                    checked={yourChoice[index][0]}
                                                                 />
                                                             }
                                                             label={currentLesson.quizz[activeStep].choice[0]}
@@ -285,7 +322,8 @@ function Quizz() {
                                                                 <Checkbox {...label} name="answer"
                                                                     onClick={(e) => handleClickAnswer(e)}
                                                                     value={1}
-                                                                    color="secondary" />
+                                                                    color="secondary"
+                                                                    checked={yourChoice[index][1]} />
                                                             }
                                                             label={currentLesson.quizz[activeStep].choice[1]}
                                                             sx={{ marginBottom: '30px' , fontSize: '14px'}}
@@ -297,7 +335,8 @@ function Quizz() {
                                                                 <Checkbox {...label} name="answer"
                                                                     onClick={(e) => handleClickAnswer(e)}
                                                                     value={2}
-                                                                    color="secondary" />
+                                                                    color="secondary" 
+                                                                    checked={yourChoice[index][2]}/>
                                                             }
                                                             label={currentLesson.quizz[activeStep].choice[2]}
                                                             sx={{ marginBottom: '30px' , fontSize: '14px'}}
@@ -309,7 +348,8 @@ function Quizz() {
                                                                 <Checkbox {...label} name="answer"
                                                                     onClick={(e) => handleClickAnswer(e)}s
                                                                     value={3}
-                                                                    color="secondary" />
+                                                                    color="secondary"
+                                                                    checked={yourChoice[index][3]} />
                                                             }
                                                             label={currentLesson.quizz[activeStep].choice[3]}
                                                             sx={{ marginBottom: '30px', fontSize: '14px' }}
@@ -328,6 +368,7 @@ function Quizz() {
                                                 onClick={(e) => {
                                                     setIsRedo(true);
                                                     setYourChoice(initValueQuizz());
+                                                    setIsFinish(false);
                                                 }} 
                                             >
                                                 Redo
@@ -339,7 +380,8 @@ function Quizz() {
                     }
                 </div>
                 {
-                    (!isPass || isRedo) && !isFinish?  
+                    !fullAnswerCheck ? null :
+                    (!isPass || isRedo) && !isFinish ?  
                     <div style={{ display: 'flex', justifyContent: 'center', backgroundColor: 'rgba(4, 14, 83, 0.04)', paddingTop: '20px' }}>
                         {
                             currentLesson.quizz.map((value, index, key) => {
@@ -358,6 +400,7 @@ function Quizz() {
                     : null
                 }
                 {
+                    !fullAnswerCheck ? null :
                     (!isPass || isRedo) && !isFinish? 
                     <div style={{ padding: '30px', paddingTop: '0', display: 'flex', justifyContent: 'space-between', backgroundColor: 'rgba(4, 14, 83, 0.04)' }}>
                         {

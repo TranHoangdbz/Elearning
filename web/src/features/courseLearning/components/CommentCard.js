@@ -1,4 +1,4 @@
-import React, {useState, useRef, useEffect} from 'react';
+import React, {useState, useRef} from 'react';
 import {useDispatch, useSelector} from 'react-redux';
 import { Avatar } from '@mui/material'
 import ThumbUpOutlinedIcon from '@mui/icons-material/ThumbUpOutlined';
@@ -11,7 +11,7 @@ import { FiMoreHorizontal } from "react-icons/fi";
 import { MdThumbUp } from "react-icons/md";
 
 function CommentCard(props) {
-    // console.log("commentProps", props);
+    // console.log("commentProps", props.comment);
     const dispatch = useDispatch();
     const calculateTime = (timeString) => {
         const postTime = new Date(timeString);
@@ -151,6 +151,7 @@ function CommentCard(props) {
         })
     }
 
+    if(Object.keys(props.comment).length===0) return null;
     return (
         <div className='chat-user-model'>
             {
