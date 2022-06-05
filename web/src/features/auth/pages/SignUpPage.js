@@ -104,7 +104,7 @@ function SignUpPage() {
       register(email, fullName, phoneNumber, password)
         .then((result) => {
           setOpen(true);
-          setIsError(true);
+          setIsError(false);
           setMessage("Check your email to verify account");
         })
         .catch(({ response }) => {
