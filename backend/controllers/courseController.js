@@ -107,16 +107,24 @@ const createCourse = async (req, res) => {
     const video = req.files.video;
     const { courseName, description, teacherId } = req.body;
 
-    const lastCourse = await Course.find({}).sort({ _id: -1 }).limit(1).lean();
+
+    const teacher = await Teacher.find({}).limit(1).lean()
+    const lastCourse = await Course.find({})
+      .sort({ _id: -1 })
+      .limit(1)
+      .lean()
+
 
     const courseCodeIndex = lastCourse[0].courseCode.substring(6); //COURSE1 => 1
 
     let course = await Course.create({
       courseName,
       description,
-      teacher: teacherId,
-      courseCode: `COURSE${Number(courseCodeIndex) + 1}`,
-    });
+
+      teacher: teacher[0]._id,
+      courseCode: `COURSE${Number(courseCodeIndex) + 1}`
+    })
+
     const courseImage = await handleUpload(thumbnail);
     const demoVideo = await handleUpload(video);
     course.courseImage = courseImage;
