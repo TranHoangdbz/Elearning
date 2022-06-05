@@ -3,205 +3,224 @@ const bcrypt = require("bcrypt");
 const { transporter } = require("../services/nodemailer");
 
 const userController = {
+	getCurrentUser: async (req, res) => {
+        try {
+            const tmp = req.user;
+
+            if (!tmp) return res.status(400).json({ msg: 'User not found' });
+
+            const user = await User.findOne({ _id: tmp._id });
+
+            return res.json({ user });
+        } catch (err) {
+            return res.status(500).json({ msg: err.message });
+        }
+    },
   register: async (req, res) => {
     try {
-      const { fullName, email, password, phoneNumber } = req.body;
+		const { fullName, email, password, phoneNumber } = req.body;
 
-      if (!fullName || !email || !password || !phoneNumber)
-        return res.status(400).json({ msg: "Please fill out the information" });
+		if (!fullName || !email || !password || !phoneNumber)
+			return res.status(400).json({ msg: "Please fill out the information" });
 
-      const user = await User.findOne({ email });
+		const user = await User.findOne({ email });
 
-      if (user && !user.googleId) {
-        if (user.verified) {
-          return res.status(400).json({ msg: "The email is used" });
-        } else {
-          const content = `<a href="${
-            "http://localhost:3000/user/verify/" + user._id
-          }" target="_blank">Click here to verify your account</a>`;
-          const mainOptions = {
-            from: "ProCourses E-learning",
-            to: user.email,
-            subject: "Verify Account in ProCourse",
-            text: "Your text is here",
-            html: content,
-          };
-          transporter.sendMail(mainOptions, function (err, info) {
-            if (err) {
-              return res.status(500).json({ msg: err.message });
-            } else {
-              return res.status(200).json({ msg: "success" });
-            }
-          });
-          return res.json({ user });
-        }
-      }
+		if (user && user.verified && user.googleId)
+			return res.status(400).json({ msg: "The email is used for Google Account. Please Continue with Google!" });
 
-      const newUser = new User({
-        fullName,
-        email,
-        password,
-        phoneNumber,
-      });
-      await newUser.save();
+		if (user) {
+			console.log('found user');
+			if (user.verified) {
+				return res.status(400).json({ msg: "The email is used. Please sign up with another email!" });
+			} else {
+				const content = `<a href="${
+					"http://localhost:3000/user/verify/" + user._id
+				}" target="_blank">Click here to verify your account</a>`;
+				const mainOptions = {
+					from: "ProCourses E-learning",
+					to: user.email,
+					subject: "Verify Account in ProCourse",
+					text: "Your text is here",
+					html: content,
+				};
+				transporter.sendMail(mainOptions, function (err, info) {
+					if (err) {
+						return res.status(500).json({ msg: err.message });
+					} else {
+						return res.status(200).json({ msg: "Success" });
+					}
+				});
+				return res.json({ user });
+			}
+		}
 
-      const content = `<a href="${
-        "http://localhost:3000/user/verify/" + newUser._id
-      }" target="_blank">Click here to verify your account</a>`;
-      const mainOptions = {
-        from: "ProCourses E-learning",
-        to: newUser.email,
-        subject: "Verify Account in ProCourse",
-        text: "Your text is here",
-        html: content,
-      };
-      transporter.sendMail(mainOptions, function (err, info) {
-        if (err) {
-          return res.status(500).json({ msg: err.message });
-        } else {
-          return res.status(200).json({ msg: "success" });
-        }
-      });
+		const newUser = new User({
+			fullName,
+			email,
+			password,
+			phoneNumber,
+		});
+		await newUser.save();
 
-      return res.json({ user: newUser });
-    } catch (err) {
-      return res.status(500).json({ msg: err.message });
-    }
-  },
-  verifyUser: async (req, res) => {
-    try {
-      const { id } = req.query;
+		console.log('save user');
 
-      const user = await User.findOne({ _id: id });
+		const content = `<a href="${
+			"http://localhost:3000/user/verify/" + newUser._id
+		}" target="_blank">Click here to verify your account</a>`;
+		const mainOptions = {
+			from: "ProCourses E-learning",
+			to: newUser.email,
+			subject: "Verify Account in ProCourse",
+			text: "Your text is here",
+			html: content,
+		};
+		transporter.sendMail(mainOptions, function (err, info) {
+			if (err) {
+			return res.status(500).json({ msg: err.message });
+			} else {
+			return res.status(200).json({ msg: "success" });
+			}
+		});
 
-      if (!user) return res.status(400).json({ msg: "User not found" });
+		return res.json({ user: newUser });
+		} catch (err) {
+		return res.status(500).json({ msg: err.message });
+		}
+	},
+	verifyUser: async (req, res) => {
+		try {
+		const { id } = req.query;
 
-      user.verified = true;
+		const user = await User.findOne({ _id: id });
 
-      await user.save();
+		if (!user) return res.status(400).json({ msg: "User not found" });
 
-      const token = await user.generateAuthToken();
+		user.verified = true;
 
-      return res.json({ msg: "Verify successfully.", user, token });
-    } catch (err) {
-      return res.status(500).json({ msg: err.message });
-    }
-  },
-  login: async (req, res) => {
-    try {
-      const { email, password } = req.body;
-      
-      if (!email || !password)
-        return res.status(400).json({ msg: "Please fill out the information" });
+		await user.save();
 
-      const user = await User.findOne({ email });
-      if (!user) {
-        return res.status(400).json({ msg: "Invalid login credentials" });
-      }
+		const token = await user.generateAuthToken();
 
-      if (!user.verified) {
-        return res.status(400).json({ msg: "Not verified yet" });
-      }
+		return res.json({ msg: "Verify successfully.", user, token });
+		} catch (err) {
+		return res.status(500).json({ msg: err.message });
+		}
+	},
+	login: async (req, res) => {
+		try {
+		const { email, password } = req.body;
+		if (!email)
+			return res.status(400).json({ msg: "Please fill out the information!" });
 
-      console.log(password, user);
-      const isMatch = await bcrypt.compare(password, user.password);
-      if (!isMatch) {
-        return res.status(400).json({ msg: "Invalid login credentials" });
-      }
+		const user = await User.findOne({ email });
+		if (!user)
+			return res.status(400).json({ msg: "Invalid login credentials" });
 
-      const token = await user.generateAuthToken();
-      return res.json({ user, token });
-    } catch (err) {
-      console.log(err);
-      return res.status(500).json({ msg: err.message });
-    }
-  },
-  resetPassword: async (req, res) => {
-    const user = req.user;
-    const { password, newPassword } = req.body;
+		if (!user.verified)
+			return res.status(400).json({ msg: "Not verified yet!" });
 
-    try {
-      const isMatch = await bcrypt.compare(password, user.password);
-      if (!isMatch) {
-        return res.status(400).json({ message: "Incorrect password" });
-      } else {
-        user.password = newPassword;
-        user.save();
+		if (user.googleId)
+			return res.status(400).json({ msg: "The email is used for Google Account. Please Continue with Google!" });
 
-        return res
-          .status(200)
-          .json({ mes: "Reset password successfully", user });
-      }
-    } catch (err) {
-      return res.status(500).json({ msg: err.message });
-    }
-  },
-  getNewPassword: async (req, res) => {
-    const { email } = req.body;
+		if (!password)
+			return res.status(400).json({ msg: "Please fill out the information!" });
 
-    try {
-      const user = await User.findOne({ email, verified: true }).exec();
+		const isMatch = await bcrypt.compare(password, user.password);
+		if (!isMatch) {
+			return res.status(400).json({ msg: "Invalid login credentials" });
+		}
+		const token = await user.generateAuthToken();
+		return res.json({ user, token });
+		} catch (err) {
+			return res.status(500).json({ msg: err.message });
+		}
+	},
+	resetPassword: async (req, res) => {
+		const user = req.user;
+		const { password, newPassword } = req.body;
 
-      if (!user) {
-        return res.status(404).json({ message: "This email is not verified" });
-      } else {
-        const newPassword = await user.generateRandomPassword();
+		try {
+		const isMatch = await bcrypt.compare(password, user.password);
+		if (!isMatch) {
+			return res.status(400).json({ message: "Incorrect password" });
+		} else {
+			user.password = newPassword;
+			user.save();
 
-        const accessToken = await oAuth2Client.getAccessToken();
+			return res
+			.status(200)
+			.json({ mes: "Reset password successfully", user });
+		}
+		} catch (err) {
+		return res.status(500).json({ msg: err.message });
+		}
+	},
+	getNewPassword: async (req, res) => {
+		const { email } = req.body;
 
-        const transporter = nodemailer.createTransport({
-          // config mail server
-          host: "smtp.gmail.com",
-          port: 465,
-          secure: true,
-          auth: {
-            type: "OAuth2",
-            user: "ShanectTeam@gmail.com",
-            clientId: CLIENT_ID,
-            clientSecret: CLIENT_SECRET,
-            refreshToken: REFRESH_TOKEN,
-            accessToken: accessToken,
-          },
-          tls: {
-            rejectUnauthorized: false,
-          },
-        });
+		try {
+		const user = await User.findOne({ email, verified: true }).exec();
 
-        const content = `<p>New password for your account is <b>${newPassword}<b/></p>`;
+		if (!user) {
+			return res.status(404).json({ message: "This email is not verified" });
+		} else {
+			const newPassword = await user.generateRandomPassword();
 
-        const mainOptions = {
-          from: "ProCourses E-learning",
-          to: email,
-          subject: "New password for Account in ProCourse",
-          text: "Your text is here",
-          html: content,
-        };
+			const accessToken = await oAuth2Client.getAccessToken();
 
-        transporter.sendMail(mainOptions, function (err, info) {
-          if (err) {
-            return res.status(500).json({ msg: err.message });
-          } else {
-            user.password = newPassword;
-            user.save();
-            return res.status(200).json({
-              mes: "A new password has been sent to your email/phone number, please check.",
-            });
-          }
-        });
-      }
-    } catch (err) {
-      console.log(err);
-      return res.status(500).json({ msg: err.message });
-    }
-  },
-  callback: async (req, res) => {
-    const user = req.user;
-    const token = await user.generateAuthToken();
-    res.redirect(`http://localhost:3000/signinsuccess/${token}`);
-  },
-  test: async (req, res) => {
-    return res.json({ msg: "Verify successfully." });
-  },
+			const transporter = nodemailer.createTransport({
+			// config mail server
+			host: "smtp.gmail.com",
+			port: 465,
+			secure: true,
+			auth: {
+				type: "OAuth2",
+				user: "ShanectTeam@gmail.com",
+				clientId: CLIENT_ID,
+				clientSecret: CLIENT_SECRET,
+				refreshToken: REFRESH_TOKEN,
+				accessToken: accessToken,
+			},
+			tls: {
+				rejectUnauthorized: false,
+			},
+			});
+
+			const content = `<p>New password for your account is <b>${newPassword}<b/></p>`;
+
+			const mainOptions = {
+			from: "ProCourses E-learning",
+			to: email,
+			subject: "New password for Account in ProCourse",
+			text: "Your text is here",
+			html: content,
+			};
+
+			transporter.sendMail(mainOptions, function (err, info) {
+			if (err) {
+				return res.status(500).json({ msg: err.message });
+			} else {
+				user.password = newPassword;
+				user.save();
+				return res.status(200).json({
+				mes: "A new password has been sent to your email/phone number, please check.",
+				});
+			}
+			});
+		}
+		} catch (err) {
+		console.log(err);
+		return res.status(500).json({ msg: err.message });
+		}
+	},
+	callback: async (req, res) => {
+		const user = req.user;
+		const token = await user.generateAuthToken();
+		res.redirect(`http://localhost:3000/signinsuccess/${token}`);
+	},
+	test: async (req, res) => {
+		return res.json({ msg: "Verify successfully." });
+	},
 };
 
 module.exports = userController;
