@@ -5,6 +5,8 @@ import { useParams } from "react-router-dom";
 import { verify } from "../auth";
 import AuthPageLayout from "./AuthPageLayout";
 import { saveToken } from "../localStorage";
+import { useDispatch, useSelector } from "react-redux";
+import { setUser } from "../authSlice";
 
 const titleStyle = {
   fontSize: 32,
@@ -28,15 +30,19 @@ const cardStyle = {
 
 function VerifyAccount() {
   const params = useParams();
+  const dispatch = useDispatch();
   const [loading, setLoading] = useState(true);
   const [verified, setVerified] = useState(false);
+
+  const user = useSelector((state) => state.auth.user);
 
   useEffect(() => {
     const verifyAcc = async () => {
       try {
         const { data } = await verify(params.id);
-        if (data && data.token) {
+        if (data && data.token && data.user) {
           saveToken(data.token);
+          dispatch(setUser(data.user));
           setVerified(true);
           setLoading(false);
           console.log(data);
@@ -63,14 +69,18 @@ function VerifyAccount() {
           {verified ? (
             <Card sx={cardStyle}>
               <p style={titleStyle}>Verify Succeeded!</p>
+              {user && <p>{user._id}</p>}
               <Link sx={{ display: "flex", justifyContent: "center" }} href="/">
                 Go Home Now
               </Link>
             </Card>
           ) : (
             <Card sx={cardStyle}>
-              <p style={{...titleStyle, color: "red"}}>Verified Failed!</p>
-              <Link sx={{ display: "flex", justifyContent: "center" }} href="/sign-up">
+              <p style={{ ...titleStyle, color: "red" }}>Verified Failed!</p>
+              <Link
+                sx={{ display: "flex", justifyContent: "center" }}
+                href="/sign-up"
+              >
                 Sign Up Again
               </Link>
             </Card>
