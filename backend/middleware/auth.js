@@ -1,6 +1,4 @@
 const jwt = require('jsonwebtoken');
-const User = require('../models/user');
-const Admin = require('../models/admin');
 
 const auth = (req, res, next) => {
   try {
@@ -9,11 +7,11 @@ const auth = (req, res, next) => {
 
     jwt.verify(token, process.env.JWT_KEY, (err, data) => {
       if (err) return res.status(500).json({ msg: err });
-
-      User.findById(data._id).then((user) => {
-        req.user = user;
-        next();
+      const check = req.body.role.findIndex(function (role) {
+        return role == data.role;
       });
+      if (check == -1) return res.json({ message: 'Wrong role' });
+      next();
     });
   } catch (err) {
     return res.status(500).json({ msg: err.message });

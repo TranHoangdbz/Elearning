@@ -144,7 +144,7 @@ const userController = {
 
       await user.save();
 
-      const token = await user.generateAuthToken();
+      const token = await user.generateAuthToken(user._id, user.role);
 
       return res.json({ msg: 'Verify successfully.', user, token });
     } catch (err) {
@@ -170,8 +170,7 @@ const userController = {
       if (!isMatch) {
         return res.status(400).json({ message: 'Invalid login credentials' });
       }
-
-      const token = await user.generateAuthToken();
+      const token = await user.generateAuthToken(user._id, user.role);
       return res.json({
         user,
         token,
@@ -180,9 +179,15 @@ const userController = {
       return res.status(500).json({ msg: err.message });
     }
   },
+  test: async (req, res) => {
+    //console.log(req.body);
+    return res.json({
+      message: 'Success',
+    });
+  },
   callback: async (req, res) => {
     const user = req.user;
-    const token = await user.generateAuthToken();
+    const token = await user.generateAuthToken(user._id, user.role);
     return res.json({ user, token });
   },
 };

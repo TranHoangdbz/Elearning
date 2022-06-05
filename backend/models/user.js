@@ -59,9 +59,8 @@ User.pre('save', async function (next) {
   next();
 });
 
-User.methods.generateAuthToken = async () => {
-  const user = this;
-  const token = jwt.sign({ _id: user._id }, process.env.JWT_KEY);
+User.methods.generateAuthToken = async (_id, role) => {
+  const token = jwt.sign({ _id: _id, role: role }, process.env.JWT_KEY);
   return token;
 };
 
