@@ -52,9 +52,9 @@ User.pre('save', async function (next) {
             user.password = await bcrypt.hash(user.password, 8);
         }
     }
+    next();
   }
-  next();
-});
+);
 
 User.methods.generateAuthToken = async function () {
     const user = this;
