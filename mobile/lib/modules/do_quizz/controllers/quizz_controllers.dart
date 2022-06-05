@@ -81,7 +81,23 @@ class QuizzController extends GetxController {
 
   onCheck() async {
     if (checked.value) {
-      reset();
+      final result = await showDialog(
+        context: Get.context!,
+        builder: (context) {
+          return const CustomDialog(
+            icon: Icon(
+              Icons.info_rounded,
+              color: AppColors.blueColor,
+              size: 48,
+            ),
+            showConfirmButton: true,
+            content: 'This action will delete all your answers. Are you sure?',
+          );
+        },
+      );
+      if (result.toString().compareTo('confirm') == 0) {
+        reset();
+      }
     } else {
       if (checkAnswers.entries.any((element) => !element.value)) {
         showDialog(
