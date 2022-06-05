@@ -143,7 +143,7 @@ function CourseDetail() {
         </Stack>
         <Stack direction="row" spacing="12px">
           <div className={`${styles.demo}`}>
-            <img alt="demo" src={courseData.courseImage} />
+            <video alt="demo" src={courseData.demoVideo} />
           </div>
           <List
             className={`${styles.list}`}
