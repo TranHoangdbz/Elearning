@@ -92,13 +92,12 @@ function SignInPage() {
       const { email, password } = values;
       signin(email, password)
         .then(({ data }) => {
-          console.log(data.user);
-          console.log(data.token);
           if (data && data.token && data.user) {
+            console.log(data.user);
             setOpen(false);
             dispatch(setUser(data.user));
             saveToken(data.token);
-            //navigate("/");
+            navigate("/");
           }
         })
         .catch(({ response }) => {
@@ -165,7 +164,11 @@ function SignInPage() {
             <Button type="submit" variant="contained" sx={submitButtonStyle}>
               Login
             </Button>
-            <Link href="/reset-password" underline="none" style={forgotPasswordStyle}>
+            <Link
+              href="/reset-password"
+              underline="none"
+              style={forgotPasswordStyle}
+            >
               ForgotPassword?
             </Link>
           </form>
