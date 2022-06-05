@@ -70,8 +70,8 @@ const AddCourse = (props) => {
 
     const uploadFile = (thumbnail, video) => {
         let data = new FormData();
-        data.append("courseImage", thumbnail);
-        data.append("demoVideo", video);
+        data.append("thumbnail", thumbnail);
+        data.append("video", video);
         data.append("courseName", name);
         data.append("description", description);
         const options = {
