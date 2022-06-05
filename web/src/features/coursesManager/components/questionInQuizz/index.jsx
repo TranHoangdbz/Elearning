@@ -6,13 +6,14 @@ import CheckRoundedIcon from '@mui/icons-material/CheckRounded';
 
 function QuestionInQuizz(props) {
     const quizz = props.item
+
     return (
         <Stack direction='row' sx={styles.container}>
             <Stack>
-                <Typography sx={styles.fontBold}>Question {quizz.index}: {quizz.quizz.question}</Typography>
-                {quizz.quizz.choice &&
-                    quizz.quizz.choice.map((item, index) => (
-                        <ChoiceItem key={index} item={item} index={index} answer={quizz.quizz.answer} />
+                <Typography sx={styles.fontBold}>Question {props.index}: {quizz.question}</Typography>
+                {quizz.choice &&
+                    quizz.choice.map((item, index) => (
+                        <ChoiceItem key={index} item={item} index={index} answer={quizz.answer} />
                     ))
                 }
             </Stack>
