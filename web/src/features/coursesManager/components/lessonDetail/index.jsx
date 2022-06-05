@@ -2,16 +2,23 @@ import { ArrowBack, Edit } from "@mui/icons-material";
 import { Button, Paper, Stack, Typography } from "@mui/material";
 import AddCircleOutlineIcon from '@mui/icons-material/AddCircleOutline';
 import { current, unwrapResult } from "@reduxjs/toolkit";
-import React from "react";
+import React, { useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { useNavigate } from "react-router-dom";
 import { getCourseById, getLessonById, getQuizzByLesson } from "../../coursesManagerSlice";
 import styles from "./lessonDetail.module.scss";
 import QuestionInQuizz from "../questionInQuizz";
+import CreateQuizz from "../../../create-quizz/components";
 
 function LessonDetail() {
   const dispatch = useDispatch();
   const navigate = useNavigate();
+
+
+  /// Open Modal state and function
+  const [open, setOpen] = useState(false);
+  const handleOpen = () => setOpen(true);
+  const handleClose = () => setOpen(false);
 
   const url = window.location.pathname;
   const path = url.split("/").filter((x) => x);
@@ -134,7 +141,11 @@ function LessonDetail() {
           </Typography>
           <Typography>{currentLesson.description}</Typography>
 
-          <Button variant="contained" startIcon={<AddCircleOutlineIcon />} sx={{ backgroundColor: '#120752', alignSelf: 'flex-end', '&:hover': { backgroundColor: '#262e60' } }} >
+          <Button variant="contained" 
+          startIcon={<AddCircleOutlineIcon />} 
+          sx={{ backgroundColor: '#120752', alignSelf: 'flex-end', '&:hover': { backgroundColor: '#262e60' } }} 
+          onClick={handleOpen}
+          >
             New Question
           </Button>
           <Typography variant="h5" fontWeight="bold">
@@ -148,7 +159,13 @@ function LessonDetail() {
             ))
           }
         </Stack>
-
+        <CreateQuizz
+        lessonID={path[3]}
+        open={open} 
+        handleClose={handleClose} 
+        handleOpen={handleOpen}
+        fetchNewData={fetchQuizzByLessonId}
+        ></CreateQuizz>
       </Stack>
     </Paper>
   );

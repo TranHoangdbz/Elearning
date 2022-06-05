@@ -23,6 +23,33 @@ const getAll = async (req, res) => {
   }
 };
 
+const addQuizToLesson = async (req, res) => {
+  const { lessonId } = req.body;
+  const quizzId = mongoose.Types.ObjectId(req?.body?.quizzId)
+  console.log(quizzId)
+  try {
+    const result = await Lesson.updateOne(
+      { _id: lessonId },
+      { $push: { quizz: quizzId } }
+    );
+
+    if (result) {
+      return res.status(200).json({
+        success: true,
+        message: "Add quizz to lesson successfully!",
+        data: result,
+      });
+    } else {
+      throw new Error("Add quizz failed!");
+    }
+  } catch (error) {
+    return res.status(500).json({
+      success: false,
+      message: error.message,
+    });
+  }
+};
+
 const getByCourseId = async (req, res) => {
   try {
     const id = mongoose.Types.ObjectId(req?.params?.id);
@@ -98,6 +125,7 @@ const create = async (req, res) => {
       return res.status(201).json({
         success: true,
         message: "Create a new lesson successfully!",
+        data: result,
       });
     } else {
       throw new Error("Failed to create a new lesson!");
@@ -266,4 +294,5 @@ module.exports = {
   updateById,
   updateFieldLesson,
   deleteById,
+  addQuizToLesson
 };
