@@ -79,7 +79,7 @@ class QuizzController extends GetxController {
     }
   }
 
-  onCheck() {
+  onCheck() async {
     if (checked.value) {
       reset();
     } else {
@@ -99,21 +99,6 @@ class QuizzController extends GetxController {
           },
         );
       } else {
-        showDialog(
-          context: Get.context!,
-          builder: (context) {
-            return const CustomDialog(
-              icon: Icon(
-                Icons.check_circle_rounded,
-                color: AppColors.greenColor,
-                size: 48,
-              ),
-              content:
-                  'Congratulations! You\'ve passed this lesson. You can continue to the next lesson right now!',
-            );
-          },
-        );
-
         String? userId = AuthenticationService.instance.currentUser == null
             ? null
             : AuthenticationService.instance.currentUser!.id;
@@ -132,8 +117,28 @@ class QuizzController extends GetxController {
                 Passed(user: userId, passed: true),
               );
             }
+          } else {
+            passed = [Passed(user: userId, passed: true)];
+          }
+          if (lessons[selectedIndex.value].id != null) {
+            await QuizzService.instance
+                .updateLessonPassed(lessons[selectedIndex.value].id!, userId);
           }
         }
+        showDialog(
+          context: Get.context!,
+          builder: (context) {
+            return const CustomDialog(
+              icon: Icon(
+                Icons.check_circle_rounded,
+                color: AppColors.greenColor,
+                size: 48,
+              ),
+              content:
+                  'Congratulations! You\'ve passed this lesson. You can continue to the next lesson right now!',
+            );
+          },
+        );
       }
       checked.value = true;
     }

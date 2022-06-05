@@ -201,7 +201,7 @@ class discussionController {
         })
             .then((data) => {
                 res.status(200).send({
-                    success: false,
+                    success: true,
                     message: "Add passed student successful"
                 })
             })
