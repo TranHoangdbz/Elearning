@@ -6,8 +6,8 @@ import {
     MenuItem, LinearProgress
 } from '@mui/material';
 import axios, { CancelToken, isCancel } from "axios";
-// import API from '../../../services/API/config'
-import { useLocation, Link } from "react-router-dom";
+import API from '../../../../services/API/config';
+import { Link } from "react-router-dom";
 
 
 const AddCourse = (props) => {
@@ -33,11 +33,11 @@ const AddCourse = (props) => {
     }
     // handle save
     const handleSave = () => {
-        // uploadFile(thumbnail, video);
-        // if (uploadPercentage === 0) {
-        //     setPopup(false);
-        // }
-        setPopup(false);
+        uploadFile(thumbnail, video);
+        if (uploadPercentage === 0) {
+            setPopup(false);
+        }
+        
     }
 
     const imageChange = (event) => {
@@ -68,54 +68,50 @@ const AddCourse = (props) => {
     }
     // upload file 
 
-    // const uploadFile = (thumbnail, video) => {
-    //     let data = new FormData();
-    //     data.append("thumbnail", thumbnail);
-    //     data.append("video", video);
-    //     data.append("name", name);
-    //     data.append("description", description);
+    const uploadFile = (thumbnail, video) => {
+        let data = new FormData();
+        data.append("courseImage", thumbnail);
+        data.append("demoVideo", video);
+        data.append("courseName", name);
+        data.append("description", description);
+        const options = {
+            Headers: { 'Content-Type': 'multipart/form-data' },
+            onUploadProgress: progressEvent => {
+                const { loaded, total } = progressEvent;
 
-    //     const options = {
-    //         Headers: { 'Content-Type': 'multipart/form-data' },
-    //         onUploadProgress: progressEvent => {
-    //             const { loaded, total } = progressEvent;
+                let percent = Math.floor((loaded * 100) / total);
 
-    //             let percent = Math.floor((loaded * 100) / total);
+                if (percent < 100) {
+                    setUploadPercentage(percent);
+                }
+            },
+            
+        };
 
-    //             if (percent < 100) {
-    //                 setUploadPercentage(percent);
-    //             }
-    //         },
-    //         cancelToken: new CancelToken(
-    //             cancel => (cancelFileUpload.current = cancel)
-    //         )
-    //     };
 
-    //     const lessonId = state._id;//props._id; //Where is lessonId?
+        axios
+            .post(
+                `${API.URL_ADD_COURSE}`,
+                data,
+                options
+            )
+            .then(res => {
+                console.log(res);
+                setUploadPercentage(100);
 
-    //     axios
-    //         .patch(
-    //             `${API.URL_UPDATE_LESSON}/${lessonId}`,
-    //             data,
-    //             options
-    //         )
-    //         .then(res => {
-    //             console.log(res);
-    //             setUploadPercentage(100);
+                setTimeout(() => {
+                    setUploadPercentage(0);
+                }, 1000);
+            })
+            .catch(err => {
+                console.log(err);
 
-    //             setTimeout(() => {
-    //                 setUploadPercentage(0);
-    //             }, 1000);
-    //         })
-    //         .catch(err => {
-    //             console.log(err);
-
-    //             if (isCancel(err)) {
-    //                 alert(err.message);
-    //             }
-    //             setUploadPercentage(0);
-    //         });
-    // };
+                if (isCancel(err)) {
+                    alert(err.message);
+                }
+                setUploadPercentage(0);
+            });
+    };
 
     return (
         

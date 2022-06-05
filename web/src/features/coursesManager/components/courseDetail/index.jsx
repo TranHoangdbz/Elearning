@@ -282,7 +282,6 @@ function CourseDetail() {
           course_url = { courseData.demoVideo}
           course_url2={location.pathname} 
         />
-        
       </Dialog>
     </Paper>
   );
