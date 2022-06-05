@@ -3,10 +3,9 @@ import { Card, Box, Button } from "@mui/material";
 import { useFormik } from "formik";
 import * as yup from "yup";
 import AuthPageLayout from "./AuthPageLayout";
-import CTextField from "./components/CTextField";
-import { register } from "./auth";
-import { saveToken } from "./localStorage";
-import Toast from "./components/Toast";
+import CTextField from "../components/CTextField";
+import { register } from "../auth";
+import Toast from "../components/Toast";
 
 const cardStyle = {
   boxShadow: "0px 4px 8px rgba(0, 0, 0, 0.25)",

@@ -5,12 +5,14 @@ import { useFormik } from "formik";
 import { useNavigate } from "react-router-dom";
 import * as yup from "yup";
 import AuthPageLayout from "./AuthPageLayout";
-import CTextField from "./components/CTextField";
-import { callTest, signin } from "./auth";
-import { saveToken } from "./localStorage";
-import Toast from "./components/Toast";
+import CTextField from "../components/CTextField";
+import { callTest, signin } from "../auth";
+import { saveToken } from "../localStorage";
+import Toast from "../components/Toast";
+import { useDispatch } from "react-redux";
+import { setUser } from "../authSlice";
 
-const google = require("../../assets/images/google.png");
+const google = require("../../../assets/images/google.png");
 
 const cardStyle = {
   boxShadow: "0px 4px 8px rgba(0, 0, 0, 0.25)",
@@ -79,6 +81,7 @@ const validationSchema = yup.object({
 
 function SignInPage() {
   const navigate = useNavigate();
+  const dispatch = useDispatch();
   const [open, setOpen] = useState(false);
   const [message, setMessage] = useState(null);
 
@@ -89,11 +92,13 @@ function SignInPage() {
       const { email, password } = values;
       signin(email, password)
         .then(({ data }) => {
-          console.log(data);
-          if (data && data.token) {
+          console.log(data.user);
+          console.log(data.token);
+          if (data && data.token && data.user) {
             setOpen(false);
+            dispatch(setUser(data.user));
             saveToken(data.token);
-            navigate("/exam");
+            //navigate("/");
           }
         })
         .catch(({ response }) => {
@@ -119,7 +124,7 @@ function SignInPage() {
           if (timer) clearInterval(timer);
           callTest();
           console.log("Signin Success");
-          navigate("/exam");
+          navigate("/");
         }
       }, 500);
     }
@@ -160,7 +165,7 @@ function SignInPage() {
             <Button type="submit" variant="contained" sx={submitButtonStyle}>
               Login
             </Button>
-            <Link href="#top" underline="none" style={forgotPasswordStyle}>
+            <Link href="/reset-password" underline="none" style={forgotPasswordStyle}>
               ForgotPassword?
             </Link>
           </form>
