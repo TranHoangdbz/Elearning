@@ -22,7 +22,6 @@ const userController = {
   register: async (req, res) => {
     try {
       const { fullName, email, password, phoneNumber } = req.body;
-      const role = 'user';
       if (!fullName || !email || !password || !phoneNumber)
         return res.status(400).json({ msg: 'Please fill out the information' });
 
@@ -82,7 +81,6 @@ const userController = {
         email,
         password,
         phoneNumber,
-        role,
       });
 
       await newUser.save();
@@ -144,7 +142,7 @@ const userController = {
 
       await user.save();
 
-      const token = await user.generateAuthToken(user._id, user.role);
+      const token = await user.generateAuthToken();
 
       return res.json({ msg: 'Verify successfully.', user, token });
     } catch (err) {
@@ -170,7 +168,7 @@ const userController = {
       if (!isMatch) {
         return res.status(400).json({ message: 'Invalid login credentials' });
       }
-      const token = await user.generateAuthToken(user._id, user.role);
+      const token = await user.generateAuthToken();
       return res.json({
         user,
         token,
@@ -180,14 +178,13 @@ const userController = {
     }
   },
   test: async (req, res) => {
-    //console.log(req.body);
     return res.json({
       message: 'Success',
     });
   },
   callback: async (req, res) => {
     const user = req.user;
-    const token = await user.generateAuthToken(user._id, user.role);
+    const token = await user.generateAuthToken();
     return res.json({ user, token });
   },
 };

@@ -1,4 +1,5 @@
 const jwt = require('jsonwebtoken');
+require('dotenv').config();
 
 const auth = (req, res, next) => {
   try {
@@ -7,6 +8,7 @@ const auth = (req, res, next) => {
 
     jwt.verify(token, process.env.JWT_KEY, (err, data) => {
       if (err) return res.status(500).json({ msg: err });
+      console.log(data);
       const check = req.body.role.findIndex(function (role) {
         return role == data.role;
       });

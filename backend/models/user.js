@@ -44,6 +44,7 @@ const User = new Schema(
     },
     role: {
       type: String,
+      default: 'user',
     },
   },
   { timestamps: true, collection: 'users' }
@@ -59,8 +60,12 @@ User.pre('save', async function (next) {
   next();
 });
 
-User.methods.generateAuthToken = async (_id, role) => {
-  const token = jwt.sign({ _id: _id, role: role }, process.env.JWT_KEY);
+User.methods.generateAuthToken = async function () {
+  const user = this;
+  const token = jwt.sign(
+    { _id: user._id, role: user.role },
+    process.env.JWT_KEY
+  );
   return token;
 };
 
