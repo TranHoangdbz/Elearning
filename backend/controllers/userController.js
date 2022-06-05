@@ -46,7 +46,7 @@ const userController = {
       await newUser.save();
 
       const content = `<a href="${
-        "http://localhost:3000/user/verify/" + user._id
+        "http://localhost:3000/user/verify/" + newUser._id
       }" target="_blank">Click here to verify your account</a>`;
       const mainOptions = {
         from: "ProCourses E-learning",
