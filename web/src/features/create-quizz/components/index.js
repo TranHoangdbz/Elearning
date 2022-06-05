@@ -177,11 +177,11 @@ const CreateQuizz = (props) => {
                         justifyContent: 'flex-end',
                         width: '100%'
                     }}>
-
                     <Button variant="contained" color='error' sx={{ mr: 2 }} onClick={props.handleClose}>Cancel</Button>
                     <Button variant="contained" sx={{ backgroundColor: '#040E53' }} onClick={handleCreateQuizz}>Save All</Button>
                 </Stack>
             </Stack>
+
         </Modal>
     )
 }

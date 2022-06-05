@@ -10,6 +10,9 @@ const style = {
         boxShadow: 5,
         p:2,
         bgcolor: 'background.paper',
+        overflow:'scroll',
+        overflowX:'hidden',
+        
     },
     container: {
         p: 2,
