@@ -107,10 +107,7 @@ const createCourse = async (req, res) => {
     const video = req.files.video;
     const { courseName, description, teacherId } = req.body;
 
-    const lastCourse = await Course.find({})
-      .sort({ _id: -1 })
-      .limit(1)
-      .lean()
+    const lastCourse = await Course.find({}).sort({ _id: -1 }).limit(1).lean();
 
     const courseCodeIndex = lastCourse[0].courseCode.substring(6); //COURSE1 => 1
 
@@ -118,26 +115,27 @@ const createCourse = async (req, res) => {
       courseName,
       description,
       teacher: teacherId,
-      courseCode: `COURSE${Number(courseCodeIndex) + 1}`
-    })
+      courseCode: `COURSE${Number(courseCodeIndex) + 1}`,
+    });
     const courseImage = await handleUpload(thumbnail);
     const demoVideo = await handleUpload(video);
     course.courseImage = courseImage;
     course.demoVideo = demoVideo;
 
-    course.save().then(result => {
+    course.save().then((result) => {
       res.status(200).json({
         success: true,
         course: result,
         message: "Course created!",
       });
-    })
+    });
   } catch (error) {
     console.log(error);
-    res.status(500)
+    res
+      .status(500)
       .json({ success: false, error: "Failed to create the course!" });
   }
-}
+};
 
 const updateById = async (req, res) => {
   try {
@@ -252,8 +250,8 @@ const handleUpload = async (files) => {
 const updateFieldCourse = async (req, res) => {
   try {
     const courseID = req.params.id;
-    const courseImage = req.files.courseImage;
-    const demoVideo = req.files.demoVideo;
+    const courseImage = req.files.thumbnail;
+    const demoVideo = req.files.video;
     const { courseName, category, description, teacher } = req.body;
     const course = await Course.findById(courseID);
     if (!course)
