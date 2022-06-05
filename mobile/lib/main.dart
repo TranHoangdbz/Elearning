@@ -18,7 +18,7 @@ class MyApp extends StatelessWidget {
     return ScreenUtilInit(
       minTextAdapt: true,
       child: GetMaterialApp(
-        initialRoute: Routes.splash,
+        initialRoute: Routes.home,
         getPages: Pages.pages,
         defaultTransition: Transition.cupertino,
       ),

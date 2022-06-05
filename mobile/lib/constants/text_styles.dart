@@ -23,6 +23,12 @@ class TextStyles {
     fontSize: 36.sp,
     fontWeight: FontWeight.w800,
   );
+  static final TextStyle textStyleSecondaryLightColor14w600 =
+  textStyleBase.copyWith(
+    color: AppColors.secondaryColor,
+    fontSize: 14.sp,
+    fontWeight: FontWeight.w600,
+  );
   static final TextStyle textStylePrimaryColor14w600 = textStyleBase.copyWith(
     color: AppColors.primaryColor,
     fontSize: 14.sp,
@@ -43,6 +49,12 @@ class TextStyles {
     color: AppColors.onBackgroundColor,
     fontSize: 14.sp,
     fontWeight: FontWeight.w500,
+  );
+  static final TextStyle textStyleOnBackgroundColor12w400 =
+  textStyleBase.copyWith(
+    color: AppColors.onBackgroundColor,
+    fontSize: 12.sp,
+    fontWeight: FontWeight.w400,
   );
   static final TextStyle textStyleOnBackgroundColor14w700 =
       textStyleBase.copyWith(
