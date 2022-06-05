@@ -7,7 +7,6 @@ import URL_API from '../../../services/API/config';
 import AjaxHelper from '../../../services/index';
 import {setCurrentCourse} from '../courseLearningSlice.js';
 import { MdThumbUp } from "react-icons/md";
-import _ from 'lodash';
 
 function ReplyCommentCard(props) {
     const dispatch = useDispatch();
@@ -46,7 +45,8 @@ function ReplyCommentCard(props) {
             commentID: props.comment._id,
             courseID: currentCourse._id
         }
-        console.log("dataToDelete",dataToDelete);
+        // console.log("dataToDelete",dataToDelete);
+        setIsOpenManage(false);
         await AjaxHelper.post(URL_API.URL_SYSTEM_V1 + '/discussions/comment/delete', dataToDelete)
             .then(res => {
                 dispatch(setCurrentCourse(res.data.currentCourse));

@@ -46,7 +46,6 @@ function a11yProps(index) {
 
 export default function OverviewAndQuizz() {
     const [value, setValue] = React.useState(0);
-    // const currentCourse = useSelector((state) => {return state.courseLearning.currentCourse});
 
     const handleChange = (event, newValue) => {
         setValue(newValue);

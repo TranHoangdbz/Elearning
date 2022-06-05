@@ -10,7 +10,8 @@ import AjaxHelper from '../../../services/index';
 import {
     setCurrentCourse, 
     changeCurrentLessonIndex,
-    setCurrentUserInfo
+    setCurrentUserInfo,
+    setUserLessonIndex
 } from '../courseLearningSlice.js';
 
 function CourseLearning() {
@@ -76,6 +77,7 @@ function CourseLearning() {
                     dispatch(setCurrentUserInfo(res.data.data));
                     console.log("Hàm lấy user");
                     dispatch(changeCurrentLessonIndex(getCurrentIndexInit(res.data.data._id)));
+                    dispatch(setUserLessonIndex(getCurrentIndexInit(res.data.data._id)));
                 })
                 .catch(err => {
                     console.log(err)

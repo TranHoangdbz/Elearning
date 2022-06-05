@@ -6,6 +6,7 @@ import URL_API from '../../../services/API/config';
 import AjaxHelper from '../../../services/index';
 
 const label = { inputProps: { 'aria-label': 'Checkbox demo' } };
+
 const initValueQuizz = () => {
     var res = [];
     for(var i = 0; i < 100; i++){
@@ -85,6 +86,11 @@ function Quizz() {
         }
     }
 
+    const isPass = useSelector((state) => {
+        return state.courseLearning.userLessonIndex > state.courseLearning.currentLessonIndex;
+    }) || false;
+    const [isRedo, setIsRedo] = useState(false);
+
     return (
         <div className='quizz'>
             <div style={{ fontFamily: "'Montserrat', san-serif" }} className='title'>Attention</div>
@@ -99,112 +105,140 @@ function Quizz() {
                         {currentLesson ? currentLesson.quizz.length : ""} question
                     </div>
                 </div>
-                <div style={{ paddingLeft: '60px', backgroundColor: 'rgba(4, 14, 83, 0.04)' }}>
-                    {/* <SliderQuestion></SliderQuestion> */}
-                    <div>
-                        <div style={{ fontFamily: "'Montserrat', san-serif" }} className='name-question'>
-                            {currentLesson.quizz[activeStep] ? currentLesson.quizz[activeStep].question : ""}
-                        </div>
-                        {
-                            currentLesson.quizz.map((value, index) => {
-                                    return (
-                                        <div style={{
-                                                display: index===activeStep ? 'block' : 'none'
-                                            }}
-                                        >
-                                            <div>
-                                                <FormControlLabel
-                                                    control={
-                                                        <Checkbox {...label} name="answer"
-                                                            onClick={(e) => handleClickAnswer(e)}  
-                                                            value={0}
-                                                            color="secondary"
+                <div>
+                    {
+                        <div style={{ paddingLeft: '60px', backgroundColor: 'rgba(4, 14, 83, 0.04)' }}>
+                            <div> 
+                                {   
+                                    !isPass || isRedo ?  
+                                    [
+                                        <div style={{ fontFamily: "'Montserrat', san-serif" }} className='name-question'>
+                                            {currentLesson.quizz[activeStep] ? currentLesson.quizz[activeStep].question : ""}
+                                        </div>,
+                                        currentLesson.quizz.map((value, index) => {
+                                            return (
+                                                <div style={{
+                                                        display: index===activeStep ? 'block' : 'none'
+                                                    }}
+                                                >
+                                                    <div>
+                                                        <FormControlLabel
+                                                            control={
+                                                                <Checkbox {...label} name="answer"
+                                                                    onClick={(e) => handleClickAnswer(e)}  
+                                                                    value={0}
+                                                                    color="secondary"
+                                                                />
+                                                            }
+                                                            label={currentLesson.quizz[activeStep].choice[0]}
+                                                            sx={{ marginBottom: '30px' , fontSize: '14px'}}
                                                         />
-                                                    }
-                                                    label={currentLesson.quizz[activeStep].choice[0]}
-                                                    sx={{ marginBottom: '30px' , fontSize: '14px'}}
-                                                />
+                                                    </div>
+                                                    <div>
+                                                        <FormControlLabel
+                                                            control={
+                                                                <Checkbox {...label} name="answer"
+                                                                    onClick={(e) => handleClickAnswer(e)}
+                                                                    value={1}
+                                                                    color="secondary" />
+                                                            }
+                                                            label={currentLesson.quizz[activeStep].choice[1]}
+                                                            sx={{ marginBottom: '30px' , fontSize: '14px'}}
+                                                        />
+                                                    </div>
+                                                    <div>
+                                                        <FormControlLabel
+                                                            control={
+                                                                <Checkbox {...label} name="answer"
+                                                                    onClick={(e) => handleClickAnswer(e)}
+                                                                    value={2}
+                                                                    color="secondary" />
+                                                            }
+                                                            label={currentLesson.quizz[activeStep].choice[2]}
+                                                            sx={{ marginBottom: '30px' , fontSize: '14px'}}
+                                                        />
+                                                    </div>
+                                                    <div>
+                                                        <FormControlLabel
+                                                            control={
+                                                                <Checkbox {...label} name="answer"
+                                                                    onClick={(e) => handleClickAnswer(e)}s
+                                                                    value={3}
+                                                                    color="secondary" />
+                                                            }
+                                                            label={currentLesson.quizz[activeStep].choice[3]}
+                                                            sx={{ marginBottom: '30px', fontSize: '14px' }}
+                                                        />
+                                                    </div>
+                                                </div>
+                                            )
+                                        }),
+                                    ]
+                                    : 
+                                        <div className="result-container">
+                                            <div className="title">
+                                                You have finished the test!
                                             </div>
-                                            <div>
-                                                <FormControlLabel
-                                                    control={
-                                                        <Checkbox {...label} name="answer"
-                                                            onClick={(e) => handleClickAnswer(e)}
-                                                            value={1}
-                                                            color="secondary" />
-                                                    }
-                                                    label={currentLesson.quizz[activeStep].choice[1]}
-                                                    sx={{ marginBottom: '30px' , fontSize: '14px'}}
-                                                />
-                                            </div>
-                                            <div>
-                                                <FormControlLabel
-                                                    control={
-                                                        <Checkbox {...label} name="answer"
-                                                            onClick={(e) => handleClickAnswer(e)}
-                                                            value={2}
-                                                            color="secondary" />
-                                                    }
-                                                    label={currentLesson.quizz[activeStep].choice[2]}
-                                                    sx={{ marginBottom: '30px' , fontSize: '14px'}}
-                                                />
-                                            </div>
-                                            <div>
-                                                <FormControlLabel
-                                                    control={
-                                                        <Checkbox {...label} name="answer"
-                                                            onClick={(e) => handleClickAnswer(e)}s
-                                                            value={3}
-                                                            color="secondary" />
-                                                    }
-                                                    label={currentLesson.quizz[activeStep].choice[3]}
-                                                    sx={{ marginBottom: '30px', fontSize: '14px' }}
-                                                />
+                                            <div className='btn-back btn-redo'
+                                                onClick={(e) => {
+                                                    setIsRedo(true);
+                                                }} 
+                                            >
+                                                Redo
                                             </div>
                                         </div>
+                                }
+                            </div>
+                        </div>
+                    }
+                </div>
+                {
+                    !isPass || isRedo ?  
+                    <div style={{ display: 'flex', justifyContent: 'center', backgroundColor: 'rgba(4, 14, 83, 0.04)', paddingTop: '20px' }}>
+                        {
+                            currentLesson.quizz.map((value, index, key) => {
+                                if (index === activeStep) {
+                                    return (
+                                        <div className='dot active'></div>
                                     )
+                                } else {
+                                    return (
+                                        <div className='dot'></div>
+                                    )
+                                }
                             })
                         }
                     </div>
-                </div>
-                <div style={{ display: 'flex', justifyContent: 'center', backgroundColor: 'rgba(4, 14, 83, 0.04)', paddingTop: '20px' }}>
-                    {
-                        currentLesson.quizz.map((value, index, key) => {
-                            if (index === activeStep) {
-                                return (
-                                    <div className='dot active'></div>
-                                )
-                            } else {
-                                return (
-                                    <div className='dot'></div>
-                                )
-                            }
-                        })
-                    }
-                </div>
-                <div style={{ padding: '30px', paddingTop: '0', display: 'flex', justifyContent: 'space-between', backgroundColor: 'rgba(4, 14, 83, 0.04)' }}>
-                    {
-                        activeStep === 0 ? (<div></div>) : (
-                            <div onClick={handleClickBack} className='btn-back'>
-                                Back
-                            </div>
-                        )
-                    }
-                    <div style={{ display: 'flex' }}>
+                    : null
+                }
+                {
+                    !isPass || isRedo ? 
+                    <div style={{ padding: '30px', paddingTop: '0', display: 'flex', justifyContent: 'space-between', backgroundColor: 'rgba(4, 14, 83, 0.04)' }}>
                         {
-                            activeStep === (currentLesson.quizz.length - 1) ? (
-                                <div onClick={(e) => handleClickSubmit(e)} className='btn-back'>
-                                    Submit
+                            activeStep === 0 ? (<div></div>) : (
+                                <div onClick={handleClickBack} className='btn-back'>
+                                    Back
                                 </div>
-                            ) : (
-                                currentLesson.quizz.length > 0 ?
-                                <div onClick={handleClickNext} className='btn-back'>
-                                    Next
-                                </div> : null
                             )
                         }
+                        <div style={{ display: 'flex' }}>
+                            {
+                                activeStep === (currentLesson.quizz.length - 1) ? (
+                                    <div onClick={(e) => handleClickSubmit(e)} className='btn-back'>
+                                        Submit
+                                    </div>
+                                ) : (
+                                    currentLesson.quizz.length > 0 ?
+                                    <div onClick={handleClickNext} className='btn-back'>
+                                        Next
+                                    </div> : null
+                                )
+                            }
+                        </div>
                     </div>
-                </div>
+                    : null
+                }
+                
                 {/* <div className='course unlock' style={{ position: 'relative', paddingLeft: '20px', paddingRight: '20px', display: 'flex', justifyContent: 'space-between', height: '50px', alignItems: 'center', backgroundColor: 'rgb(186, 187, 196)', color: 'black' }}>
                     <div style={{ fontFamily: "'Montserrat', san-serif", fontWeight: '500', fontSize: '12px', lineHeight: '15px' }}>2. Exception filters</div>
                     <div style={{ fontFamily: "'Montserrat', san-serif", fontWeight: '500', fontSize: '12px', lineHeight: '15px' }}>10 question</div>

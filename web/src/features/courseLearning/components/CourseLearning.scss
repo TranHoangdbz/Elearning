@@ -246,6 +246,23 @@
             align-items: center;
             padding-top: 22px;
             padding-bottom: 22px;
+            
+        }
+
+        .result-container{
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            text-align: center;
+            .title{
+                margin-top: 20px;
+            }
+            .btn-redo {
+                margin-top: 20px;
+                font-size: 14px;
+                width: 80px;
+                margin-bottom: 10px;
+            }
         }
 
         .dot {
