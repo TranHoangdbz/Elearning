@@ -1,4 +1,4 @@
-import React from "react";
+import React from 'react';
 
 // page
 const SignInPage = React.lazy(() => import("./features/auth/pages/SignInPage"));
