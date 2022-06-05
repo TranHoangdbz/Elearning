@@ -1,8 +1,12 @@
-import { combineReducers } from 'redux';
-import counter from '../features/counter/counterSlice'
+import { combineReducers } from "redux";
+import coursesManager from "../features/coursesManager/coursesManagerSlice";
+import courseLearning from "../features/courseLearning/courseLearningSlice";
+import resetPassword from "../features/resetPassword/resetPasswordSlice";
 
 const rootReducer = combineReducers({
-  counter:counter,
+    coursesManager: coursesManager,
+    courseLearning: courseLearning,
+    resetPassword,
 });
 
 export default rootReducer;

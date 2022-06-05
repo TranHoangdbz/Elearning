@@ -1,0 +1,90 @@
+.box {
+    --width: 401px;
+    --height: 162px;
+
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    padding: 30px 40px;
+    gap: 15px;
+
+    position: absolute;
+    transform: translate(-50%, -50%);
+    left: 50%;
+    top: 50%;
+
+    background: #ffffff;
+    border-radius: 10px;
+
+    .title {
+        font-style: normal;
+        font-weight: 600;
+        font-size: 32px;
+        line-height: 39px;
+        text-transform: capitalize;
+        /* identical to box height */
+
+        display: flex;
+        align-items: center;
+
+        &_success {
+            @extend .title;
+            color: #0ead1e;
+        }
+        &_fail {
+            @extend .title;
+            color: red;
+        }
+    }
+    .icon {
+        width: 35px;
+        height: 35px;
+        &_success {
+            @extend .icon;
+            color: #0ead1e;
+        }
+        &_fail {
+            @extend .icon;
+            color: red;
+        }
+    }
+    .description {
+        font-weight: 400;
+        font-size: 14px;
+        line-height: 17px;
+        display: flex;
+        align-items: center;
+        text-align: center;
+
+        color: #040e53;
+    }
+
+    .submitGroup {
+        display: flex;
+        flex-direction: column;
+        justify-content: center;
+        align-items: center;
+        padding: 0px;
+        gap: 18px;
+
+        width: 451px;
+        height: 93px;
+        .submitButton {
+            width: 451px;
+            height: 58px;
+
+            background: var(--primaryColor);
+            border-radius: 6px;
+            border: 0px;
+
+            font-weight: 600;
+            font-size: 14px;
+            line-height: 17px;
+            text-align: center;
+            color: var(--onPrimaryColor);
+
+            cursor: pointer;
+        }
+    }
+}

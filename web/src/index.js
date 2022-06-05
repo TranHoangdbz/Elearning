@@ -15,7 +15,7 @@ const root = createRoot(container); // createRoot(container!) if you use TypeScr
 root.render(
     <Provider store={store}>
         <GlobalStyles>
-            <App />
+            <App></App>
         </GlobalStyles>
     </Provider>
 );

@@ -20,23 +20,23 @@ const userController = {
                 } else {    
                     const content = `<a href="${'http://localhost:32/api/users/verify?id=' + user._id}" target="_blank">Click here to verify your account</a>`;
                     const mainOptions = {
-                        from: 'ProCourses E-learning',
+                        from: "ProCourses E-learning",
                         to: user.email,
-                        subject: 'Verify Account in ProCourse',
-                        text: 'Your text is here',
+                        subject: "Verify Account in ProCourse",
+                        text: "Your text is here",
                         html: content,
                     };
                     transporter.sendMail(mainOptions, function (err, info) {
                         if (err) {
                             return res.status(500).json({ msg: err.message });
                         } else {
-                            return res.status(200).json({ msg: 'success' });
+                            return res.status(200).json({ msg: "success" });
                         }
                     });
                     return res.json({ user });
                 }
             }
-    
+
             const newUser = new User({
                 fullName,
                 email,
@@ -47,17 +47,17 @@ const userController = {
 
             const content = `<a href="${'http://localhost:32/api/users/verify?id=' + user._id}" target="_blank">Click here to verify your account</a>`;
             const mainOptions = {
-                from: 'ProCourses E-learning',
+                from: "ProCourses E-learning",
                 to: newUser.email,
-                subject: 'Verify Account in ProCourse',
-                text: 'Your text is here',
+                subject: "Verify Account in ProCourse",
+                text: "Your text is here",
                 html: content,
             };
             transporter.sendMail(mainOptions, function (err, info) {
                 if (err) {
                     return res.status(500).json({ msg: err.message });
                 } else {
-                    return res.status(200).json({ msg: 'success' });
+                    return res.status(200).json({ msg: "success" });
                 }
             });
 
@@ -72,7 +72,7 @@ const userController = {
 
             const user = await User.findOne({ _id: id });
 
-            if (!user) return res.status(400).json({ msg: 'User not found' });
+            if (!user) return res.status(400).json({ msg: "User not found" });
 
             user.verified = true;
 
@@ -80,7 +80,7 @@ const userController = {
 
             const token = await user.generateAuthToken();
 
-            return res.json({ msg: 'Verify successfully.', user, token });
+            return res.json({ msg: "Verify successfully.", user, token });
         } catch (err) {
             return res.status(500).json({ msg: err.message });
         }
@@ -97,9 +97,9 @@ const userController = {
             }
 
             if (!user.verified) {
-                return res.status(400).json({ msg: 'Not verified yet' });
+                return res.status(400).json({ msg: "Not verified yet" });
             }
-    
+
             const isMatch = await bcrypt.compare(password, user.password);
             if (!isMatch) {
                 return res.status(400).json({ msg: 'Invalid login credentials' });
@@ -108,6 +108,7 @@ const userController = {
             const token = await user.generateAuthToken();
             return res.json({ user, token });
         } catch (err) {
+            console.log(err);
             return res.status(500).json({ msg: err.message });
         }
     },
