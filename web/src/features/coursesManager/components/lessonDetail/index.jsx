@@ -1,12 +1,13 @@
 import { ArrowBack, Edit } from "@mui/icons-material";
 import { Button, Paper, Stack, Typography } from "@mui/material";
 import AddCircleOutlineIcon from '@mui/icons-material/AddCircleOutline';
-import { current } from "@reduxjs/toolkit";
+import { current, unwrapResult } from "@reduxjs/toolkit";
 import React from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { useNavigate } from "react-router-dom";
-import { getCourseById, getLessonById } from "../../coursesManagerSlice";
+import { getCourseById, getLessonById, getQuizzByLesson } from "../../coursesManagerSlice";
 import styles from "./lessonDetail.module.scss";
+import QuestionInQuizz from "../questionInQuizz";
 
 function LessonDetail() {
   const dispatch = useDispatch();
@@ -34,6 +35,10 @@ function LessonDetail() {
     lessonVolume: null,
   });
 
+
+  const [quizList, setQuizList] = React.useState([])
+
+
   const [currentCourseName, setCurrentCourseName] = React.useState("");
 
   if (currentLessonData !== null && currentLesson._id === "") {
@@ -44,9 +49,30 @@ function LessonDetail() {
     setCurrentCourseName(currentCourseData.courseName);
   }
 
+  const fetchQuizzByLessonId = async () => {
+    try {
+      const resultAction = await dispatch(getQuizzByLesson(path[3]))
+      const originalPromiseResult = unwrapResult(resultAction)
+      let tempList = []
+      for (let i = 0; i < originalPromiseResult.data.length; i++) {
+        let temp = {
+          index: i + 1,
+          quizz: originalPromiseResult.data[i]
+        }
+        tempList.push(temp)
+      }
+      setQuizList(tempList)
+    } catch (rejectedValueOrSerializedError) {
+      alert(rejectedValueOrSerializedError);
+    }
+  }
+
   React.useEffect(() => {
     dispatch(getCourseById(path[2]));
     dispatch(getLessonById(path[3]));
+    if (quizList.length === 0) {
+      fetchQuizzByLessonId();
+    }
   }, []);
 
   return (
@@ -111,16 +137,21 @@ function LessonDetail() {
             Description
           </Typography>
           <Typography>{currentLesson.description}</Typography>
+
+          <Button variant="contained" startIcon={<AddCircleOutlineIcon />} sx={{ backgroundColor: '#120752', alignSelf: 'flex-end', '&:hover': { backgroundColor: '#262e60' } }} >
+            New Question
+          </Button>
+          <Typography variant="h5" fontWeight="bold">
+            Lesson Quiz:
+          </Typography>
+
+          {
+            quizList &&
+            quizList.map((item, index) => (
+              <QuestionInQuizz key={index} item={item} />
+            ))
+          }
         </Stack>
-
-        {/* View Quiz Nhom 8 */}
-        <Button className={`${styles.addQuesBtn}`} variant="contained" startIcon={<AddCircleOutlineIcon />}>
-          New Question
-        </Button>
-        <Typography variant="h5" fontWeight="bold">
-          Lesson Quiz:
-        </Typography>
-
 
       </Stack>
     </Paper>
