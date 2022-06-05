@@ -7,7 +7,6 @@ const AuthPageLayout = React.lazy(() =>
 const SignInPage = React.lazy(() => import("./features/auth/SignInPage"));
 const SignUpPage = React.lazy(() => import("./features/auth/SignUpPage"));
 const DemoCourse = React.lazy(() => import("./features/demo-course"));
-const CreateQuizz = React.lazy(() => import("./features/create-quizz"));
 const CourseLearningPage = React.lazy(() =>
     import("./features/courseLearning")
 );
@@ -28,7 +27,6 @@ export const DEMO = '/demo';
 export const RESET_PASSWORD = "/reset-password";
 export const VIEW_LESSON = "/coursesmanager/lessondetail/:courseId/:lessonId";
 export const ADD_LESSON = "/coursesmanager/addlesson";
-export const CREATE_QUIZZ = "/quizz"
 
 const publicRoute = [
     {
@@ -92,11 +90,7 @@ const adminRoute = [
         name: "LessonDetail",
         element: <CoursesManagerPage route={"lessondetail"} />
     },
-    {
-        path: CREATE_QUIZZ,
-        name: "CreateQuizz",
-        element: <CreateQuizz />
-    },
+  
     {
         path: ADD_LESSON,
         name: "AddCourse",
