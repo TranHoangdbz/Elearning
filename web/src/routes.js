@@ -1,11 +1,8 @@
-import React from "react";
+import React from 'react';
 
 // page
-const AuthPageLayout = React.lazy(() =>
-    import("./features/auth/AuthPageLayout")
-);
-const SignInPage = React.lazy(() => import("./features/auth/SignInPage"));
-const SignUpPage = React.lazy(() => import("./features/auth/SignUpPage"));
+const SignInPage = React.lazy(() => import("./features/auth/pages/SignInPage"));
+const SignUpPage = React.lazy(() => import("./features/auth/pages/SignUpPage"));
 const DemoCourse = React.lazy(() => import("./features/demo-course"));
 const CourseLearningPage = React.lazy(() =>
     import("./features/courseLearning")
