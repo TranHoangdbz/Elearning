@@ -2,7 +2,6 @@ import { ArrowBack, Delete, Edit, MoreVert } from "@mui/icons-material";
 import {
   Alert,
   Button,
-  Dialog,
   IconButton,
   List,
   ListItem,
@@ -17,7 +16,7 @@ import { Box } from "@mui/system";
 import React from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { useNavigate } from "react-router-dom";
-import { getLessonsByCourse } from "../../coursesManagerSlice";
+import { getCourseById, getCourses, setActiveCourse } from "../../coursesManagerSlice";
 import AddLessonModal from "../addLessonModal";
 import styles from "./courseDetail.module.scss";
 
@@ -42,28 +41,94 @@ function CourseDetail() {
     }, 3000);
   };
 
-  const courseIndex = useSelector(
-    (state) => state.coursesManager.courses
-  ).findIndex((object) => {
-    return object._id === path[2];
+  const currentCourseData = useSelector(
+    (state) => state.coursesManager.currentCourse
+  );
+
+  const [currentCourse, setCurrentCourse] = React.useState({
+    _id: "",
+    courseCode: "",
+    courseImage: "",
+    courseName: "",
+    demoVideo: "",
+    category: "",
+    description: "",
+    teacher: null,
+    discussion: [],
+    rating: [],
+    lessons: [],
+    isActive: null,
   });
 
-  const courseData = useSelector((state) => state.coursesManager.courses)[
-    courseIndex
-  ];
+  const getVideoDuration = (_id) => {
+    if (currentCourse.lessons === []) {
+      return {
+        minute: NaN,
+        second: NaN,
+      };
+    } else {
+      var myVideoPlayer = document.getElementById(`${_id}`);
+      if (myVideoPlayer === null) {
+        return {
+          minute: NaN,
+          second: NaN,
+        };
+      } else if (myVideoPlayer.duration !== NaN) {
+        let videoDuration = myVideoPlayer.duration;
+        return {
+          minute: parseInt(videoDuration / 60, 10),
+          second: parseInt(videoDuration % 60),
+        };
+      }
+      return {
+        minute: NaN,
+        second: NaN,
+      };
+    }
+  };
 
-  const lessons = useSelector((state) => state.coursesManager.lessons);
+  if (currentCourseData !== null && currentCourse._id === "") {
+    setCurrentCourse(currentCourseData);
+  }
 
   React.useEffect(() => {
-    dispatch(getLessonsByCourse(courseData._id));
-  }, [courseData]);
+    setCurrentCourse({
+      _id: "",
+      courseCode: "",
+      courseImage: "",
+      courseName: "",
+      demoVideo: "",
+      category: "",
+      description: "",
+      teacher: null,
+      discussion: [],
+      rating: [],
+      lessons: [],
+      isActive: null,
+    });
+    dispatch(getCourseById(path[2]));
+  }, [dispatch]);
+
+  const handleDeleteCourse = () => {
+    let lessons = [];
+    currentCourse.lessons.forEach((item) => {
+      lessons.push(item._id);
+    });
+    dispatch(
+      setActiveCourse({ ...currentCourse, lessons: lessons, isActive: false })
+    );
+    navigate("/coursesmanager/courseslist");
+    dispatch(getCourses());
+  };
 
   const [anchorEl, setAnchorEl] = React.useState(null);
+  const [id, setId] = React.useState();
 
   const open = Boolean(anchorEl);
 
-  const handleClick = (e) => {
+  const handleClick = (e, _id) => {
     setAnchorEl(e.currentTarget);
+    setId(_id);
   };
 
   const handleClose = () => {
@@ -105,21 +170,22 @@ function CourseDetail() {
               className={`${styles.button}`}
               variant="text"
               startIcon={<Delete />}
+              onClick={() => handleDeleteCourse()}
             >
               Delete
             </Button>
           </Box>
         </Stack>
         <Typography variant="h4" fontWeight="bold">
-          {courseData.courseName}
+          {currentCourse.courseName}
         </Typography>
-        <Typography width="67%">{courseData.description}</Typography>
+        <Typography width="67%">{currentCourse.description}</Typography>
         <Stack padding="12px 0px" spacing="4px">
           <Typography variant="h5" fontWeight="bold">
             Thumbnail
           </Typography>
           <div className={`${styles.thumbnail}`}>
-            <img alt="thumbnail" src={courseData.courseImage} />
+            <img alt="thumbnail" src={currentCourse.courseImage} />
           </div>
         </Stack>
         <Stack
@@ -131,7 +197,7 @@ function CourseDetail() {
             <Typography variant="h5" fontWeight="bold">
               Course content
             </Typography>
-            <Typography>{`${courseData.lessons.length} lessons`}</Typography>
+            <Typography>{`${currentCourse.lessons.length} lessons`}</Typography>
           </Stack>
           <Button
             className={`${styles.addbutton}`}
@@ -143,43 +209,57 @@ function CourseDetail() {
         </Stack>
         <Stack direction="row" spacing="12px">
           <div className={`${styles.demo}`}>
-            <img alt="demo" src={courseData.courseImage} />
+            <img alt="demo" src={currentCourse.courseImage} />
           </div>
           <List
             className={`${styles.list}`}
             sx={{ margin: "0px", padding: "0px" }}
           >
-            {lessons.map((item) => {
+            {currentCourse.lessons.map((item, index) => {
               return (
                 <ListItem>
                   <Paper className={`${styles.listitem}`} elevation={3}>
-                    <Stack direction="row" justifyContent="space-between">
-                      <img
-                        alt="listitemiamge"
-                        className={`${styles.listitemimage}`}
-                        src={item.thumbnail}
-                      />
-
+                    <Stack direction="row" spacing="16px">
+                      <video
+                        className={`${styles.lessonvideo}`}
+                        id={`video_${item._id}`}
+                        controls
+                      >
+                        <source src={item.video} type="video/mp4" />
+                      </video>
+                      <div className={`${styles.listitemimage}`}>
+                        <img alt="listitemiamge" src={item.thumbnail} />
+                      </div>
                       <Stack
-                        direction="column"
-                        alignItems="flex-start"
-                        justifyContent="space-evenly"
+                        className={`${styles.listitemrest}`}
+                        direction="row"
+                        justifyContent="space-between"
                       >
-                        <Typography fontWeight="bold">
-                          {`${item.lessonVolume}. ${item.name}`}
-                        </Typography>
-                        <Typography>12:25</Typography>
+                        <Stack
+                          direction="column"
+                          alignItems="flex-start"
+                          justifyContent="space-evenly"
+                        >
+                          <Typography fontWeight="bold">
+                            {`${index + 1}. ${item.name}`}
+                          </Typography>
+                          <Typography>
+                            {`${getVideoDuration(`video_${item._id}`).minute}:${
+                              getVideoDuration(`video_${item._id}`).second
+                            }`}
+                          </Typography>
+                        </Stack>
+                        <IconButton
+                          aria-controls={
+                            open ? "demo-positioned-menu" : undefined
+                          }
+                          aria-haspopup="true"
+                          aria-expanded={open ? "true" : undefined}
+                          onClick={(e) => handleClick(e, item._id)}
+                        >
+                          <MoreVert />
+                        </IconButton>
                       </Stack>
-                      <IconButton
-                        aria-controls={
-                          open ? "demo-positioned-menu" : undefined
-                        }
-                        aria-haspopup="true"
-                        aria-expanded={open ? "true" : undefined}
-                        onClick={handleClick}
-                      >
-                        <MoreVert />
-                      </IconButton>
                       <Menu
                         id="demo-positioned-menu"
                         aria-labelledby="demo-positioned-button"
@@ -198,7 +278,7 @@ function CourseDetail() {
                       >
                         <MenuItem
                           onClick={() => {
-                            handleViewLesson(courseData._id, item._id);
+                            handleViewLesson(currentCourse._id, id);
                           }}
                         >
                           Xem

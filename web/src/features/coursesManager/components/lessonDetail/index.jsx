@@ -1,9 +1,8 @@
 import { ArrowBack, Edit } from "@mui/icons-material";
 import { Button, Paper, Stack, Typography } from "@mui/material";
-import { current } from "@reduxjs/toolkit";
 import React from "react";
 import { useDispatch, useSelector } from "react-redux";
-import { useNavigate } from "react-router-dom";
+import { useNavigate, useParams } from "react-router-dom";
 import { getCourseById, getLessonById } from "../../coursesManagerSlice";
 import styles from "./lessonDetail.module.scss";
 
@@ -44,6 +43,17 @@ function LessonDetail() {
   }
 
   React.useEffect(() => {
+    setCurrentLesson({
+      _id: "",
+      lessonCode: "",
+      description: "",
+      video: "",
+      quizz: [],
+      passed: [],
+      thumbnail: "",
+      name: "",
+      lessonVolume: null,
+    });
     dispatch(getCourseById(path[2]));
     dispatch(getLessonById(path[3]));
   }, []);

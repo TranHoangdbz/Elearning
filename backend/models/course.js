@@ -29,6 +29,10 @@ const courseSchema = new mongoose.Schema({
   ],
   discussion: [],
   rating: [],
+  isActive: {
+    type: Boolean,
+    default: true,
+  }
 });
 
 module.exports = mongoose.model("Course", courseSchema);

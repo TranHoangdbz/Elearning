@@ -49,8 +49,20 @@
 }
 
 .listitemimage {
-    width: 30%;
+    flex: 1;
     height: calc(18vw * 6 / 19);
-    object-fit: cover;
-    border-radius: 2%;
+    img{
+        width: 100%;
+        height: 100%;
+        object-fit: cover;
+        border-radius: 2%;
+    }
+}
+
+.listitemrest {
+    flex: 2;
+}
+
+.lessonvideo {
+    display: none;
 }

@@ -101,7 +101,7 @@ const updateById = async (req, res) => {
     });
 
     if (result) {
-      const { courseName, courseImage, description, lessons } = req.body;
+      const { courseName, courseImage, description, lessons, isActive } = req.body;
 
       let errors = {};
 
@@ -134,6 +134,7 @@ const updateById = async (req, res) => {
           courseImage,
           description,
           lessons,
+          isActive
         }
       );
 
