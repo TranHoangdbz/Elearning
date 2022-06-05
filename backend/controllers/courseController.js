@@ -18,6 +18,7 @@ const getAll = async (req, res) => {
   }
 };
 
+
 const getById = async (req, res) => {
   try {
     const id = mongoose.Types.ObjectId(req?.params?.id);

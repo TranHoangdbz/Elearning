@@ -9,7 +9,6 @@ const { BASE_API_URL } = require("../constants");
 const getAll = async (req, res) => {
   try {
     const results = await Lesson.find({}).lean();
-
     return res.status(200).json({
       success: true,
       message: "Get all lessons successfully!",

@@ -21,6 +21,10 @@ const lessonSchema = new mongoose.Schema({
       ref: "Quizz",
     },
   ],
+  passed: {
+    type: Array,
+    default: []
+  }
 });
 
 module.exports = mongoose.model("lesson", lessonSchema);
