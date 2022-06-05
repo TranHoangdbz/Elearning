@@ -1,10 +1,15 @@
 import React, {useState } from 'react';
 import './CourseLearning.scss'
 import { Checkbox, FormControlLabel} from '@mui/material'
-import { useSelector} from 'react-redux';
+import { useDispatch, useSelector} from 'react-redux';
 import URL_API from '../../../services/API/config';
 import AjaxHelper from '../../../services/index';
-
+import {
+    setCurrentCourse, 
+    changeCurrentLessonIndex,
+    setCurrentUserInfo,
+    setUserLessonIndex,
+} from '../courseLearningSlice.js';
 const label = { inputProps: { 'aria-label': 'Checkbox demo' } };
 
 const initValueQuizz = () => {
@@ -16,6 +21,11 @@ const initValueQuizz = () => {
 }
 
 function Quizz() {
+    const dispatch = useDispatch();
+    const currentUserID = useSelector((state) => {return state.courseLearning.currentUserID});
+    const url = window.location.pathname;
+    const path = url.split("/").filter((x) => x);
+    const currentCourseID = path.length > 1 ?  path[path.length-1] : "628e51cbb64e260717ce07b2";
     const [activeStep, setActiveStep] = React.useState(0);
     const currentLesson = useSelector(state => {
         return state.courseLearning.currentCourse.lessons[state.courseLearning.currentLessonIndex]}
@@ -132,55 +142,59 @@ function Quizz() {
     const [isFinish, setIsFinish] = useState(false);
     const [resultToShow, setResultToShow] = useState(false);
     const [scoreToDisplay, setScoreToDisplay] = useState(0);
-    const moveToNextLesson = async() => {}
-    //     var currentCourseTempt ;
-    //     const getCurrentIndexInit = (userID) => {
-    //         if(currentCourse !== {}){
-    //             var currentLesson = currentCourseTempt.lessons;
-    //             var index = 0;
-    //             if(!currentLesson) return 0;
+    const moveToNextLesson = async() => {
+        var currentCourseTempt ;
+        setIsFinish(false);
+        setResultToShow(false);
+        setScoreToDisplay(0);
+        isRedo(false);
+        const getCurrentIndexInit = (userID) => {
+            if(currentCourse !== {}){
+                var currentLesson = currentCourseTempt.lessons;
+                var index = 0;
+                if(!currentLesson) return 0;
 
-    //             for(var  i = 0; i < currentLesson.length; i++){
-    //                 var j = 0;
-    //                 for(; j < currentLesson[i].passed.length; j++){
-    //                     if(currentLesson[i].passed[j].user === userID){
-    //                         break;
-    //                     }
-    //                 }
-    //                 if(j >= currentLesson[i].passed.length){
-    //                     return i;
-    //                 }
-    //                 else index = i;
-    //             }
-    //             return index;
-    //         }
-    //         else {
-    //             console.log("acc");
-    //             return 0;
-    //         }
-    //     }
-    //     const fetchCourseAndUser = async() => {
-    //         await AjaxHelper.get(URL_API.URL_SYSTEM_V1 + '/discussions/lesson-quizz/' + currentCourseID)
-    //             .then(res => {
-    //                 currentCourseTempt = res.data.currentCourse;
-    //                 dispatch(setCurrentCourse(res.data.currentCourse));
-    //             })
-    //             .catch(err => {
-    //                 console.log(err)
-    //             })
-    //         await AjaxHelper.get(URL_API.URL_SYSTEM_V1 + '/discussions/user/' + currentUserID)
-    //             .then(res => {
-    //                 dispatch(setCurrentUserInfo(res.data.data));
-    //                 console.log("Hàm lấy user");
-    //                 dispatch(changeCurrentLessonIndex(getCurrentIndexInit(res.data.data._id)));
-    //                 dispatch(setUserLessonIndex(getCurrentIndexInit(res.data.data._id)));
-    //             })
-    //             .catch(err => {
-    //                 console.log(err)
-    //             })
-    //     }
-    //     fetchCourseAndUser();
-    // }
+                for(var  i = 0; i < currentLesson.length; i++){
+                    var j = 0;
+                    for(; j < currentLesson[i].passed.length; j++){
+                        if(currentLesson[i].passed[j].user === userID){
+                            break;
+                        }
+                    }
+                    if(j >= currentLesson[i].passed.length){
+                        return i;
+                    }
+                    else index = i;
+                }
+                return index;
+            }
+            else {
+                // console.log("acc");
+                return 0;
+            }
+        }
+        const fetchCourseAndUser = async() => {
+            await AjaxHelper.get(URL_API.URL_SYSTEM_V1 + '/discussions/lesson-quizz/' + currentCourseID)
+                .then(res => {
+                    currentCourseTempt = res.data.currentCourse;
+                    dispatch(setCurrentCourse(res.data.currentCourse));
+                })
+                .catch(err => {
+                    console.log(err)
+                })
+            await AjaxHelper.get(URL_API.URL_SYSTEM_V1 + '/discussions/user/' + currentUserID)
+                .then(res => {
+                    dispatch(setCurrentUserInfo(res.data.data));
+                    console.log("Hàm lấy user");
+                    dispatch(changeCurrentLessonIndex(getCurrentIndexInit(res.data.data._id)));
+                    dispatch(setUserLessonIndex(getCurrentIndexInit(res.data.data._id)));
+                })
+                .catch(err => {
+                    console.log(err)
+                })
+        }
+        fetchCourseAndUser();
+    }
 
 
 
@@ -325,7 +339,7 @@ function Quizz() {
                     }
                 </div>
                 {
-                    !isPass || isRedo ?  
+                    (!isPass || isRedo) && !isFinish?  
                     <div style={{ display: 'flex', justifyContent: 'center', backgroundColor: 'rgba(4, 14, 83, 0.04)', paddingTop: '20px' }}>
                         {
                             currentLesson.quizz.map((value, index, key) => {
@@ -344,7 +358,7 @@ function Quizz() {
                     : null
                 }
                 {
-                    !isPass || isRedo ? 
+                    (!isPass || isRedo) && !isFinish? 
                     <div style={{ padding: '30px', paddingTop: '0', display: 'flex', justifyContent: 'space-between', backgroundColor: 'rgba(4, 14, 83, 0.04)' }}>
                         {
                             activeStep === 0 ? (<div></div>) : (
