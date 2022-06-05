@@ -8,6 +8,8 @@ const userController = require('../controllers/userController');
 router.get("/verify", userController.verifyUser);
 router.post("/register", userController.register);
 router.post("/login", userController.login);
+router.get("/current-user", authMiddleware, userController.getCurrentUser);
+
 router.get(
   "/test",
   authMiddleware,

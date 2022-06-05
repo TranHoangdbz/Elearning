@@ -10,9 +10,6 @@ const User = new Schema(
         googleId: {
             type: String,
         },
-        facebookId: {
-            type: String,
-        },
         fullName: {
             type: String,
             required: true,
@@ -41,6 +38,10 @@ const User = new Schema(
             type: Boolean,
             default: false,
         },
+        role: {
+            type: String,
+            default: "user",
+        },
     }, { timestamps: true, collection: 'users' }
 );
 
@@ -54,9 +55,9 @@ User.pre('save', async function (next) {
     next();
 });
 
-User.methods.generateAuthToken = async () => {
+User.methods.generateAuthToken = async function () {
     const user = this;
-    const token = jwt.sign({ _id: user._id }, process.env.JWT_KEY);
+    const token = jwt.sign({ _id: user._id, role: user.role }, process.env.JWT_KEY);
     return token;
 };
 User.methods.generateRandomPassword = async () => {
