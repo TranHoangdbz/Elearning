@@ -107,13 +107,8 @@ const createCourse = async (req, res) => {
     const video = req.files.video;
     const { courseName, description, teacherId } = req.body;
 
-
-    const teacher = await Teacher.find({}).limit(1).lean()
-    const lastCourse = await Course.find({})
-      .sort({ _id: -1 })
-      .limit(1)
-      .lean()
-
+    const teacher = await Teacher.find({}).limit(1).lean();
+    const lastCourse = await Course.find({}).sort({ _id: -1 }).limit(1).lean();
 
     const courseCodeIndex = lastCourse[0].courseCode.substring(6); //COURSE1 => 1
 
@@ -122,8 +117,8 @@ const createCourse = async (req, res) => {
       description,
 
       teacher: teacher[0]._id,
-      courseCode: `COURSE${Number(courseCodeIndex) + 1}`
-    })
+      courseCode: `COURSE${Number(courseCodeIndex) + 1}`,
+    });
 
     const courseImage = await handleUpload(thumbnail);
     const demoVideo = await handleUpload(video);
@@ -269,7 +264,7 @@ const updateFieldCourse = async (req, res) => {
 
     if (courseName) course.courseName = courseName;
     if (category) course.category = category;
-    if (description) course.description = description;
+    course.description = description || "";
     if (teacher) {
       const existTeacher = await Teacher.findById(teacher);
       if (!existTeacher)
