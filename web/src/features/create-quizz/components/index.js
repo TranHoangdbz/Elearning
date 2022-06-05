@@ -1,7 +1,7 @@
 import { Button, Grid, Modal, Stack, TextField, Typography } from '@mui/material'
 import FormControlLabel from '@mui/material/FormControlLabel';
 import Checkbox from '@mui/material/Checkbox';
-import { useEffect, useState } from 'react';
+import { useState } from 'react';
 import style from './style';
 import AjaxHelper from '../../../services/index'
 import URL_API from '../../../services/API/config'
