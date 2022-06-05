@@ -20,10 +20,12 @@ function Quizz() {
     const currentLesson = useSelector(state => {
         return state.courseLearning.currentCourse.lessons[state.courseLearning.currentLessonIndex]}
     );
+    const currentCourse = useSelector((state) => {return state.courseLearning.currentCourse});
+
     const [yourChoice, setYourChoice] = useState(initValueQuizz())
     
     const handleClickAnswer = (e) => {
-        var newChoice = yourChoice;
+        var newChoice = JSON.parse(JSON.stringify(yourChoice));
         if (e.target.checked) {
             newChoice[activeStep][e.target.value] = true;
             setYourChoice(newChoice);
@@ -36,41 +38,52 @@ function Quizz() {
     const currentUserInfo = useSelector((state) => {return state.courseLearning.currentUserInfo});
 
     const handleClickSubmit = async() => {
+        // console.log("Chạy lại ở đây rồi", new Date());
+        // console.log("yourChoice", yourChoice);
+       
+        setIsFinish(true);
+        setIsRedo(false);
+        setActiveStep(0);
         let isSuccess = true
         currentLesson.quizz.forEach((quizz, index) => {
             let soDapAnDung = 0;
-            yourChoice[index].forEach((value, key) => {
+            yourChoice[index].forEach((value) => {
                 if (value === true) {
                     soDapAnDung += 1;
                 }
             })
+            setScoreToDisplay(soDapAnDung*100 / quizz.answer.length);
             if (quizz.answer.length === soDapAnDung) {
-                quizz.answer.forEach((right, key) => {
+                quizz.answer.forEach((right) => {
                     if (yourChoice[index][right] === false) {
                         isSuccess = false;
                     }
                 })
             } else {
                 isSuccess = false
-                return
             }
         })
+
         if (isSuccess) {
-            console.log("Thành công");
-            alert("Congratulation! You have passed the test!");
-            window.location.reload();
+            // console.log("Thành công");
+            // alert("Congratulation! You have passed the test!");
+            // window.location.reload();
             // APi check hoàn thành bài học ở đây
+            setResultToShow(true);
             const dataToSend = {
                 lessonID: currentLesson._id,
                 userID: currentUserInfo._id,
             }
-            console.log("data to add", dataToSend)
-            await AjaxHelper.post(URL_API.URL_SYSTEM_V1 + '/discussions/quizz-passed/', dataToSend)
+            // console.log("data to add", dataToSend)
+            if(!isPass)
+                await AjaxHelper.post(URL_API.URL_SYSTEM_V1 + '/discussions/quizz-passed/', dataToSend)
             
         } else {
-            console.log("Thất bại");
-            alert("Sorry. You have to score 100% in order to pass the test. Try again");
-            window.location.reload();
+            console.log("Thất bại")
+            setResultToShow(false);
+            // console.log("Thất bại");
+            // alert("Sorry. You have to score 100% in order to pass the test. Try again");
+            // window.location.reload();
         }
     }
 
@@ -86,15 +99,93 @@ function Quizz() {
         }
     }
 
+    const getCurrentIndex = () => {
+        if(currentCourse !== {}){
+            var currentLesson = currentCourse.lessons;
+            // console.log("currentLesson", currentLesson);
+            var index = 0;
+            if(!currentLesson) return 0;
+            for(var  i = 0; i < currentLesson.length; i++){
+                var j = 0;
+                for(; j < currentLesson[i].passed.length; j++){
+                    if(currentLesson[i].passed[j].user === currentUserInfo._id){
+                        break;
+                    }
+                }
+                if(j >= currentLesson[i].passed.length){
+                    return i;
+                }
+                else index = i + 1;
+            }
+            return index;
+        }
+        else return 0;
+    }
     const isPass = useSelector((state) => {
-        return state.courseLearning.userLessonIndex > state.courseLearning.currentLessonIndex;
+        return getCurrentIndex() > state.courseLearning.currentLessonIndex;
     }) || false;
+
     const [isRedo, setIsRedo] = useState(false);
 
-    // Thông báo làm lại quizz nếu chưa đạt
-
-    // Hiển thị đáp án đúng sai khi làm bài quizz
     
+    // Hiện kết quả bài test
+    const [isFinish, setIsFinish] = useState(false);
+    const [resultToShow, setResultToShow] = useState(false);
+    const [scoreToDisplay, setScoreToDisplay] = useState(0);
+    const moveToNextLesson = async() => {}
+    //     var currentCourseTempt ;
+    //     const getCurrentIndexInit = (userID) => {
+    //         if(currentCourse !== {}){
+    //             var currentLesson = currentCourseTempt.lessons;
+    //             var index = 0;
+    //             if(!currentLesson) return 0;
+
+    //             for(var  i = 0; i < currentLesson.length; i++){
+    //                 var j = 0;
+    //                 for(; j < currentLesson[i].passed.length; j++){
+    //                     if(currentLesson[i].passed[j].user === userID){
+    //                         break;
+    //                     }
+    //                 }
+    //                 if(j >= currentLesson[i].passed.length){
+    //                     return i;
+    //                 }
+    //                 else index = i;
+    //             }
+    //             return index;
+    //         }
+    //         else {
+    //             console.log("acc");
+    //             return 0;
+    //         }
+    //     }
+    //     const fetchCourseAndUser = async() => {
+    //         await AjaxHelper.get(URL_API.URL_SYSTEM_V1 + '/discussions/lesson-quizz/' + currentCourseID)
+    //             .then(res => {
+    //                 currentCourseTempt = res.data.currentCourse;
+    //                 dispatch(setCurrentCourse(res.data.currentCourse));
+    //             })
+    //             .catch(err => {
+    //                 console.log(err)
+    //             })
+    //         await AjaxHelper.get(URL_API.URL_SYSTEM_V1 + '/discussions/user/' + currentUserID)
+    //             .then(res => {
+    //                 dispatch(setCurrentUserInfo(res.data.data));
+    //                 console.log("Hàm lấy user");
+    //                 dispatch(changeCurrentLessonIndex(getCurrentIndexInit(res.data.data._id)));
+    //                 dispatch(setUserLessonIndex(getCurrentIndexInit(res.data.data._id)));
+    //             })
+    //             .catch(err => {
+    //                 console.log(err)
+    //             })
+    //     }
+    //     fetchCourseAndUser();
+    // }
+
+
+
+    // Xác nhận khi người dùng chưa click chọn đáp án ở câu đó
+
 
     return (
         <div className='quizz'>
@@ -115,6 +206,41 @@ function Quizz() {
                         <div style={{ paddingLeft: '60px', backgroundColor: 'rgba(4, 14, 83, 0.04)' }}>
                             <div> 
                                 {   
+                                    isFinish && !isRedo? 
+                                        <div className="show-result">
+                                            {
+                                                resultToShow ?
+                                                <div className="title">
+                                                    
+                                                    Congratulation! You have passed the test!<br></br>
+                                                    Score: {scoreToDisplay}/100
+                                                </div>
+                                                :
+                                                <div className='title'>
+                                                    Sorry. You have failed the test!<br></br>
+                                                    Score: {scoreToDisplay}/100
+                                                </div>
+                                            }
+                                            <div className="btn-container">
+                                                <div className='btn-back btn-redo'
+                                                    onClick={(e) => {
+                                                        setIsRedo(true);
+                                                        setYourChoice(initValueQuizz());
+                                                    }} 
+                                                >
+                                                    Redo
+                                                </div>
+                                                <div className='btn-back btn-redo btn-next'
+                                                    onClick={(e) => {
+                                                        moveToNextLesson();
+                                                    }} 
+                                                >
+                                                    Next lesson
+                                                </div>
+                                            </div>
+                                            
+                                        </div>
+                                    :
                                     !isPass || isRedo ?  
                                     [
                                         <div style={{ fontFamily: "'Montserrat', san-serif" }} className='name-question'>
@@ -187,6 +313,7 @@ function Quizz() {
                                             <div className='btn-back btn-redo'
                                                 onClick={(e) => {
                                                     setIsRedo(true);
+                                                    setYourChoice(initValueQuizz());
                                                 }} 
                                             >
                                                 Redo
