@@ -3,8 +3,8 @@ import './editcourse.css';
 
 import CancelOutlinedIcon from '@mui/icons-material/CancelOutlined';
 import {
-    TextField, FormControl, Select, InputLabel,
-    MenuItem, LinearProgress, Button
+    TextField, FormControl, Select, InputLabel,DialogContent , DialogContentText,
+    MenuItem, LinearProgress, Dialog , DialogActions , DialogTitle, Button
 } from '@mui/material';
 import axios, { CancelToken, isCancel } from "axios";
 import API from '../../../../services/API/config'
@@ -15,6 +15,14 @@ const EditCourse = (props) => {
     const [description, setDescription] = useState(props.description)
     // mở thông báo
     const [popup, setPopup] = React.useState(false);
+    const [popupFalse,setPopupFalse] = React.useState(false);
+    const handlepopupFalseOpen = () => {
+        setPopupFalse(true);
+      };
+    
+      const handlepopupFalseClose = () => {
+        setPopupFalse(false);
+      };
     // Change image
     const inputAvatarRef = useRef(null);
     const [thumbnail, setThumbnail] = useState()
@@ -107,7 +115,7 @@ const EditCourse = (props) => {
             })
             .catch(err => {
                 console.log(err);
-
+                setPopupFalse(true);
                 if (isCancel(err)) {
                     alert(err.message);
                 }
@@ -117,7 +125,7 @@ const EditCourse = (props) => {
 
     return (
             <div className="editLesson-inner">
-                <h2 className='header__center'>Edit lesson</h2>
+                <h2 className='header__center'>Edit course</h2>
                 
                 <div className="edit__body">
                     <p className="title">Name</p>
@@ -181,28 +189,38 @@ const EditCourse = (props) => {
                         Save all
                     </button>
                 </div>
-                {popup && (
-                    <div className='overlay'>
-                        <div className='popup'>
-                            <div className='header'>
-                                <h2 className='header__title'>Confirm action</h2>
-                                <button className='header__right' onClick={() => setPopup(false)}> <CancelOutlinedIcon color="secondary" fontSize="large" /> </button>
-                            </div>
-                            <p>This is confirm message we will pass into the model</p>
-                            {uploadPercentage > 0 && (
-                                <LinearProgress variant="determinate" value={uploadPercentage} />
-                            )}
-                            <div className='footer'>
-                                <div className='footer__left'></div>
-                                <div className='footer__right'>
-                                    <button className='btn__cancel' onClick={() => setPopup(false)}> Cancel </button>
-                                    <button className='btn__ok' onClick={() => handleSave()}> Ok </button>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                )}
-
+                <Dialog open={popup} >
+                    <DialogTitle style={{fontSize: 18}} id="alert-dialog-title">
+                    {"Confirm action"}
+                    </DialogTitle>
+                    <DialogContent>
+                        <DialogContentText style={{fontSize: 16}} id="alert-dialog-description">
+                        This is confirm message we will pass into the model
+                        </DialogContentText>
+                    </DialogContent>
+                    <DialogActions>
+                        <Button variant="contained" color="error" style={{fontSize: 12}} onClick={() => setPopup(false)}>Cancel</Button>
+                        <Button variant="contained" style={{fontSize: 12}} onClick={() => handleSave()}>Save</Button>
+                    </DialogActions>
+                </Dialog>
+                <Dialog
+                    open={popupFalse}
+                    onClose={handlepopupFalseClose}
+                    aria-labelledby="alert-dialog-title"
+                    aria-describedby="alert-dialog-description"
+                >
+                    <DialogTitle style={{fontSize: 18}} id="alert-dialog-title">
+                    {"Your edit course have false. Please check your index"}
+                    </DialogTitle>
+                    <DialogContent>
+                    <DialogContentText style={{fontSize: 16}} id="alert-dialog-description">
+                        Some reason you maybe have: Your course name has been created, your courses description is null, etc...
+                    </DialogContentText>
+                    </DialogContent>
+                    <DialogActions>
+                    <Button style={{fontSize: 16}} onClick={handlepopupFalseClose}>OK</Button>
+                    </DialogActions>
+                </Dialog>
             </div>
         
     );

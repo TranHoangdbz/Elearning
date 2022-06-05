@@ -131,7 +131,7 @@ const EditCourses = (props) => {
                     <button className='header__right'> <CancelOutlinedIcon color="secondary" fontSize="large" /> </button>
                 </Link>
                 <div className="edit__header">
-                    <h2 className='header__center'>Edit course</h2>
+                    <h2 className='header__center'>Edit lesson</h2>
                 </div>
                 <div className="edit__body">
                     <p className="title">Name</p>
