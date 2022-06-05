@@ -10,6 +10,7 @@ import {
     setCurrentUserInfo,
     setUserLessonIndex,
 } from '../courseLearningSlice.js';
+import RetroQuizz from './RetroQuizz';
 const label = { inputProps: { 'aria-label': 'Checkbox demo' } };
 
 const initValueQuizz = () => {
@@ -48,10 +49,6 @@ function Quizz() {
     const currentUserInfo = useSelector((state) => {return state.courseLearning.currentUserInfo});
 
     const handleClickSubmit = async() => {
-        // console.log("Chạy lại ở đây rồi", new Date());
-        // console.log("yourChoice", yourChoice);
-    //    setFullAnswerCheck(true);
-        // Check đã check hết chưa
         for(var i = 0; i < currentLesson.quizz.length; i++){
             var isCheck = false;
             for(var j = 0; j < 4; j++){
@@ -65,7 +62,24 @@ function Quizz() {
                 return;
             }
         }
-
+        let totalPoint = 0;
+        for(let i = 0; i < currentLesson.quizz.length; i++){
+            let point  = 1;
+            for(let j = 0; j < 4; j++){
+                if(yourChoice[i][j] == true){
+                    // console.log(currentLesson.quizz);
+                    if(!currentLesson.quizz[i].answer.includes(j.toString())) point = 0;
+                }
+                else if(yourChoice[i][j] == false)
+                {
+                    if(currentLesson.quizz[i].answer.includes(j.toString())) point = 0;
+                }
+            }
+            totalPoint += point;
+        }
+        setScoreToDisplay(totalPoint*100 / currentLesson.quizz.length);
+        // console.log(/ quizz.answer.length);
+        // return;
         setIsFinish(true);
         setIsRedo(false);
         setActiveStep(0);
@@ -77,7 +91,7 @@ function Quizz() {
                     soDapAnDung += 1;
                 }
             })
-            setScoreToDisplay(soDapAnDung*100 / quizz.answer.length);
+            // setScoreToDisplay(soDapAnDung*100 / quizz.answer.length);
             if (quizz.answer.length === soDapAnDung) {
                 quizz.answer.forEach((right) => {
                     if (yourChoice[index][right] === false) {
@@ -163,6 +177,7 @@ function Quizz() {
         setResultToShow(false);
         setScoreToDisplay(0);
         setIsRedo(false);
+        setYourChoice(initValueQuizz());
         const getCurrentIndexInit = (userID) => {
             if(currentCourse !== {}){
                 var currentLesson = currentCourseTempt.lessons;
@@ -214,8 +229,23 @@ function Quizz() {
 
 
     // Xác nhận khi người dùng chưa click chọn đáp án ở câu đó
-    const [fullAnswerCheck, setFullAnswerCheck] = useState(false);
+    const [fullAnswerCheck, setFullAnswerCheck] = useState(true);
 
+    //Xem lại đáp án của bài quizz
+    const [isRetroQuizz, setIsRetroQuizz]  = useState(false);
+    if(isRetroQuizz) 
+        return <RetroQuizz yourChoice = {yourChoice} 
+        quit={() => {
+            setIsRetroQuizz(false)
+            setFullAnswerCheck(true);
+            setIsFinish(false);
+            setResultToShow(false);
+            setScoreToDisplay(0);
+            setIsRedo(false);
+            setYourChoice(initValueQuizz());
+        }}
+    />
+    else
     return (
         <div className='quizz'>
             <div style={{ fontFamily: "'Montserrat', san-serif" }} className='title'>Attention</div>
@@ -276,6 +306,15 @@ function Quizz() {
                                                 >
                                                     Redo
                                                 </div>
+                                                <div className='btn-back btn-redo btn-next'
+                                                    style={{width: '94px'}}
+                                                    onClick={(e) => {
+                                                        setIsRetroQuizz(true);
+                                                    }} 
+                                                >
+                                                    Preview
+                                                </div>
+                                              
                                                 {
                                                     !resultToShow ? null :
                                                     <div className='btn-back btn-redo btn-next'

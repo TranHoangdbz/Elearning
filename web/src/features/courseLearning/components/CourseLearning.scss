@@ -316,6 +316,15 @@
         .dot.active{
             background: #352020;
         }
+
+        .answer-container{
+            position: relative;
+            .icon-check{
+                position: absolute;
+                left: -17px;
+                top: 10px;
+            }
+        }
     }
 
 }

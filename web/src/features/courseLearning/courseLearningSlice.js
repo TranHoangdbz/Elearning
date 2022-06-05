@@ -22,6 +22,9 @@ const courseLearningSlice = createSlice({
         },
         setUserLessonIndex: (state, action) => {
             state.userLessonIndex = action.payload;
+        },
+        setCurrentUser: (state, action) => {
+            state.currentUserID = action.payload;
         }
     }
 })
@@ -32,7 +35,8 @@ export const {
     changeCurrentLessonIndex,
     setCurrentUserInfo,
     setUserLessonIndex,
-    setUserProgress
+    setUserProgress,
+    setCurrentUser
 } = courseLearningSlice.actions;
 
 export default courseLearningSlice.reducer

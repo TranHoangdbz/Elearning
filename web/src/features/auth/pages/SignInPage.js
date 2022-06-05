@@ -11,7 +11,7 @@ import { saveToken } from "../localStorage";
 import Toast from "../components/Toast";
 import { useDispatch } from "react-redux";
 import { setUser } from "../authSlice";
-
+import { setCurrentUser } from "../../courseLearning/courseLearningSlice";
 const google = require("../../../assets/images/google.png");
 
 const cardStyle = {
@@ -94,6 +94,8 @@ function SignInPage() {
         .then(({ data }) => {
           if (data && data.token && data.user) {
             console.log(data.user);
+            dispatch(setCurrentUser(data.user._id));
+            window.localStorage.setItem('userID', data.user._id);
             setOpen(false);
             dispatch(setUser(data.user));
             saveToken(data.token);
