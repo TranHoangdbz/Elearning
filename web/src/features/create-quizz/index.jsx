@@ -1,4 +1,4 @@
-import CreateQuizz from "./pages";
+import CreateQuizz from "./components";
 
 function CreateQuizzPage() {
     return (
