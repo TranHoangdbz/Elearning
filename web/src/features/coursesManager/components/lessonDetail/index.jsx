@@ -62,11 +62,7 @@ function LessonDetail() {
       const originalPromiseResult = unwrapResult(resultAction)
       let tempList = []
       for (let i = 0; i < originalPromiseResult.data.length; i++) {
-        let temp = {
-          index: i + 1,
-          quizz: originalPromiseResult.data[i]
-        }
-        tempList.push(temp)
+        tempList.push(originalPromiseResult.data[i])
       }
       setQuizList(tempList)
     } catch (rejectedValueOrSerializedError) {
@@ -159,7 +155,7 @@ function LessonDetail() {
           {
             quizList &&
             quizList.map((item, index) => (
-              <QuestionInQuizz key={index} item={item} />
+              <QuestionInQuizz key={index} item={item} index={index + 1} />
             ))
           }
         </Stack>
