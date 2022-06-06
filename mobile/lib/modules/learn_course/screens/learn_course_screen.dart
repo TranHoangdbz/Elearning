@@ -5,21 +5,25 @@ import 'package:get/get.dart';
 import 'package:get/get_core/src/get_main.dart';
 import 'package:get/get_instance/src/extension_instance.dart';
 import 'package:get/get_navigation/src/extension_navigation.dart';
+import 'package:uit_elearning/data/models/course.dart';
 import 'package:uit_elearning/global_widgets/custom_icon_button.dart';
 import 'package:uit_elearning/global_widgets/video_player_wiget.dart';
+import 'package:uit_elearning/modules/disscussion/screens/disscussion_screen.dart';
 import 'package:uit_elearning/modules/learn_course/controllers/learning_course_controller.dart';
 import 'package:uit_elearning/modules/lessons/screens/lessons_screen.dart';
 import 'package:uit_elearning/modules/my_courses/screens/my_courses_screen.dart';
 import 'package:video_player/video_player.dart';
 
 class LearnCourseScreen extends StatelessWidget {
-  LearnCourseScreen({Key? key}) : super(key: key);
+  final Course course;
+  LearnCourseScreen({Key? key, required this.course}) : super(key: key);
 
-  final _controller = Get.find<LearnCoursesController>();
+  //final _controller = Get.find<LearnCoursesController>();
   late VideoPlayerController vidcontroller;
 
   @override
   Widget build(BuildContext context) {
+    Get.put(LearnCoursesController());
     vidcontroller = VideoPlayerController.network("https://www.youtube.com/watch?v=sMcfFmR0MmA");
     return GetBuilder<LearnCoursesController>(
         builder: (_controller) {
@@ -120,9 +124,9 @@ class LearnCourseScreen extends StatelessWidget {
                   ),
                   body: TabBarView(
                     children: [
-                      LessonsScreen(),
+                      LessonsScreen(course),
                       MyCoursesScreen(),
-                      MyCoursesScreen(),
+                      DisscussionScreen(course),
                     ],
                   ),
                 ),

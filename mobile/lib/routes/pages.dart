@@ -31,16 +31,7 @@ abstract class Pages {
       page: () => HomeScreen(),
       binding: HomeBinding(),
     ),
-    GetPage(
-      name: Routes.viewcourse,
-      page: () => ViewcourseScreen(),
-      binding: ViewCoursesBinding(),
-    ),
-    GetPage(
-      name: Routes.learncourse,
-      page: () => LearnCourseScreen(),
-      binding: LearnCoursesBinding(),
-    ),
+
     GetPage(
       name: Routes.auth,
       page: () => AuthenticationScreen(),

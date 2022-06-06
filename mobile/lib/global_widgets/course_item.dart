@@ -10,9 +10,9 @@ import '../../../data/models/course.dart';
 
 class CourseItem extends StatelessWidget {
   // const CourseItem({Key? key}) : super(key: key);
-
   Course course;
-  CourseItem({required this.course, Key? key}) : super(key: key);
+  final function;
+  CourseItem({required this.course, Key? key, this.function}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
@@ -21,7 +21,7 @@ class CourseItem extends StatelessWidget {
       elevation: 4,
       borderRadius: BorderRadius.circular(20),
       child: GestureDetector(
-        // onTap: ,
+        onTap: function,
         child: Column(
           children: [
             SizedBox(

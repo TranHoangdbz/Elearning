@@ -56,6 +56,18 @@ class TextStyles {
     fontSize: 12.sp,
     fontWeight: FontWeight.w400,
   );
+  static final TextStyle textStyleOnBackgroundColor12w600 =
+  textStyleBase.copyWith(
+    color: AppColors.onBackgroundColor,
+    fontSize: 12.sp,
+    fontWeight: FontWeight.w600,
+  );
+  static final TextStyle textStyleOnBackgroundColor12w300 =
+  textStyleBase.copyWith(
+    color: AppColors.onBackgroundColor,
+    fontSize: 11.sp,
+    fontWeight: FontWeight.w300,
+  );
   static final TextStyle textStyleOnBackgroundColor14w700 =
       textStyleBase.copyWith(
     color: AppColors.onBackgroundColor,

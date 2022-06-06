@@ -9,12 +9,14 @@ class LessonItem extends StatelessWidget{
   Lesson lesson;
   final Color? primary;
   final Color? onPrimary;
-  LessonItem({required this.lesson, this.primary, this.onPrimary, Key? key}) : super(key: key);
+  final function;
+  LessonItem({required this.lesson, this.primary, this.onPrimary, Key? key, this.function}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
     return Material(
       child: GestureDetector(
+        onTap: function,
         child: Container(
           height: 60,
           width: double.maxFinite,
