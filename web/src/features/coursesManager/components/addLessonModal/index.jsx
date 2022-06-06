@@ -48,6 +48,7 @@ function AddLessonModal({ open, setOpen, handleShowAlert }) {
     setVideoPreview("");
     setThumbnailPreview("");
     setSubmit(false);
+    window.location.reload();
   };
 
   const [lesson, setLesson] = React.useState({

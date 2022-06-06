@@ -316,24 +316,14 @@ function CourseDetail() {
                           }
                           aria-haspopup="true"
                           aria-expanded={open ? "true" : undefined}
-                          onClick={(e) => handleClick(e, item._id)}
+                          onClick={(e) => {
+                            handleClick(e, item._id)
+                            setCurrentItem(item);
+                          }}
                         >
                           <MoreVert />
                         </IconButton>
                       </Stack>
-                      <IconButton
-                        aria-controls={
-                          open ? "demo-positioned-menu" : undefined
-                        }
-                        aria-haspopup="true"
-                        aria-expanded={open ? "true" : undefined}
-                        onClick={(e) => {
-                          handleClick(e);
-                          setCurrentItem(item);
-                        }}
-                      >
-                        <MoreVert />
-                      </IconButton>
                       <Menu
                         id="demo-positioned-menu"
                         aria-labelledby="demo-positioned-button"

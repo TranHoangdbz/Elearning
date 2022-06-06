@@ -1,6 +1,10 @@
 const mongoose = require("mongoose");
 
 const lessonSchema = new mongoose.Schema({
+  courseId: {
+    type: mongoose.Schema.Types.ObjectId,
+    ref: "Course",
+  },
   lessonCode: {
     type: String,
   },
@@ -27,8 +31,8 @@ const lessonSchema = new mongoose.Schema({
   ],
   passed: {
     type: Array,
-    default: []
-  }
+    default: [],
+  },
 });
 
 module.exports = mongoose.model("lesson", lessonSchema);

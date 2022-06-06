@@ -103,7 +103,7 @@ const getById = async (req, res) => {
 
 const create = async (req, res) => {
   try {
-    const { lessonCode, name, description, lessonVolume } = req.body;
+    const { lessonCode, name, description, lessonVolume, courseId } = req.body;
     const thumbnail = req.files.thumbnail;
     const video = req.files.video;
     const videoUrl = await handleUpload(video);
@@ -116,9 +116,29 @@ const create = async (req, res) => {
       video: videoUrl,
       thumbnail: thumbnailUrl,
       lessonVolumne: lessonVolume,
+      courseId: courseId,
     });
 
     const result = await newItem.save();
+
+    let belongedCourse = await Course.findOne({
+      _id: courseId,
+    });
+
+    if (belongedCourse) {
+      const newLessons = belongedCourse["lessons"].concat(
+        mongoose.Types.ObjectId(courseId)
+      );
+
+      await Course.updateOne(
+        {
+          _id: courseId,
+        },
+        {
+          lessons: newLessons,
+        }
+      );
+    }
 
     if (result) {
       return res.status(201).json({
