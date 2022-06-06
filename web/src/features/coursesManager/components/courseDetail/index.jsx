@@ -431,11 +431,11 @@ function CourseDetail() {
         
         <button className={`${styles.header__right__}`} onClick={()=>handleCloseEditPopup()} > <CancelOutlinedIcon color="secondary" fontSize="large" /> </button>
         <EditCourse 
-          _id = { courseData._id}
-          name= {courseData.courseName}
-          description = {courseData.description}
-          thumbnail = {courseData.courseImage}
-          course_url = { courseData.demoVideo}
+          _id = { currentCourse._id}
+          name= {currentCourse.courseName}
+          description = {currentCourse.description}
+          thumbnail = {currentCourse.courseImage}
+          course_url = { currentCourse.demoVideo}
           course_url2={location.pathname} 
         />
       </Dialog>
