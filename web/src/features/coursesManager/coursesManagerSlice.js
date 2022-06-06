@@ -64,6 +64,14 @@ export const deleteLessonById = createAsyncThunk(
   }
 );
 
+export const setActiveCourse = createAsyncThunk(
+  "course/setActiveCourse",
+  async (params, thunkAPI) => {
+    const response = await API.put(URL_API.URL_SET_ACTIVE_COURSE + params._id, params);
+    return response.data;
+  }
+);
+
 const coursesManagerSlice = createSlice({
     name: "coursesManager",
     initialState: {
@@ -201,6 +209,22 @@ const coursesManagerSlice = createSlice({
         state.success = false;
         state.message = action.payload.message;
       }
+    },
+    [createLesson.fulfilled]: (state, action) => {
+      state.success = action.payload.success;
+      state.message = action.payload.message;
+    },
+    [setActiveCourse.pending]: (state) => {
+      state.success = false;
+      state.message = "";
+    },
+    [setActiveCourse.rejected]: (state, action) => {
+      state.success = false;
+      state.message = action.payload.message;
+    },
+    [setActiveCourse.fulfilled]: (state, action) => {
+      state.success = action.payload.success;
+      state.message = action.payload.message;
     },
 });
 

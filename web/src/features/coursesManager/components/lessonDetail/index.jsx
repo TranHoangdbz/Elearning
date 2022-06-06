@@ -4,8 +4,8 @@ import AddCircleOutlineIcon from '@mui/icons-material/AddCircleOutline';
 import {  unwrapResult } from "@reduxjs/toolkit";
 import React, { useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
-import { useNavigate } from "react-router-dom";
 import { getCourseById, getLessonById, getQuizzByLesson } from "../../coursesManagerSlice";
+import { useNavigate, useParams } from "react-router-dom";
 import styles from "./lessonDetail.module.scss";
 import QuestionInQuizz from "../questionInQuizz";
 import CreateQuizz from "../../../create-quizz/components";
@@ -71,6 +71,17 @@ function LessonDetail() {
   }
 
   React.useEffect(() => {
+    setCurrentLesson({
+      _id: "",
+      lessonCode: "",
+      description: "",
+      video: "",
+      quizz: [],
+      passed: [],
+      thumbnail: "",
+      name: "",
+      lessonVolume: null,
+    });
     dispatch(getCourseById(path[2]));
     dispatch(getLessonById(path[3]));
     if (quizList.length === 0) {

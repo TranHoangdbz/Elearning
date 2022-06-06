@@ -1,24 +1,23 @@
 import {
   Button,
-  IconButton,
   Modal,
   Paper,
   Stack,
   TextField,
   Typography,
 } from "@mui/material";
-import AddPhotoAlternateIcon from "@mui/icons-material/AddPhotoAlternate";
 import { styled } from "@mui/material/styles";
 import React from "react";
 import { useDispatch, useSelector } from "react-redux";
-import styles from "./addLessonModal.module.scss";
 import { createLesson } from "../../coursesManagerSlice";
+import styles from "./addLessonModal.module.scss";
 
-function AddLessonModal({ open, setOpen }) {
+function AddLessonModal({ open, setOpen, handleShowAlert }) {
   const dispatch = useDispatch();
 
+  const checkSpecialCharacters = /[`!@#$%^&*()_+\-=\[\]{};':"\\|,.<>\/?~]/;
+
   const [submit, setSubmit] = React.useState(false);
-  const [uploadPercentage, setUploadPercentage] = React.useState(0);
 
   const [success, setSuccess] = React.useState(null);
   const [message, setMessage] = React.useState("");
@@ -48,7 +47,7 @@ function AddLessonModal({ open, setOpen }) {
     });
     setVideoPreview("");
     setThumbnailPreview("");
-    setUploadPercentage(0);
+    setSubmit(false);
   };
 
   const [lesson, setLesson] = React.useState({
@@ -81,8 +80,6 @@ function AddLessonModal({ open, setOpen }) {
   };
 
   const handleChooseVideo = (e) => {
-    console.log(12);
-
     let file = e.target.files[0];
 
     const reader = new FileReader();
@@ -98,7 +95,11 @@ function AddLessonModal({ open, setOpen }) {
   };
 
   const handleSubmit = (e) => {
-    if (lesson.name === "" || !lesson.name) {
+    if (
+      lesson.name === "" ||
+      !lesson.name ||
+      checkSpecialCharacters.test(lesson.name)
+    ) {
       setSubmit(true);
     } else if (lesson.description === "" || !lesson.description) {
       setSubmit(true);
@@ -118,6 +119,7 @@ function AddLessonModal({ open, setOpen }) {
       // data.append("quizz", lesson.quizz);
       dispatch(createLesson(data));
       handleCloseModal();
+      handleShowAlert("Add new lesson successfully!");
     }
   };
 
@@ -137,10 +139,17 @@ function AddLessonModal({ open, setOpen }) {
               Name
             </Typography>
             <TextField
-              error={submit && lesson.name === "" ? true : false}
+              error={
+                submit &&
+                (lesson.name === "" || checkSpecialCharacters.test(lesson.name))
+                  ? true
+                  : false
+              }
               helperText={
                 submit && lesson.name === ""
                   ? "Tên bài giảng không được để trống"
+                  : submit && checkSpecialCharacters.test(lesson.name)
+                  ? "Tên bài giảng không được chứa ký tự đặc biệt"
                   : ""
               }
               className={`${styles.lessonNameInput}`}
@@ -150,7 +159,6 @@ function AddLessonModal({ open, setOpen }) {
               value={lesson.name}
               onChange={(e) => {
                 setLesson({ ...lesson, name: e.target.value });
-                console.log(lesson.name);
               }}
             />
           </Stack>
@@ -183,85 +191,75 @@ function AddLessonModal({ open, setOpen }) {
               <Typography variant="h5" fontWeight="bold">
                 Video Link
               </Typography>
-              <TextField
-                error={submit && lesson.video === "" ? true : false}
-                helperText={
+              <label htmlFor="contained-button-file">
+                <Input
+                  accept="video/mp4,video/x-m4v,video/*"
+                  id="contained-button-file"
+                  type="file"
+                  onChange={(e) => handleChooseVideo(e)}
+                />
+                <Button
+                  className={`${styles.iconAddPhoto}`}
+                  component="span"
+                  size="medium"
+                  variant="contained"
+                >
+                  Select Video
+                </Button>
+              </label>
+              <div
+                className={
                   submit && lesson.video === ""
-                    ? "Tên bài giảng không được để trống"
-                    : ""
+                    ? `${styles.videoerror}`
+                    : `${styles.video}`
                 }
-                placeholder="Video link"
-                variant="outlined"
-                size="small"
-                fullWidth
-                InputProps={{
-                  endAdornment: (
-                    <label htmlFor="contained-button-file">
-                      <Input
-                        accept="video/mp4,video/x-m4v,video/*"
-                        id="contained-button-file"
-                        type="file"
-                        onChange={(e) => handleChooseVideo(e)}
-                      />
-                      <IconButton
-                        className={`${styles.iconAddPhoto}`}
-                        component="span"
-                        size="small"
-                      >
-                        <AddPhotoAlternateIcon />
-                      </IconButton>
-                    </label>
-                  ),
-                }}
-                value={lesson.video.name}
-              />
-              <div className={`${styles.video}`}>
+              >
                 {videoPreview !== "" ? (
                   <iframe src={videoPreview} allowFullScreen />
                 ) : null}
               </div>
+              {submit && lesson.video === "" ? (
+                <Typography variant="caption" color="#a90000">
+                  Video bài giảng không được để trống
+                </Typography>
+              ) : null}
             </Stack>
             <Stack width="50%" direction="column" spacing="8px">
               <Typography variant="h5" fontWeight="bold">
                 Thumbnail Link
               </Typography>
-              <TextField
-                error={submit && lesson.thumbnail === "" ? true : false}
-                helperText={
-                  submit && lesson.thumbnail === ""
-                    ? "Tên bài giảng không được để trống"
-                    : ""
+              <label>
+                <Input
+                  accept="image/*"
+                  id="contained-button-file"
+                  type="file"
+                  onChange={(e) => handleChooseThumbnail(e)}
+                />
+                <Button
+                  className={`${styles.iconAddPhoto}`}
+                  component="span"
+                  size="medium"
+                  variant="contained"
+                >
+                  Select Image
+                </Button>
+              </label>
+              <div
+                className={
+                  submit && lesson.video === ""
+                    ? `${styles.thumbnailerror}`
+                    : `${styles.thumbnail}`
                 }
-                placeholder="Thumbnail link"
-                variant="outlined"
-                size="small"
-                fullWidth
-                InputProps={{
-                  endAdornment: (
-                    <label>
-                      <Input
-                        accept="image/*"
-                        id="contained-button-file"
-                        type="file"
-                        onChange={(e) => handleChooseThumbnail(e)}
-                      />
-                      <IconButton
-                        className={`${styles.iconAddPhoto}`}
-                        component="span"
-                        size="small"
-                      >
-                        <AddPhotoAlternateIcon />
-                      </IconButton>
-                    </label>
-                  ),
-                }}
-                value={lesson.thumbnail.name}
-              />
-              <div className={`${styles.thumbnail}`}>
+              >
                 {thumbnailPreview !== "" ? (
                   <img src={thumbnailPreview} />
                 ) : null}
               </div>
+              {submit && lesson.thumbnail === "" ? (
+                <Typography variant="caption" color="#a90000">
+                  Thumbnail bài giảng không được để trống
+                </Typography>
+              ) : null}
             </Stack>
           </Stack>
           <Stack direction="row-reverse" spacing="8px">

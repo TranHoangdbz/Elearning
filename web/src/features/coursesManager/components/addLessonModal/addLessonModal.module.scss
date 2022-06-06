@@ -26,10 +26,36 @@
   }
 }
 
+.videoerror {
+  height: calc(80vw * 5 / 19);
+  background-color: var(--canvasColor);
+  border: solid #a90000 1px ;
+  border-radius: 2%;
+  iframe {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    border-radius: 2%;
+  }
+}
+
 .thumbnail {
   height: calc(80vw * 5 / 19);
   background-color: var(--canvasColor);
   border-radius: 2%;
+  img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    border-radius: 2%;
+  }
+}
+
+.thumbnailerror {
+  height: calc(80vw * 5 / 19);
+  background-color: var(--canvasColor);
+  border-radius: 2%;
+  border: solid #a90000 1px ;
   img {
     width: 100%;
     height: 100%;
@@ -49,5 +75,6 @@
 }
 
 .iconAddPhoto {
-  color: var(--primaryColor) !important;
+  background-color: var(--primaryColor) !important;
+  color: var(--onPrimaryColor) !important;
 }

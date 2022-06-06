@@ -1,12 +1,18 @@
 import { ArrowBack, Delete, Edit, MoreVert } from "@mui/icons-material";
 import {
+  Alert,
   Button,
   Dialog,
+  DialogActions,
+  DialogContent,
+  DialogContentText,
+  DialogTitle,
   IconButton,
   List,
   ListItem,
   Menu,
   MenuItem,
+  Modal,
   Paper,
   Stack,
   Typography,
@@ -18,6 +24,9 @@ import { useNavigate, Link, useLocation } from "react-router-dom";
 import {
   deleteLessonById,
   getLessonsByCourse,
+  getCourseById,
+  getCourses,
+  setActiveCourse,
 } from "../../coursesManagerSlice";
 import AddLessonModal from "../addLessonModal";
 import styles from "./courseDetail.module.scss";
@@ -32,30 +41,129 @@ function CourseDetail() {
 
   const [show, setShow] = React.useState(false);
 
-  const courseIndex = useSelector(
-    (state) => state.coursesManager.courses
-  ).findIndex((object) => {
-    return object._id === path[2];
+  const [alert, setAlert] = React.useState({
+    title: "",
+    open: false,
   });
 
-  const courseData = useSelector((state) => state.coursesManager.courses)[
-    courseIndex
-  ];
+  const [deleteAlert, seDeleteAlert] = React.useState(false);
 
-  const lessons = useSelector((state) => state.coursesManager.lessons);
+  const handleOpenConfirmDialog = () => {
+    seDeleteAlert(true);
+  };
+
+  const handleCloseConfirmDialog = () => {
+    seDeleteAlert(false);
+  };
+
+  const handleShowAlert = (title) => {
+    setAlert({ title: title, open: true });
+    setTimeout(() => {
+      setAlert({ title: "", open: false });
+    }, 3000);
+  };
+
+  const currentCourseData = useSelector(
+    (state) => state.coursesManager.currentCourse
+  );
+
+  const [currentCourse, setCurrentCourse] = React.useState({
+    _id: "",
+    courseCode: "",
+    courseImage: "",
+    courseName: "",
+    demoVideo: "",
+    category: "",
+    description: "",
+    teacher: null,
+    discussion: [],
+    rating: [],
+    lessons: [],
+    isActive: null,
+  });
+
+  const getVideoDuration = (_id) => {
+    if (currentCourse.lessons === []) {
+      return {
+        minute: NaN,
+        second: NaN,
+      };
+    } else {
+      var myVideoPlayer = document.getElementById(`${_id}`);
+      if (myVideoPlayer === null) {
+        return {
+          minute: NaN,
+          second: NaN,
+        };
+      } else if (myVideoPlayer.duration !== NaN) {
+        let videoDuration = myVideoPlayer.duration;
+        return {
+          minute: parseInt(videoDuration / 60, 10),
+          second: parseInt(videoDuration % 60),
+        };
+      }
+      return {
+        minute: NaN,
+        second: NaN,
+      };
+    }
+  };
+
+  if (currentCourseData !== null && currentCourse._id === "") {
+    setCurrentCourse(currentCourseData);
+  }
 
   React.useEffect(() => {
-    dispatch(getLessonsByCourse(courseData._id));
-  }, [courseData]);
+    setCurrentCourse({
+      _id: "",
+      courseCode: "",
+      courseImage: "",
+      courseName: "",
+      demoVideo: "",
+      category: "",
+      description: "",
+      teacher: null,
+      discussion: [],
+      rating: [],
+      lessons: [],
+      isActive: null,
+    });
+    dispatch(getCourseById(path[2]));
+  }, [dispatch]);
+
+  const handleDeleteCourse = () => {
+    let lessons = [];
+    currentCourse.lessons.forEach((item) => {
+      lessons.push(item._id);
+    });
+    dispatch(
+      setActiveCourse({ ...currentCourse, lessons: lessons, isActive: false })
+    );
+    handleCloseConfirmDialog();
+    window.location.reload();
+  };
+
+  const handleReverseCourse = () => {
+    let lessons = [];
+    currentCourse.lessons.forEach((item) => {
+      lessons.push(item);
+    });
+    dispatch(setActiveCourse({ ...currentCourse, lessons: lessons, isActive: true }));
+    handleCloseConfirmDialog();
+    window.location.reload();
+  };
 
   const [anchorEl, setAnchorEl] = React.useState(null);
   const [currentItem, setCurrentItem] = React.useState();
   const [openConfirm, setOpenConfirm] = React.useState(false);
   const location = useLocation();
+  const [id, setId] = React.useState();
+
   const open = Boolean(anchorEl);
 
-  const handleClick = (e) => {
+  const handleClick = (e, _id) => {
     setAnchorEl(e.currentTarget);
+    setId(_id);
   };
 
   const handleClose = () => {
@@ -107,25 +215,37 @@ function CourseDetail() {
             >
               Edit
             </Button>
-            <Button
-              className={`${styles.button}`}
-              variant="text"
-              startIcon={<Delete />}
-            >
-              Delete
-            </Button>
+            {currentCourse.isActive ? (
+              <Button
+                className={`${styles.button}`}
+                variant="text"
+                startIcon={<Delete />}
+                onClick={() => handleOpenConfirmDialog()}
+              >
+                Delete
+              </Button>
+            ) : (
+              <Button
+                className={`${styles.button}`}
+                variant="text"
+                startIcon={<Delete />}
+                onClick={() => handleOpenConfirmDialog()}
+              >
+                Reverse
+              </Button>
+            )}
           </Box>
         </Stack>
         <Typography variant="h4" fontWeight="bold">
-          {courseData.courseName}
+          {currentCourse.courseName}
         </Typography>
-        <Typography width="67%">{courseData.description}</Typography>
+        <Typography width="67%">{currentCourse.description}</Typography>
         <Stack padding="12px 0px" spacing="4px">
           <Typography variant="h5" fontWeight="bold">
             Thumbnail
           </Typography>
           <div className={`${styles.thumbnail}`}>
-            <img alt="thumbnail" src={courseData.courseImage} />
+            <img alt="thumbnail" src={currentCourse.courseImage} />
           </div>
         </Stack>
         <Stack
@@ -137,44 +257,69 @@ function CourseDetail() {
             <Typography variant="h5" fontWeight="bold">
               Course content
             </Typography>
-            <Typography>{`${courseData.lessons.length} lessons`}</Typography>
+            <Typography>{`${currentCourse.lessons.length} lessons`}</Typography>
           </Stack>
           <Button
             className={`${styles.addbutton}`}
             variant="contained"
             onClick={() => setShow(!show)}
           >
-            Thêm bài học
+            Add new lesson
           </Button>
         </Stack>
         <Stack direction="row" spacing="12px">
           <div className={`${styles.demo}`}>
-            <video alt="demo" src={courseData.demoVideo} />
+            {/* <video alt="demo" src={courseData.demoVideo} /> */}
+            <img alt="demo" src={currentCourse.courseImage} />
           </div>
           <List
             className={`${styles.list}`}
             sx={{ margin: "0px", padding: "0px" }}
           >
-            {lessons.map((item) => {
+            {currentCourse.lessons.map((item, index) => {
               return (
                 <ListItem>
                   <Paper className={`${styles.listitem}`} elevation={3}>
-                    <Stack direction="row" justifyContent="space-between">
-                      <img
-                        alt="listitemiamge"
-                        className={`${styles.listitemimage}`}
-                        src={item.thumbnail}
-                      />
-
-                      <Stack
-                        direction="column"
-                        alignItems="flex-start"
-                        justifyContent="space-evenly"
+                    <Stack direction="row" spacing="16px">
+                      <video
+                        className={`${styles.lessonvideo}`}
+                        id={`video_${item._id}`}
+                        controls
                       >
-                        <Typography fontWeight="bold">
-                          {`${item.lessonVolume}. ${item.name}`}
-                        </Typography>
-                        <Typography>12:25</Typography>
+                        <source src={item.video} type="video/mp4" />
+                      </video>
+                      <div className={`${styles.listitemimage}`}>
+                        <img alt="listitemiamge" src={item.thumbnail} />
+                      </div>
+                      <Stack
+                        className={`${styles.listitemrest}`}
+                        direction="row"
+                        justifyContent="space-between"
+                      >
+                        <Stack
+                          direction="column"
+                          alignItems="flex-start"
+                          justifyContent="space-evenly"
+                        >
+                          <Typography fontWeight="bold">
+                            {`${index + 1}. ${item.name}`}
+                          </Typography>
+                          <Typography>
+                            {`${getVideoDuration(`video_${item._id}`).minute}:${
+                              getVideoDuration(`video_${item._id}`).second
+                            }`}
+                          </Typography>
+                        </Stack>
+                        <IconButton
+                          aria-controls={
+                            open ? "demo-positioned-menu" : undefined
+                          }
+                          aria-haspopup="true"
+                          aria-expanded={open ? "true" : undefined}
+                          onClick={(e) => handleClick(e, item._id)}
+                        >
+                          <MoreVert />
+                        </IconButton>
                       </Stack>
                       <IconButton
                         aria-controls={
@@ -205,6 +350,11 @@ function CourseDetail() {
                         }}
                         elevation={1}
                       >
+                        <MenuItem
+                          onClick={() => {
+                            handleViewLesson(currentCourse._id, id);
+                          }}
+                        >View</MenuItem>
                         <Link
                           to="/edit-courses"
                           state={{
@@ -214,8 +364,8 @@ function CourseDetail() {
                             thumbnail: item.thumbnail,
                             course_url: item.video,
                             course_url2: location.pathname,
-                          }}
-                        >
+                      }}
+                      >
                           <MenuItem onClick={handleClose}>Edit</MenuItem>
                         </Link>
                         <MenuItem
@@ -289,7 +439,46 @@ function CourseDetail() {
           course_url2={location.pathname} 
         />
       </Dialog>
-      <AddLessonModal open={show} setOpen={setShow} />
+      <AddLessonModal
+        open={show}
+        setOpen={setShow}
+        handleShowAlert={handleShowAlert}
+      />
+      <Modal
+        open={alert.open}
+        hideBackdrop={true}
+        onClose={() => setAlert({ title: "", open: false })}
+      >
+        <Alert variant="filled" severity="success">
+          {alert.title}
+        </Alert>
+      </Modal>
+      <Dialog
+        open={deleteAlert}
+        onClose={handleCloseConfirmDialog}
+        aria-labelledby="alert-dialog-title"
+        aria-describedby="alert-dialog-description"
+      >
+        <DialogTitle id="alert-dialog-title">
+          {currentCourse.isActive ? "Confirm delete course?" : "Confirm reverse course?"}
+        </DialogTitle>
+        <DialogContent>
+          <DialogContentText id="alert-dialog-description">
+            {currentCourse.isActive ? "After delete, the course will be set to be inactive." : "After reverse, the course will be set to be active."}
+          </DialogContentText>
+        </DialogContent>
+        <DialogActions>
+          <Button onClick={handleCloseConfirmDialog}>Cancel</Button>
+          <Button
+            className={`${styles.confirmbutton}`}
+            variant="contained"
+            onClick={currentCourse.isActive ? handleDeleteCourse : handleReverseCourse}
+            autoFocus
+          >
+            OK
+          </Button>
+        </DialogActions>
+      </Dialog>
     </Paper>
   );
 }
