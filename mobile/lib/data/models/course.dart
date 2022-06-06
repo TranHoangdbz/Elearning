@@ -51,9 +51,8 @@ class Course extends BaseModel {
         "rating": rating == null
             ? null
             : List<dynamic>.from(rating!.map((x) => x.toJson())),
-        "lessons": lessons == null
-            ? null
-            : List<dynamic>.from(lessons.map((x) => x)),
+        "lessons":
+            lessons == null ? null : List<dynamic>.from(lessons.map((x) => x)),
         "isActive": isActive,
         '__v': v,
       };
@@ -63,9 +62,11 @@ class Course extends BaseModel {
         courseCode: data["courseCode"],
         courseImage: data["courseImage"],
         courseName: data["courseName"],
-        demoVideo: data["demoVideo"],
-        category: data["category"],
-        description: data["description"],
+        demoVideo: data["demoVideo"] ?? '',
+        category: data["category"] == null ? "No Category" : data["category"],
+        description: data["description"] == null
+            ? "No Description"
+            : data["description"],
         teacher: Teacher.fromJson(data["teacher"]),
         discussion: data["discussion"] == null
             ? null
@@ -74,7 +75,8 @@ class Course extends BaseModel {
         rating: data["rating"] == null
             ? null
             : List<Rating>.from(data["rating"].map((x) => Rating.fromJson(x))),
-        lessons: List<Lesson>.from(data["lessons"].map((x) => Lesson.fromJson(x))),
+        lessons:
+            List<Lesson>.from(data["lessons"].map((x) => Lesson.fromJson(x))),
         isActive: data["isActive"] == null ? null : data["isActive"],
         v: data["__v"] == null ? null : data["__v"],
       );
