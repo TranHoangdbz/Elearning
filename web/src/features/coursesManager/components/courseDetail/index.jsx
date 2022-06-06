@@ -21,7 +21,11 @@ import { Box } from "@mui/system";
 import React from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { useNavigate } from "react-router-dom";
-import { getCourseById, getCourses, setActiveCourse } from "../../coursesManagerSlice";
+import {
+  getCourseById,
+  getCourses,
+  setActiveCourse,
+} from "../../coursesManagerSlice";
 import AddLessonModal from "../addLessonModal";
 import styles from "./courseDetail.module.scss";
 
@@ -43,11 +47,11 @@ function CourseDetail() {
 
   const handleOpenDeleteDialog = () => {
     seDeleteAlert(true);
-  }
+  };
 
   const handleCloseDeleteDialog = () => {
     seDeleteAlert(false);
-  }
+  };
 
   const handleShowAlert = (title) => {
     setAlert({ title: title, open: true });
@@ -157,7 +161,7 @@ function CourseDetail() {
     handleClose();
   };
 
-  return (
+  return currentCourse.isActive ? (
     <Paper className={`${styles.coursedetail}`} elevation={3}>
       <Stack direction="column" spacing="8px">
         <Stack
@@ -341,11 +345,22 @@ function CourseDetail() {
         </DialogContent>
         <DialogActions>
           <Button onClick={handleCloseDeleteDialog}>Cancel</Button>
-          <Button className={`${styles.confirmbutton}`} variant="contained" onClick={handleDeleteCourse} autoFocus>
+          <Button
+            className={`${styles.confirmbutton}`}
+            variant="contained"
+            onClick={handleDeleteCourse}
+            autoFocus
+          >
             OK
           </Button>
         </DialogActions>
       </Dialog>
+    </Paper>
+  ) : (
+    <Paper className={`${styles.coursedetail}`} elevation={3}>
+      <Typography variant="h4" fontWeight="bold">
+          Course is inactive
+        </Typography>
     </Paper>
   );
 }

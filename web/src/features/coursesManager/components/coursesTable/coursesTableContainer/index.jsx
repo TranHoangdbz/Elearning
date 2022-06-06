@@ -203,11 +203,11 @@ function CoursesTableContainer({ rowData, page, rowsPerPage }) {
         aria-describedby="alert-dialog-description"
       >
         <DialogTitle id="alert-dialog-title">
-          {"Confirm delete course?"}
+          {"Confirm reverse course?"}
         </DialogTitle>
         <DialogContent>
           <DialogContentText id="alert-dialog-description">
-            After delete, the course will be set to be inactive.
+            After reverse, the course will be set to be active.
           </DialogContentText>
         </DialogContent>
         <DialogActions>
