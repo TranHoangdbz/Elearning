@@ -5,8 +5,10 @@ import { useState } from 'react';
 import style from './style';
 import AjaxHelper from '../../../services/index'
 import URL_API from '../../../services/API/config'
+import AlertDialogSlide from './notification';
 
 const CreateQuizz = (props) => {
+
 
     const [answer, setAnswer] = useState([])
     const answerSource = ['A', 'B', 'C', 'D']
@@ -15,6 +17,11 @@ const CreateQuizz = (props) => {
     const [answerB, setAnswerB] = useState('')
     const [answerC, setAnswerC] = useState('')
     const [answerD, setAnswerD] = useState('')
+
+    // Open Alert
+    const [openAlert, setOpenAlert] = useState(false)
+    const handleOpenAlert = () => setOpenAlert(true);
+    const handleCloseAlert = () => setOpenAlert(false);
 
     async function AddQuizzToLesson(quizzId) {
         try {
@@ -115,7 +122,7 @@ const CreateQuizz = (props) => {
         if (!CheckingProcess())
             await AsyncProcess()
         else {
-            console.log("Khong duoc bo trong cau tra loi va phai chon it nhat 1 cau tra loi dung !")
+            handleOpenAlert()
         }
     }
 
@@ -180,6 +187,7 @@ const CreateQuizz = (props) => {
                     <Button variant="contained" color='error' sx={{ mr: 2 }} onClick={props.handleClose}>Cancel</Button>
                     <Button variant="contained" sx={{ backgroundColor: '#040E53' }} onClick={handleCreateQuizz}>Save All</Button>
                 </Stack>
+                <AlertDialogSlide open={openAlert} handleClose={handleCloseAlert}></AlertDialogSlide>
             </Stack>
 
         </Modal>
