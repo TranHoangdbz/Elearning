@@ -84,7 +84,7 @@ const Routers = () => {
           <Route
             path=":id"
             element={
-              user && user.verified ? (
+              user && !user.verified ? (
                 <VerifyAccount />
               ) : (
                 <Navigate to="/homeCourseList" replace />

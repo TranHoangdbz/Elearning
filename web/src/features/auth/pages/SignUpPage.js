@@ -111,9 +111,7 @@ function SignUpPage() {
           setOpen(true);
           setIsError(true);
           setMessage(response.data.msg);
-          console.log(response);
         });
-      // console.log({ email, fullName, phoneNumber, password });
     },
   });
 
