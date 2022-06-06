@@ -119,8 +119,9 @@ const Routers = () => {
               )
             );
           })}
-        {user &&
-          user.role === "admin" &&
+        {
+        // user &&
+        //   user.role === "admin" &&
           routes.adminRoute.map((route, idx) => {
             return (
               route.element && (
