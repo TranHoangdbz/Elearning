@@ -34,10 +34,9 @@ class ViewcourseScreen extends StatelessWidget {
               child: Container(
                 width: double.maxFinite,
                 height: 300,
-                decoration: BoxDecoration(
-
-                ),
-                child: Image.network(course.courseImage,
+                decoration: BoxDecoration(),
+                child: Image.network(
+                  course.courseImage,
                   fit: BoxFit.cover,
                 ),
               ),
@@ -50,10 +49,9 @@ class ViewcourseScreen extends StatelessWidget {
                     Icons.arrow_back_ios_new_rounded,
                     color: Colors.white,
                   ),
-                  onTap: (){
+                  onTap: () {
                     Get.back();
-                  }
-              ),
+                  }),
             ),
             Positioned(
               top: 270,
@@ -65,14 +63,14 @@ class ViewcourseScreen extends StatelessWidget {
                   decoration: BoxDecoration(
                       color: Colors.white,
                       borderRadius: BorderRadius.only(
-                      topLeft: Radius.circular(30),
-                      topRight: Radius.circular(30)
-                    )
-                  ),
+                          topLeft: Radius.circular(30),
+                          topRight: Radius.circular(30))),
                   child: Column(
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
-                      SizedBox(height: 30,),
+                      SizedBox(
+                        height: 30,
+                      ),
                       Container(
                         child: Center(
                           child: Text(
@@ -84,7 +82,9 @@ class ViewcourseScreen extends StatelessWidget {
                           ),
                         ),
                       ),
-                      SizedBox(height: 30,),
+                      SizedBox(
+                        height: 30,
+                      ),
                       Row(
                         mainAxisAlignment: MainAxisAlignment.spaceBetween,
                         children: [
@@ -92,15 +92,18 @@ class ViewcourseScreen extends StatelessWidget {
                             children: [
                               Container(
                                 child: CircleAvatar(
-                                  backgroundImage: const NetworkImage(
-                                      'https://picsum.photos/100/100?image=35'),
+                                  backgroundImage: NetworkImage(
+                                      course.teacher.profilePicture),
                                   onBackgroundImageError: (e, s) {
-                                    debugPrint('Teacher avatar can\'t load: , $e, $s');
+                                    debugPrint(
+                                        'Teacher avatar can\'t load: , $e, $s');
                                   },
                                   minRadius: 15,
                                 ),
                               ),
-                              SizedBox(width: 10,),
+                              SizedBox(
+                                width: 10,
+                              ),
                               Container(
                                 child: Column(
                                   crossAxisAlignment: CrossAxisAlignment.start,
@@ -115,78 +118,81 @@ class ViewcourseScreen extends StatelessWidget {
                                     Text(
                                       course.teacher.title,
                                       style: TextStyle(
-                                      fontSize: 13,
-                                      fontWeight: FontWeight.w300,
-                                    ),
+                                        fontSize: 13,
+                                        fontWeight: FontWeight.w300,
+                                      ),
                                     )
                                   ],
                                 ),
                               ),
-
                             ],
                           ),
                           Container(
                             child: Column(
                               crossAxisAlignment: CrossAxisAlignment.end,
                               children: [
-                                Text(
-                                  "4 hours 20 mins",
-                                  style: TextStyle(
-                                  fontSize: 13,
-                                  fontWeight: FontWeight.w300,
-                                  )
-                                ),
-                                Text(
-                                  course.lessons.length.toString(),
+                                Text("4 hours 20 mins",
+                                    style: TextStyle(
+                                      fontSize: 13,
+                                      fontWeight: FontWeight.w300,
+                                    )),
+                                Text(course.lessons.length.toString(),
                                     style: TextStyle(
                                       fontSize: 13,
                                       fontWeight: FontWeight.w600,
-                                    )
-                                )
+                                    ))
                               ],
                             ),
                           ),
                         ],
                       ),
-                      SizedBox(height: 30,),
-                      Container(
-                        child: Text(
-                            "Description:",
-                            style: TextStyle(
-                              fontSize: 13,
-                              fontWeight: FontWeight.w600,
-                            )
-                        )
+                      SizedBox(
+                        height: 30,
                       ),
-                      SizedBox(height: 20,),
                       Container(
-                          child: Text(
-                              course.description,
+                          child: Text("Description:",
                               style: TextStyle(
                                 fontSize: 13,
-                                fontWeight: FontWeight.w300,
-                              ),
-                            textAlign: TextAlign.center,
-                          )
+                                fontWeight: FontWeight.w600,
+                              ))),
+                      SizedBox(
+                        height: 20,
                       ),
-                      SizedBox(height: 20,),
+                      Container(
+                          child: Text(
+                        course.description,
+                        style: TextStyle(
+                          fontSize: 13,
+                          fontWeight: FontWeight.w300,
+                        ),
+                        textAlign: TextAlign.center,
+                      )),
+                      SizedBox(
+                        height: 20,
+                      ),
                     ],
                   ),
                 ),
               ),
             ),
             Positioned(
-                bottom: 20,
-                left: 20,
-                right: 20,
-                child: CustomElevatedButton(
-                  label: "REGISTER",
-                  onPressed: () {
-                    Navigator.push(context, MaterialPageRoute(builder: (context) => LearnCourseScreen(course: course,)));
-                  },
-                  primary: Colors.indigo,
-                  onPrimary: Colors.white,
-                ),
+              bottom: 20,
+              left: 20,
+              right: 20,
+              child: CustomElevatedButton(
+                label: "REGISTER",
+                onPressed: () {
+                  Navigator.push(
+                      context,
+                      MaterialPageRoute(
+                          builder: (context) => LearnCourseScreen(
+                                course: course,
+                                lesson: course.lessons.first,
+                              )));
+                },
+                primary: Colors.indigo,
+                onPrimary: Colors.white,
+              ),
             )
           ],
         ),
