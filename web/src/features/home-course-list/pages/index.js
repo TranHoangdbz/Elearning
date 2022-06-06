@@ -2,7 +2,7 @@ import React, { useState, useEffect } from 'react'
 
 import style from './style'
 
-import { Avatar, Button, IconButton, Stack, Typography } from '@mui/material'
+import { Avatar, Button, CardActions, CardContent, IconButton, Stack, Typography } from '@mui/material'
 import Card from '@mui/material/Card';
 import CardMedia from '@mui/material/CardMedia';
 import { CardActionArea } from '@mui/material';
@@ -25,6 +25,14 @@ SwiperCore.use([Virtual, Navigation, Pagination]);
 
 
 const HomeCourseList = () => {
+
+    const getCourseName = (name) => {
+        if (name.length > 65) {
+            return name.slice(0, 64) + "..."
+        } else {
+            return name
+        }
+    }
 
     useEffect(() => {
         async function LoadData() {
@@ -126,29 +134,33 @@ const HomeCourseList = () => {
                     {slides.map(course => (
                         <SwiperSlide key={course._id}>
                             <Card sx={style.card}>
-                                <CardActionArea>
+                                <CardActionArea onClick={() => console.log("click")} sx={{ height: "100px" }}>
                                     <CardMedia
                                         component="img"
                                         height="140"
                                         image={course.courseImage}
                                         alt=" "
                                     />
-                                    <Stack direction="column" spacing={2} marginLeft="10%">
-                                        <Stack direction="row">
+                                    <CardContent sx={{ height: '30px' }}>
+                                        <Stack paddingRight="10%" paddingLeft="10%" direction="row">
                                             <Avatar src={course.teacher.profilePicture} sx={style.avatar} />
                                             <Stack direction="column" width="100%" marginLeft="4%">
                                                 <Typography sx={style.teacherFullName}>{course.teacher.fullName}</Typography>
                                                 <Typography sx={style.teacherTitle}>{course.teacher.title}</Typography>
                                             </Stack>
                                         </Stack>
-                                        <Typography sx={style.courseName}>{course.courseName}</Typography>
-                                        <Stack direction="row" justifyContent="space-between" paddingRight="3%">
+                                    </CardContent>
+                                    <CardContent sx={{ height: "50px", mt: 2 }}>
+                                        <Typography sx={style.courseName}>{getCourseName(course.courseName)}</Typography>
+                                    </CardContent>
+                                    <CardContent >
+                                        <Stack direction="row" justifyContent="space-between" paddingRight="10%" paddingLeft="10%">
                                             <Typography sx={style.countCourseVolume}>{CountCourseVolume(course)}</Typography>
                                             <ul>
                                                 <li style={style.countLessons}>{course.lessons.length} lessons</li>
                                             </ul>
                                         </Stack>
-                                    </Stack>
+                                    </CardContent>
                                 </CardActionArea>
                             </Card>
                         </SwiperSlide>
@@ -183,13 +195,14 @@ const HomeCourseList = () => {
                     {slides.map((course) => (
                         <SwiperSlide key={course._id}>
                             <Card sx={style.card}>
-                                <CardActionArea>
-                                    <CardMedia
-                                        component="img"
-                                        height="140"
-                                        image={course.courseImage}
-                                        alt=" "
-                                    />
+
+                                <CardMedia
+                                    component="img"
+                                    height="140"
+                                    image={course.courseImage}
+                                    alt=" "
+                                />
+                                <CardActionArea sx={{ height: "100px" }}>
                                     <Stack direction="column" spacing={2} marginLeft="10%">
                                         <Stack direction="row">
                                             <Avatar src={course.teacher.profilePicture} sx={style.avatar} />
@@ -198,15 +211,18 @@ const HomeCourseList = () => {
                                                 <Typography sx={style.teacherTitle}>{course.teacher.title}</Typography>
                                             </Stack>
                                         </Stack>
-                                        <Typography sx={style.courseName}>{course.courseName}</Typography>
-                                        <Stack direction="row" justifyContent="space-between" paddingRight="3%">
-                                            <Typography sx={style.countCourseVolume}>{CountCourseVolume(course)}</Typography>
-                                            <ul>
-                                                <li style={style.countLessons}>{course.lessons.length} lessons</li>
-                                            </ul>
-                                        </Stack>
+                                        <Typography sx={style.courseName}>{getCourseName(course.courseName)}</Typography>
                                     </Stack>
+
                                 </CardActionArea>
+                                <CardContent>
+                                    <Stack direction="row" justifyContent="space-between" paddingRight="4%">
+                                        <Typography sx={style.countCourseVolume}>{CountCourseVolume(course)}</Typography>
+                                        <ul>
+                                            <li style={style.countLessons}>{course.lessons.length} lessons</li>
+                                        </ul>
+                                    </Stack>
+                                </CardContent>
                             </Card>
                         </SwiperSlide>
                     ))}
@@ -243,13 +259,14 @@ const HomeCourseList = () => {
                                 {slides1.map(course => (
                                     <SwiperSlide key={course._id}>
                                         <Card sx={style.card}>
-                                            <CardActionArea>
-                                                <CardMedia
-                                                    component="img"
-                                                    height="140"
-                                                    image={course.courseImage}
-                                                    alt=" "
-                                                />
+
+                                            <CardMedia
+                                                component="img"
+                                                height="140"
+                                                image={course.courseImage}
+                                                alt=" "
+                                            />
+                                            <CardActionArea sx={{ height: "100px" }}>
                                                 <Stack direction="column" spacing={2} marginLeft="10%">
                                                     <Stack direction="row">
                                                         <Avatar src={course.teacher.profilePicture} sx={style.avatar} />
@@ -258,15 +275,18 @@ const HomeCourseList = () => {
                                                             <Typography sx={style.teacherTitle}>{course.teacher.title}</Typography>
                                                         </Stack>
                                                     </Stack>
-                                                    <Typography sx={style.courseName}>{course.courseName}</Typography>
-                                                    <Stack direction="row" justifyContent="space-between" paddingRight="3%">
-                                                        <Typography sx={style.countCourseVolume}>{CountCourseVolume(course)}</Typography>
-                                                        <ul>
-                                                            <li style={style.countLessons}>{course.lessons.length} lessons</li>
-                                                        </ul>
-                                                    </Stack>
+                                                    <Typography sx={style.courseName}>{getCourseName(course.courseName)}</Typography>
                                                 </Stack>
+
                                             </CardActionArea>
+                                            <CardContent>
+                                                <Stack direction="row" justifyContent="space-between" paddingRight="4%">
+                                                    <Typography sx={style.countCourseVolume}>{CountCourseVolume(course)}</Typography>
+                                                    <ul>
+                                                        <li style={style.countLessons}>{course.lessons.length} lessons</li>
+                                                    </ul>
+                                                </Stack>
+                                            </CardContent>
                                         </Card>
                                     </SwiperSlide>
                                 ))}
@@ -307,13 +327,14 @@ const HomeCourseList = () => {
                                 {slides2.map(course => (
                                     <SwiperSlide key={course._id}>
                                         <Card sx={style.card}>
-                                            <CardActionArea>
-                                                <CardMedia
-                                                    component="img"
-                                                    height="140"
-                                                    image={course.courseImage}
-                                                    alt=" "
-                                                />
+
+                                            <CardMedia
+                                                component="img"
+                                                height="140"
+                                                image={course.courseImage}
+                                                alt=" "
+                                            />
+                                            <CardActionArea sx={{ height: "100px" }}>
                                                 <Stack direction="column" spacing={2} marginLeft="10%">
                                                     <Stack direction="row">
                                                         <Avatar src={course.teacher.profilePicture} sx={style.avatar} />
@@ -322,16 +343,20 @@ const HomeCourseList = () => {
                                                             <Typography sx={style.teacherTitle}>{course.teacher.title}</Typography>
                                                         </Stack>
                                                     </Stack>
-                                                    <Typography sx={style.courseName}>{course.courseName}</Typography>
-                                                    <Stack direction="row" justifyContent="space-between" paddingRight="3%">
-                                                        <Typography sx={style.countCourseVolume}>{CountCourseVolume(course)}</Typography>
-                                                        <ul>
-                                                            <li style={style.countLessons}>{course.lessons.length} lessons</li>
-                                                        </ul>
-                                                    </Stack>
+                                                    <Typography sx={style.courseName}>{getCourseName(course.courseName)}</Typography>
                                                 </Stack>
+
                                             </CardActionArea>
+                                            <CardContent>
+                                                <Stack direction="row" justifyContent="space-between" paddingRight="4%">
+                                                    <Typography sx={style.countCourseVolume}>{CountCourseVolume(course)}</Typography>
+                                                    <ul>
+                                                        <li style={style.countLessons}>{course.lessons.length} lessons</li>
+                                                    </ul>
+                                                </Stack>
+                                            </CardContent>
                                         </Card>
+
                                     </SwiperSlide>
                                 ))}
                             </Swiper>
