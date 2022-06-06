@@ -9,12 +9,14 @@ class Course extends BaseModel {
   final String courseName;
   final String courseImage;
   final String demoVideo;
-  final String category;
+  final String? category;
   final String description;
   final Teacher teacher;
   final List<Discussion>? discussion;
   final List<Rating>? rating;
   final List<Lesson> lessons;
+  final bool? isActive;
+  final num? v;
 
   Course({
     String? id,
@@ -22,12 +24,15 @@ class Course extends BaseModel {
     required this.courseName,
     required this.courseImage,
     required this.demoVideo,
-    required this.category,
+    //required this.category,
+    this.category,
     required this.description,
     required this.teacher,
     this.discussion,
     this.rating,
     required this.lessons,
+    this.isActive,
+    this.v,
   }) : super(id);
 
   @override
@@ -46,7 +51,11 @@ class Course extends BaseModel {
         "rating": rating == null
             ? null
             : List<dynamic>.from(rating!.map((x) => x.toJson())),
-        "lessons": List<dynamic>.from(lessons.map((x) => x)),
+        "lessons": lessons == null
+            ? null
+            : List<dynamic>.from(lessons.map((x) => x)),
+        "isActive": isActive,
+        '__v': v,
       };
 
   factory Course.fromJson(Map<String, dynamic> data) => Course(
@@ -65,7 +74,8 @@ class Course extends BaseModel {
         rating: data["rating"] == null
             ? null
             : List<Rating>.from(data["rating"].map((x) => Rating.fromJson(x))),
-        lessons:
-            List<Lesson>.from(data["lessons"].map((x) => Lesson.fromJson(x))),
+        lessons: List<Lesson>.from(data["lessons"].map((x) => Lesson.fromJson(x))),
+        isActive: data["isActive"] == null ? null : data["isActive"],
+        v: data["__v"] == null ? null : data["__v"],
       );
 }

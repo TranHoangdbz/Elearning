@@ -20,11 +20,12 @@ class CourseService {
       return courses;
     } catch (e) {
       courses = [];
+      print(e);
       showDialog(
         context: Get.context!,
         builder: (context) {
           return const CustomDialog(
-            content: "Can't connect to server",
+            content: "Error occur",
             icon: Icon(
               Icons.error,
               color: AppColors.redColor,

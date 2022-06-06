@@ -19,6 +19,7 @@ class MyCoursesScreen extends GetView<MyCoursesController> {
       backgroundColor: AppColors.backgroundColor,
       body: SingleChildScrollView(
         child: Column(
+          crossAxisAlignment: CrossAxisAlignment.start,
           children: [
             Container(
               margin: const EdgeInsets.all(20),
