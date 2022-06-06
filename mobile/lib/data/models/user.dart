@@ -50,5 +50,6 @@ class User extends BaseModel {
           data['currentCourses'],
         ),
         verified: data['verified'],
+        profilePicture: data['profilePicture'],
       );
 }
