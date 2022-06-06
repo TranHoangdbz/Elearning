@@ -15,27 +15,28 @@ class LessonService {
   List<Lesson> lessons = [];
 
   fetchLessons() async {
-    try {
-      lessons = await _lessonProvider.fetchAll();
-      return lessons;
-    } catch (e) {
-      lessons = [];
-      showDialog(
-        context: Get.context!,
-        builder: (context) {
-          return const CustomDialog(
-            content: "Can't connect to server",
-            icon: Icon(
-              Icons.error,
-              color: AppColors.redColor,
-              size: 48,
-            ),
-          );
-        },
-      );
+    // try {
+    //   lessons = await _lessonProvider.fetchAll();
+    //   return lessons;
+    // } catch (e) {
+    //   lessons = [];
+    //   print(e);
+    //   showDialog(
+    //     context: Get.context!,
+    //     builder: (context) {
+    //       return const CustomDialog(
+    //         content: "Error occur",
+    //         icon: Icon(
+    //           Icons.error,
+    //           color: AppColors.redColor,
+    //           size: 48,
+    //         ),
+    //       );
+    //     },
+    //   );
 
-      rethrow;
-    }
+    //   rethrow;
+    // }
   }
 
   getAllLessons() {
