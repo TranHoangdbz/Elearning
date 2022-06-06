@@ -81,16 +81,9 @@ const Routers = () => {
             </div>
           }
         >
-          <Route
-            path=":id"
-            element={
-              user && !user.verified ? (
-                <VerifyAccount />
-              ) : (
-                <Navigate to="/homeCourseList" replace />
-              )
-            }
-          />
+          {user && !user.verified && (
+            <Route path=":id" element={<VerifyAccount />} />
+          )}
         </Route>
         {user &&
           (user.role === "user" || user.role === "admin") &&
@@ -129,7 +122,6 @@ const Routers = () => {
               )
             );
           })}
-        <Route path="*" element={<Navigate to="/" replace />} />
       </Routes>
     </React.Suspense>
   );
