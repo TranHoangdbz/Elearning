@@ -23,6 +23,8 @@ export const SIGN_UP = "/sign-up";
 export const DEMO = '/demo';
 export const RESET_PASSWORD = "/reset-password";
 export const EDIT_COURSES = "/edit-courses";
+export const VIEW_LESSON = "/coursesmanager/lessondetail/:courseId/:lessonId";
+export const ADD_LESSON = "/coursesmanager/addlesson";
 
 const publicRoute = [
     {
@@ -92,7 +94,13 @@ const adminRoute = [
         element: <CoursesManagerPage route={"coursedetail"} />
     },
     {
-        path: "/coursesmanager/addcourse",
+        path: VIEW_LESSON,
+        name: "LessonDetail",
+        element: <CoursesManagerPage route={"lessondetail"} />
+    },
+  
+    {
+        path: ADD_LESSON,
         name: "AddCourse",
         element: <AddCourse />
     },

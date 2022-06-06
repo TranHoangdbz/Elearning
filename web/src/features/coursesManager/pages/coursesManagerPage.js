@@ -2,6 +2,7 @@ import { Box, Grid, List, ListItem } from "@mui/material";
 import CourseDetail from "../components/courseDetail";
 import CoursesTable from "../components/coursesTable";
 import Header from "../components/header";
+import LessonDetail from "../components/lessonDetail";
 import SideMenu from "../components/sideMenu";
 
 function CoursesManagerPage({ route }) {
@@ -20,6 +21,7 @@ function CoursesManagerPage({ route }) {
               <ListItem>
                 {route === "courseslist" ? <CoursesTable /> : null}
                 {route === "coursedetail" ? <CourseDetail /> : null}
+                {route === "lessondetail" ? <LessonDetail /> : null}
               </ListItem>
             </List>
           </Box>

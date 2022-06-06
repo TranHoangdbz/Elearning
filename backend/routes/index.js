@@ -5,6 +5,7 @@ const filesRouter = require("./files");
 const discussionRouter = require("./discussion");
 const googleRouter = require('./google');
 const teacherRouter = require('./teachers')
+const quizzRouter = require("./quizz")
 
 function router(app) {
   app.use("/api/users", usersRouter);
@@ -15,6 +16,7 @@ function router(app) {
 
   app.use('/auth/google', googleRouter);
   app.use("/api/teachers", teacherRouter)
+  app.use("/api/quizz", quizzRouter);
 }
 
 module.exports = router;

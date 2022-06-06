@@ -9,14 +9,14 @@ const QuizzSchema = new mongoose.Schema({
     type: String,
     required: true,
   },
-  choice: [{
-    type: String,
+  choice: {
+    type: Array,
     required: true,
-  }],
-  answer: [{
-    type: String,
+  },
+  answer: {
+    type: Array,
     required: true,
-  }]  ,
+  }
 });
 
 module.exports = mongoose.model("Quizz", QuizzSchema);

@@ -19,6 +19,7 @@ import {
   deleteLessonById,
   getLessonsByCourse,
 } from "../../coursesManagerSlice";
+import AddLessonModal from "../addLessonModal";
 import styles from "./courseDetail.module.scss";
 import CancelOutlinedIcon from "@mui/icons-material/CancelOutlined";
 import EditCourse from "../editCourse/EditCourse";
@@ -28,6 +29,8 @@ function CourseDetail() {
 
   const url = window.location.pathname;
   const path = url.split("/").filter((x) => x);
+
+  const [show, setShow] = React.useState(false);
 
   const courseIndex = useSelector(
     (state) => state.coursesManager.courses
@@ -72,6 +75,11 @@ function CourseDetail() {
   const handleCloseEditPopup = () => {
     setOpenEditPopup(false);
   };
+  const handleViewLesson = (courseId, lessonId) => {
+    navigate("/coursesmanager/lessondetail/" + courseId + "/" + lessonId);
+    handleClose();
+  };
+
   return (
     <Paper className={`${styles.coursedetail}`} elevation={3}>
       <Stack direction="column" spacing="8px">
@@ -134,9 +142,7 @@ function CourseDetail() {
           <Button
             className={`${styles.addbutton}`}
             variant="contained"
-            onClick={() => {
-              navigate("/coursesmanager/addcourse");
-            }}
+            onClick={() => setShow(!show)}
           >
             Thêm bài học
           </Button>
@@ -283,6 +289,7 @@ function CourseDetail() {
           course_url2={location.pathname} 
         />
       </Dialog>
+      <AddLessonModal open={show} setOpen={setShow} />
     </Paper>
   );
 }
