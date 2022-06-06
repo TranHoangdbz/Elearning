@@ -45,11 +45,11 @@ function CourseDetail() {
 
   const [deleteAlert, seDeleteAlert] = React.useState(false);
 
-  const handleOpenDeleteDialog = () => {
+  const handleOpenConfirmDialog = () => {
     seDeleteAlert(true);
   };
 
-  const handleCloseDeleteDialog = () => {
+  const handleCloseConfirmDialog = () => {
     seDeleteAlert(false);
   };
 
@@ -136,9 +136,17 @@ function CourseDetail() {
     dispatch(
       setActiveCourse({ ...currentCourse, lessons: lessons, isActive: false })
     );
-    navigate("/coursesmanager/courseslist");
-    dispatch(getCourses());
-    handleCloseDeleteDialog();
+    handleCloseConfirmDialog();
+    window.location.reload();
+  };
+
+  const handleReverseCourse = () => {
+    let lessons = [];
+    currentCourse.lessons.forEach((item) => {
+      lessons.push(item);
+    });
+    dispatch(setActiveCourse({ ...currentCourse, lessons: lessons, isActive: true }));
+    handleCloseConfirmDialog();
     window.location.reload();
   };
 
@@ -161,7 +169,7 @@ function CourseDetail() {
     handleClose();
   };
 
-  return currentCourse.isActive ? (
+  return (
     <Paper className={`${styles.coursedetail}`} elevation={3}>
       <Stack direction="column" spacing="8px">
         <Stack
@@ -187,14 +195,25 @@ function CourseDetail() {
             >
               Edit
             </Button>
-            <Button
-              className={`${styles.button}`}
-              variant="text"
-              startIcon={<Delete />}
-              onClick={() => handleOpenDeleteDialog()}
-            >
-              Delete
-            </Button>
+            {currentCourse.isActive ? (
+              <Button
+                className={`${styles.button}`}
+                variant="text"
+                startIcon={<Delete />}
+                onClick={() => handleOpenConfirmDialog()}
+              >
+                Delete
+              </Button>
+            ) : (
+              <Button
+                className={`${styles.button}`}
+                variant="text"
+                startIcon={<Delete />}
+                onClick={() => handleOpenConfirmDialog()}
+              >
+                Reverse
+              </Button>
+            )}
           </Box>
         </Stack>
         <Typography variant="h4" fontWeight="bold">
@@ -331,36 +350,30 @@ function CourseDetail() {
       </Modal>
       <Dialog
         open={deleteAlert}
-        onClose={handleCloseDeleteDialog}
+        onClose={handleCloseConfirmDialog}
         aria-labelledby="alert-dialog-title"
         aria-describedby="alert-dialog-description"
       >
         <DialogTitle id="alert-dialog-title">
-          {"Confirm delete course?"}
+          {currentCourse.isActive ? "Confirm delete course?" : "Confirm reverse course?"}
         </DialogTitle>
         <DialogContent>
           <DialogContentText id="alert-dialog-description">
-            After delete, the course will be set to be inactive.
+            {currentCourse.isActive ? "After delete, the course will be set to be inactive." : "After reverse, the course will be set to be active."}
           </DialogContentText>
         </DialogContent>
         <DialogActions>
-          <Button onClick={handleCloseDeleteDialog}>Cancel</Button>
+          <Button onClick={handleCloseConfirmDialog}>Cancel</Button>
           <Button
             className={`${styles.confirmbutton}`}
             variant="contained"
-            onClick={handleDeleteCourse}
+            onClick={currentCourse.isActive ? handleDeleteCourse : handleReverseCourse}
             autoFocus
           >
             OK
           </Button>
         </DialogActions>
       </Dialog>
-    </Paper>
-  ) : (
-    <Paper className={`${styles.coursedetail}`} elevation={3}>
-      <Typography variant="h4" fontWeight="bold">
-          Course is inactive
-        </Typography>
     </Paper>
   );
 }

@@ -62,18 +62,7 @@ const tableHeadCells = [
 ];
 
 function CoursesTableContainer({ rowData, page, rowsPerPage }) {
-  const dispatch = useDispatch();
   const navigate = useNavigate();
-
-  const [deleteAlert, seDeleteAlert] = React.useState(false);
-
-  const handleOpenDeleteDialog = () => {
-    seDeleteAlert(true);
-  };
-
-  const handleCloseDeleteDialog = () => {
-    seDeleteAlert(false);
-  };
 
   const [anchorEl, setAnchorEl] = React.useState(null);
   const [course, setCourse] = React.useState({ isActive: null });
@@ -94,17 +83,6 @@ function CoursesTableContainer({ rowData, page, rowsPerPage }) {
 
   const handleViewCourse = (_id) => {
     navigate("/coursesmanager/coursedetail/" + _id);
-  };
-
-  const handleReverseCourse = (course) => {
-    let lessons = [];
-    course.lessons.forEach((item) => {
-      lessons.push(item);
-    });
-    dispatch(setActiveCourse({ ...course, lessons: lessons, isActive: true }));
-    dispatch(getCourses());
-    handleClose();
-    window.location.reload();
   };
 
   return (
@@ -166,19 +144,8 @@ function CoursesTableContainer({ rowData, page, rowsPerPage }) {
                       }}
                       elevation={1}
                     >
-                      <MenuItem
-                        onClick={
-                          course.isActive
-                            ? () => {
-                                handleViewCourse(course._id);
-                              }
-                            : () => {
-                                handleOpenDeleteDialog();
-                              }
-                          // : () => handleReverseCourse(course)
-                        }
-                      >
-                        {course.isActive ? "Xem" : "Hoàn tác"}
+                      <MenuItem onClick={() => handleViewCourse(course._id)}>
+                        Xem
                       </MenuItem>
                     </Menu>
                   </TableCell>
@@ -196,32 +163,6 @@ function CoursesTableContainer({ rowData, page, rowsPerPage }) {
           )}
         </TableBody>
       </Table>
-      <Dialog
-        open={deleteAlert}
-        onClose={handleCloseDeleteDialog}
-        aria-labelledby="alert-dialog-title"
-        aria-describedby="alert-dialog-description"
-      >
-        <DialogTitle id="alert-dialog-title">
-          {"Confirm reverse course?"}
-        </DialogTitle>
-        <DialogContent>
-          <DialogContentText id="alert-dialog-description">
-            After reverse, the course will be set to be active.
-          </DialogContentText>
-        </DialogContent>
-        <DialogActions>
-          <Button onClick={handleCloseDeleteDialog}>Cancel</Button>
-          <Button
-            className={`${styles.confirmbutton}`}
-            variant="contained"
-            onClick={() => handleReverseCourse(course)}
-            autoFocus
-          >
-            OK
-          </Button>
-        </DialogActions>
-      </Dialog>
     </TableContainer>
   );
 }
