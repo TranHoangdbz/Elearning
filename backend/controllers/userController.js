@@ -5,11 +5,8 @@ const { transporter } = require("../services/nodemailer");
 const userController = {
 	getCurrentUser: async (req, res) => {
         try {
-            const tmp = req.user;
-
-            if (!tmp) return res.status(400).json({ msg: 'User not found' });
-
-            const user = await User.findOne({ _id: tmp._id });
+            const user = await User.findOne({ _id: req._id });
+			if (!user) return res.status(400).json({ msg: 'User not found' });
 
             return res.json({ user });
         } catch (err) {
