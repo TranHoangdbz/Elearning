@@ -288,7 +288,7 @@ function Quizz() {
                                                 <div className="title">
                                                     
                                                     Congratulation! You have passed the test!<br></br>
-                                                    Score: {scoreToDisplay}/100
+                                                    Score: {100}/100
                                                 </div>
                                                 :
                                                 <div className='title'>
