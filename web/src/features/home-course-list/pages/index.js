@@ -20,11 +20,25 @@ import 'swiper/css';
 import 'swiper/css/pagination';
 import 'swiper/css/navigation';
 import { formatVolume } from '../../../utils/FormatVolumeUtil'
+import { useDispatch } from 'react-redux';
+import { useSelector } from 'react-redux';
+import { getCurrentUser } from './../../auth/auth';
+import { setUser } from '../../auth/authSlice'
+import { useNavigate } from 'react-router-dom';
+import { COURSE_LEARNING, DEMO } from './../../../routes';
+import { useParams } from 'react-router-dom';
+import { saveToken } from './../../auth/localStorage';
 
 SwiperCore.use([Virtual, Navigation, Pagination]);
 
 
 const HomeCourseList = () => {
+
+    const dispatch = useDispatch();
+    const [currentUser, setCurrentUser] = useState(null)
+
+    // let params = useParams();
+    // saveToken(params.token);
 
     const getCourseName = (name) => {
         if (name.length > 65) {
@@ -39,6 +53,9 @@ const HomeCourseList = () => {
             let temp = []
             let temp1 = []
             let temp2 = []
+            const { data } = await getCurrentUser();
+            setCurrentUser(data.user);
+            setYourCourses(data.user.takenCourses)
             try {
                 const result = await AjaxHelper.get(URL_API.URL_GET_ALL_COURSE + '/')
                 if (result.status == 200) {
@@ -85,12 +102,15 @@ const HomeCourseList = () => {
             setSlides([])
             setSlides1([])
             setSlides2([])
+            setYourCourses([])
         }
     }, [])
+
 
     const [slides, setSlides] = useState([]);
     const [slides1, setSlides1] = useState([]);
     const [slides2, setSlides2] = useState([]);
+    const [yourCourses, setYourCourses] = useState([]);
     const [index, setIndex] = useState(0);
 
     const CountCourseVolume = (course) => {
@@ -102,13 +122,27 @@ const HomeCourseList = () => {
     function handleLearnMore(param) {
         alert("Learn more of: " + param)
     }
+    const navigate = useNavigate()
 
-
+    const handleClickTrendingCourse = (value) => {
+        let i = 0
+        console.log(value)
+        yourCourses.map(i => {
+            if (value._id === i._id) {
+                i = 1;
+            }
+        })
+        if (i == 1) {
+            navigate(COURSE_LEARNING + "/" + value._id)
+        } else {
+            navigate(DEMO + "/" + value._id)
+        }
+    }
 
     return (
 
         <Stack direction="column" sx={style.bigContainer} spacing={2}>
-            {console.log(slides)}
+            {console.log(currentUser)}
             <Stack direction="row" justifyContent="space-between">
                 <Typography sx={style.categoryTitle}>Trending</Typography>
                 <Button onClick={() => handleLearnMore("Trending")} sx={style.learnMoreButton}>Learn more</Button>
@@ -127,14 +161,14 @@ const HomeCourseList = () => {
                     spaceBetween={20}
                     slidesPerGroup={4}
                     loop={true}
-                    loopFillGroupWithBlank={true}
+                    // loopFillGroupWithBlank={true}
                     style={{ height: '300px' }}
                     modules={[Navigation]}
                 >
                     {slides.map(course => (
                         <SwiperSlide key={course._id}>
                             <Card sx={style.card}>
-                                <CardActionArea onClick={() => console.log("click")} sx={{ height: "100px" }}>
+                                <CardActionArea onClick={() => handleClickTrendingCourse(course)} sx={{ height: "100px" }}>
                                     <CardMedia
                                         component="img"
                                         height="140"
@@ -174,63 +208,68 @@ const HomeCourseList = () => {
                 <Typography sx={style.categoryTitle}>Your course</Typography>
                 <Button onClick={() => handleLearnMore("Your course")} sx={style.learnMoreButton}>Learn more</Button>
             </Stack>
-            <Stack direction="row" spacing={2} sx={{ mt: 5 }}>
-                <IconButton sx={style.iconLeftButton}>
-                    <FaAngleLeft sx={{ width: '31.45px', height: '31.45px' }} className="typeOfFilm__container__content__prev1" />
-                </IconButton>
-                <Swiper
-                    navigation={{
-                        nextEl: '.typeOfFilm__container__content__next1',
-                        prevEl: '.typeOfFilm__container__content__prev1'
-                    }}
-                    className="typeOfFilm__container__content__swiper"
-                    slidesPerView={4}
-                    spaceBetween={20}
-                    slidesPerGroup={4}
-                    loop={true}
-                    loopFillGroupWithBlank={true}
-                    style={{ height: '300px' }}
-                    modules={[Navigation]}
-                >
-                    {slides.map((course) => (
-                        <SwiperSlide key={course._id}>
-                            <Card sx={style.card}>
+            {yourCourses.length != 0 ? (
+                <Stack direction="row" spacing={2} sx={{ mt: 5 }}>
+                    <IconButton sx={style.iconLeftButton}>
+                        <FaAngleLeft sx={{ width: '31.45px', height: '31.45px' }} className="typeOfFilm__container__content__prev1" />
+                    </IconButton>
+                    <Swiper
+                        navigation={{
+                            nextEl: '.typeOfFilm__container__content__next1',
+                            prevEl: '.typeOfFilm__container__content__prev1'
+                        }}
+                        className="typeOfFilm__container__content__swiper"
+                        slidesPerView={4}
+                        spaceBetween={20}
+                        slidesPerGroup={4}
+                        loop={true}
+                        // loopFillGroupWithBlank={true}
+                        style={{ height: '300px' }}
+                        modules={[Navigation]}
+                    >
+                        {yourCourses.map((course) => (
+                            <SwiperSlide key={course._id}>
+                                <Card sx={style.card}>
 
-                                <CardMedia
-                                    component="img"
-                                    height="140"
-                                    image={course.courseImage}
-                                    alt=" "
-                                />
-                                <CardActionArea sx={{ height: "100px" }}>
-                                    <Stack direction="column" spacing={2} marginLeft="10%">
-                                        <Stack direction="row">
-                                            <Avatar src={course.teacher.profilePicture} sx={style.avatar} />
-                                            <Stack direction="column" width="100%" marginLeft="4%">
-                                                <Typography sx={style.teacherFullName}>{course.teacher.fullName}</Typography>
-                                                <Typography sx={style.teacherTitle}>{course.teacher.title}</Typography>
+                                    <CardMedia
+                                        component="img"
+                                        height="140"
+                                        image={course.courseImage}
+                                        alt=" "
+                                    />
+                                    <CardActionArea onClick={() => handleClickTrendingCourse(course)} sx={{ height: "100px" }}>
+                                        <Stack direction="column" spacing={2} marginLeft="10%">
+                                            <Stack direction="row">
+                                                <Avatar src={course.teacher.profilePicture} sx={style.avatar} />
+                                                <Stack direction="column" width="100%" marginLeft="4%">
+                                                    <Typography sx={style.teacherFullName}>{course.teacher.fullName}</Typography>
+                                                    <Typography sx={style.teacherTitle}>{course.teacher.title}</Typography>
+                                                </Stack>
                                             </Stack>
+                                            <Typography sx={style.courseName}>{getCourseName(course.courseName)}</Typography>
                                         </Stack>
-                                        <Typography sx={style.courseName}>{getCourseName(course.courseName)}</Typography>
-                                    </Stack>
 
-                                </CardActionArea>
-                                <CardContent>
-                                    <Stack direction="row" justifyContent="space-between" paddingRight="4%">
-                                        <Typography sx={style.countCourseVolume}>{CountCourseVolume(course)}</Typography>
-                                        <ul>
-                                            <li style={style.countLessons}>{course.lessons.length} lessons</li>
-                                        </ul>
-                                    </Stack>
-                                </CardContent>
-                            </Card>
-                        </SwiperSlide>
-                    ))}
-                </Swiper>
-                <IconButton sx={style.iconLeftButton}>
-                    <FaAngleRight sx={{ width: '31.45px', height: '31.45px' }} className="typeOfFilm__container__content__next1" />
-                </IconButton>
-            </Stack>
+                                    </CardActionArea>
+                                    <CardContent>
+                                        <Stack direction="row" justifyContent="space-between" paddingRight="4%">
+                                            <Typography sx={style.countCourseVolume}>{CountCourseVolume(course)}</Typography>
+                                            <ul>
+                                                <li style={style.countLessons}>{course.lessons.length} lessons</li>
+                                            </ul>
+                                        </Stack>
+                                    </CardContent>
+                                </Card>
+                            </SwiperSlide>
+                        ))}
+                    </Swiper>
+                    <IconButton sx={style.iconLeftButton}>
+                        <FaAngleRight sx={{ width: '31.45px', height: '31.45px' }} className="typeOfFilm__container__content__next1" />
+                    </IconButton>
+                </Stack>
+            ) : (
+                <Typography sx={{ fontSize: '14px', alignSelf: 'center' }}>Let's sign for some courses</Typography>
+            )}
+
             {
                 slides1.length != 0 ?
                     <>
@@ -266,7 +305,7 @@ const HomeCourseList = () => {
                                                 image={course.courseImage}
                                                 alt=" "
                                             />
-                                            <CardActionArea sx={{ height: "100px" }}>
+                                            <CardActionArea onClick={() => handleClickTrendingCourse(course)} sx={{ height: "100px" }}>
                                                 <Stack direction="column" spacing={2} marginLeft="10%">
                                                     <Stack direction="row">
                                                         <Avatar src={course.teacher.profilePicture} sx={style.avatar} />
@@ -320,7 +359,7 @@ const HomeCourseList = () => {
                                 spaceBetween={20}
                                 slidesPerGroup={4}
                                 loop={true}
-                                loopFillGroupWithBlank={true}
+                                // loopFillGroupWithBlank={true}
                                 style={{ height: '300px' }}
                                 modules={[Navigation]}
                             >
@@ -334,7 +373,7 @@ const HomeCourseList = () => {
                                                 image={course.courseImage}
                                                 alt=" "
                                             />
-                                            <CardActionArea sx={{ height: "100px" }}>
+                                            <CardActionArea onClick={() => handleClickTrendingCourse(course)} sx={{ height: "100px" }}>
                                                 <Stack direction="column" spacing={2} marginLeft="10%">
                                                     <Stack direction="row">
                                                         <Avatar src={course.teacher.profilePicture} sx={style.avatar} />
