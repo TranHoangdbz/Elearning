@@ -58,37 +58,39 @@ class LessonsScreen extends GetView<LessonsController> {
                             SizedBox(
                               height: 20,
                             ),
-                            Row(
-                              children: [
-                                Container(
-                                  child: CircleAvatar(
-                                    backgroundImage: NetworkImage(
-                                        course.teacher.profilePicture),
-                                    onBackgroundImageError: (e, s) {
-                                      debugPrint(
-                                          'Teacher avatar can\'t load: , $e, $s');
-                                    },
-                                    minRadius: 15,
-                                  ),
-                                ),
-                                SizedBox(
-                                  width: 10,
-                                ),
-                                Column(
-                                  crossAxisAlignment: CrossAxisAlignment.start,
-                                  children: [
-                                    Text(
-                                      course.teacher.fullName,
-                                      style: TextStyles
-                                          .textStyleOnBackgroundColor14w600,
+                            if (course.teacher != null)
+                              Row(
+                                children: [
+                                  Container(
+                                    child: CircleAvatar(
+                                      backgroundImage: NetworkImage(
+                                          course.teacher!.profilePicture),
+                                      onBackgroundImageError: (e, s) {
+                                        debugPrint(
+                                            'Teacher avatar can\'t load: , $e, $s');
+                                      },
+                                      minRadius: 15,
                                     ),
-                                    Text(course.teacher.title,
+                                  ),
+                                  SizedBox(
+                                    width: 10,
+                                  ),
+                                  Column(
+                                    crossAxisAlignment:
+                                        CrossAxisAlignment.start,
+                                    children: [
+                                      Text(
+                                        course.teacher!.fullName,
                                         style: TextStyles
-                                            .textStylePrimaryColor12w300)
-                                  ],
-                                )
-                              ],
-                            )
+                                            .textStyleOnBackgroundColor14w600,
+                                      ),
+                                      Text(course.teacher!.title,
+                                          style: TextStyles
+                                              .textStylePrimaryColor12w300)
+                                    ],
+                                  )
+                                ],
+                              )
                           ],
                         ),
                         Column(

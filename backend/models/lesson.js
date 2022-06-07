@@ -1,9 +1,15 @@
 const mongoose = require("mongoose");
 
 const lessonSchema = new mongoose.Schema({
+  courseId: {
+    type: mongoose.Schema.Types.ObjectId,
+    ref: "Course",
+  },
+  lessonCode: {
+    type: String,
+  },
   name: {
     type: String,
-    required: true,
   },
   description: {
     type: String,
@@ -11,7 +17,9 @@ const lessonSchema = new mongoose.Schema({
   video: {
     type: String,
   },
-  thumbnail: String,
+  thumbnail: {
+    type: String,
+  },
   lessonVolume: {
     type: Number,
   },
@@ -21,6 +29,10 @@ const lessonSchema = new mongoose.Schema({
       ref: "Quizz",
     },
   ],
+  passed: {
+    type: Array,
+    default: [],
+  },
 });
 
 module.exports = mongoose.model("lesson", lessonSchema);

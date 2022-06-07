@@ -8,13 +8,17 @@ class CustomDialog extends StatelessWidget {
   final String content;
   final Widget? icon;
   final String buttonLabel;
+  final String confirmButtonLabel;
+  final bool showConfirmButton;
 
-  const CustomDialog(
-      {Key? key,
-      this.content = 'Content',
-      this.icon,
-      this.buttonLabel = 'Close'})
-      : super(key: key);
+  const CustomDialog({
+    Key? key,
+    this.content = 'Content',
+    this.icon,
+    this.buttonLabel = 'Close',
+    this.confirmButtonLabel = 'Confirm',
+    this.showConfirmButton = false,
+  }) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
@@ -36,13 +40,40 @@ class CustomDialog extends StatelessWidget {
                   style: TextStyles.textStyleOnBackgroundColor13w700,
                   textAlign: TextAlign.center),
             ),
-            CustomElevatedButton(
-                primary: AppColors.primaryColor,
-                onPrimary: AppColors.onPrimaryColor,
-                label: buttonLabel,
-                onPressed: () {
-                  Get.back();
-                }),
+            Row(
+              mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+              children: [
+                Expanded(
+                  child: CustomElevatedButton(
+                    primary: showConfirmButton
+                        ? AppColors.disabledColor
+                        : AppColors.primaryColor,
+                    onPrimary: showConfirmButton
+                        ? AppColors.onDisabledColor
+                        : AppColors.onPrimaryColor,
+                    label: buttonLabel,
+                    onPressed: () {
+                      Get.back(result: 'close');
+                    },
+                  ),
+                ),
+                if (showConfirmButton)
+                  const SizedBox(
+                    width: 16,
+                  ),
+                if (showConfirmButton)
+                  Expanded(
+                    child: CustomElevatedButton(
+                      primary: AppColors.primaryColor,
+                      onPrimary: AppColors.onPrimaryColor,
+                      label: confirmButtonLabel,
+                      onPressed: () {
+                        Get.back(result: 'confirm');
+                      },
+                    ),
+                  ),
+              ],
+            ),
           ],
         ),
       ),

@@ -66,13 +66,17 @@ class CourseList extends StatelessWidget {
             padding: const EdgeInsets.only(left: 24, bottom: 28),
             scrollDirection: Axis.horizontal,
             itemCount: courses.length,
-            itemBuilder: (context, index)
-              => CourseItem(
-                course: courses[index],
-                function: (){
-                  Navigator.push(context, MaterialPageRoute(builder: (context) => ViewcourseScreen(course: courses[index],)));
-                },
-              ),
+            itemBuilder: (context, index) => CourseItem(
+              course: courses[index],
+              function: () {
+                Navigator.push(
+                    context,
+                    MaterialPageRoute(
+                        builder: (context) => ViewcourseScreen(
+                              course: courses[index],
+                            )));
+              },
+            ),
             separatorBuilder: (context, index) => const SizedBox(
               width: 40,
             ),

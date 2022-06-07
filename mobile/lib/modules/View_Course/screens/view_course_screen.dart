@@ -85,67 +85,69 @@ class ViewcourseScreen extends StatelessWidget {
                       SizedBox(
                         height: 30,
                       ),
-                      Row(
-                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                        children: [
-                          Row(
-                            children: [
-                              Container(
-                                child: CircleAvatar(
-                                  backgroundImage: NetworkImage(
-                                      course.teacher.profilePicture),
-                                  onBackgroundImageError: (e, s) {
-                                    debugPrint(
-                                        'Teacher avatar can\'t load: , $e, $s');
-                                  },
-                                  minRadius: 15,
+                      if (course.teacher != null)
+                        Row(
+                          mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                          children: [
+                            Row(
+                              children: [
+                                Container(
+                                  child: CircleAvatar(
+                                    backgroundImage: NetworkImage(
+                                        course.teacher!.profilePicture),
+                                    onBackgroundImageError: (e, s) {
+                                      debugPrint(
+                                          'Teacher avatar can\'t load: , $e, $s');
+                                    },
+                                    minRadius: 15,
+                                  ),
                                 ),
-                              ),
-                              SizedBox(
-                                width: 10,
-                              ),
-                              Container(
-                                child: Column(
-                                  crossAxisAlignment: CrossAxisAlignment.start,
-                                  children: [
-                                    Text(
-                                      course.teacher.fullName,
-                                      style: TextStyle(
-                                        fontSize: 13,
-                                        fontWeight: FontWeight.w600,
+                                SizedBox(
+                                  width: 10,
+                                ),
+                                Container(
+                                  child: Column(
+                                    crossAxisAlignment:
+                                        CrossAxisAlignment.start,
+                                    children: [
+                                      Text(
+                                        course.teacher!.fullName,
+                                        style: TextStyle(
+                                          fontSize: 13,
+                                          fontWeight: FontWeight.w600,
+                                        ),
                                       ),
-                                    ),
-                                    Text(
-                                      course.teacher.title,
+                                      Text(
+                                        course.teacher!.title,
+                                        style: TextStyle(
+                                          fontSize: 13,
+                                          fontWeight: FontWeight.w300,
+                                        ),
+                                      )
+                                    ],
+                                  ),
+                                ),
+                              ],
+                            ),
+                            Container(
+                              child: Column(
+                                crossAxisAlignment: CrossAxisAlignment.end,
+                                children: [
+                                  Text("4 hours 20 mins",
                                       style: TextStyle(
                                         fontSize: 13,
                                         fontWeight: FontWeight.w300,
-                                      ),
-                                    )
-                                  ],
-                                ),
+                                      )),
+                                  Text(course.lessons.length.toString(),
+                                      style: TextStyle(
+                                        fontSize: 13,
+                                        fontWeight: FontWeight.w600,
+                                      ))
+                                ],
                               ),
-                            ],
-                          ),
-                          Container(
-                            child: Column(
-                              crossAxisAlignment: CrossAxisAlignment.end,
-                              children: [
-                                Text("4 hours 20 mins",
-                                    style: TextStyle(
-                                      fontSize: 13,
-                                      fontWeight: FontWeight.w300,
-                                    )),
-                                Text(course.lessons.length.toString(),
-                                    style: TextStyle(
-                                      fontSize: 13,
-                                      fontWeight: FontWeight.w600,
-                                    ))
-                              ],
                             ),
-                          ),
-                        ],
-                      ),
+                          ],
+                        ),
                       SizedBox(
                         height: 30,
                       ),

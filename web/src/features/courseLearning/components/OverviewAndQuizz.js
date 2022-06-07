@@ -1,4 +1,5 @@
 import * as React from 'react';
+// import{ useState, useEffect } from 'react';
 import PropTypes from 'prop-types';
 import Tabs from '@mui/material/Tabs';
 import Tab from '@mui/material/Tab';
@@ -6,6 +7,9 @@ import Typography from '@mui/material/Typography';
 import Box from '@mui/material/Box';
 import Overview from './Overview';
 import Quizz from './Quizz';
+// import axios from 'axios';
+// import config from '../../../services/API/config';
+// import { useSelector, useDispatch } from 'react-redux';
 
 function TabPanel(props) {
     const { children, value, index, ...other } = props;
@@ -46,14 +50,14 @@ export default function OverviewAndQuizz() {
     const handleChange = (event, newValue) => {
         setValue(newValue);
     };
-
+    
     return (
         <Box sx={{ width: '100%' }}>
             <Box sx={{ borderBottom: 1, borderColor: 'divider', width: '50%', fontSize: '15px', marginLeft:'16px', marginTop:'16px' }}>
                 <Tabs value={value} onChange={handleChange} aria-label="basic tabs example">
                     <Tab sx={{ fontSize: '16px', fontWeight: '700', color: '#777777' }} label="Overview" {...a11yProps(0)} />
                     <Tab sx={{ fontSize: '16px', fontWeight: '700', color: '#777777' }} label="Quizz" {...a11yProps(1)} />
-                </Tabs>
+                </Tabs> 
             </Box>
             <TabPanel value={value} index={0}>
                 <Overview></Overview>
@@ -61,7 +65,6 @@ export default function OverviewAndQuizz() {
             <TabPanel value={value} index={1}>
                 <Quizz></Quizz>
             </TabPanel>
-
         </Box>
     );
 }

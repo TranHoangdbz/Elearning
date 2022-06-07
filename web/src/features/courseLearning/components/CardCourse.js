@@ -1,24 +1,33 @@
 import React from 'react';
 import './CourseLearning.scss'
 import LockIcon from '@mui/icons-material/Lock';
+import { useSelector} from 'react-redux';
+
 function CardCourse(props) {
     const handleClickCourse = () => {
-        if(props.course.unClock) {
-            console.log('Chuyển khóa học')
-        } else {
-            console.log('Khóa học chưa được mở')
-        }
+        props.handleClickLesson(props.index)
     }
+
+    const currentIndex = useSelector(state => {
+        return state.courseLearning.currentLessonIndex
+    });
+
+
     return (
-        <div onClick={handleClickCourse} style={{ display: 'flex', justifyContent: 'space-between' }} className={props.course.unClock ? 'course unclock' : 'course'}>
+        <div onClick={handleClickCourse} style={{ display: 'flex', justifyContent: 'space-between' }} 
+            className={
+                props.type === 'open' 
+                    ? currentIndex === props.index ? 'course unlock' : 'course unlock unactive'
+                    : 'course'}
+        >
             <div style={{ fontFamily: "'Montserrat', san-serif" }} >
-                {props.course.stt ? props.course.stt : 'Error'}. {props.course.name ? props.course.name : 'Error'}
+                {props.index + 1}.  {props.lesson.name ? props.lesson.name : 'Error'}
             </div>
             <div style={{ fontFamily: "'Montserrat', san-serif" }} >
-                {props.course.time ? props.course.time : 'Error'}
+                {props.lesson.lessonVolume} min 
             </div>
             <div className='layout-lock'>
-                <LockIcon />
+                <LockIcon fontSize={"large"}/>
             </div>
         </div>
     );

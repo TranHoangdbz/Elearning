@@ -55,7 +55,7 @@ function ModalContent({ open, onClose, status, mes }) {
                             className={`${styles.submitButton}`}
                             onClick={status === "success" ? () => navigate(SIGN_IN) : onClose}
                         >
-                            {status === "success" ? "Sign up" : "Close"}
+                            {status === "success" ? "Sign in" : "Close"}
                         </button>
                     </div>
                 </Box>

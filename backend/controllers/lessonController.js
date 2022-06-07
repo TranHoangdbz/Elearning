@@ -2,19 +2,45 @@ const mongoose = require("mongoose");
 const Lesson = require("../models/lesson");
 const Course = require("../models/course");
 const uploadFile = require("../middleware/upload");
-const cloudinary = require('../middleware/cloudinary');
-const fs = require('fs')
+const cloudinary = require("../middleware/cloudinary");
+const fs = require("fs");
 const { BASE_API_URL } = require("../constants");
 
 const getAll = async (req, res) => {
   try {
     const results = await Lesson.find({}).lean();
-
     return res.status(200).json({
       success: true,
       message: "Get all lessons successfully!",
       data: results,
     });
+  } catch (error) {
+    return res.status(500).json({
+      success: false,
+      message: error.message,
+    });
+  }
+};
+
+const addQuizToLesson = async (req, res) => {
+  const { lessonId } = req.body;
+  const quizzId = mongoose.Types.ObjectId(req?.body?.quizzId)
+  console.log(quizzId)
+  try {
+    const result = await Lesson.updateOne(
+      { _id: lessonId },
+      { $push: { quizz: quizzId } }
+    );
+
+    if (result) {
+      return res.status(200).json({
+        success: true,
+        message: "Add quizz to lesson successfully!",
+        data: result,
+      });
+    } else {
+      throw new Error("Add quizz failed!");
+    }
   } catch (error) {
     return res.status(500).json({
       success: false,
@@ -32,7 +58,7 @@ const getByCourseId = async (req, res) => {
 
     if (result) {
       const results = await Lesson.find({
-        courseId: id,
+        _id: result.lessons,
       }).lean();
 
       return res.status(200).json({
@@ -77,35 +103,48 @@ const getById = async (req, res) => {
 
 const create = async (req, res) => {
   try {
-    const { name, description, video, lessonVolume, quizz } = req.body;
-    let errors = {};
-
-    if (name === "") {
-      errors["name"] = ["Name is required!"];
-    }
-
-    if (Object.keys(errors)?.length > 0) {
-      return res.status(500).json({
-        success: false,
-        message: "Failed to create a new lesson!",
-        errors,
-      });
-    }
+    const { lessonCode, name, description, lessonVolume, courseId } = req.body;
+    const thumbnail = req.files.thumbnail;
+    const video = req.files.video;
+    const videoUrl = await handleUpload(video);
+    const thumbnailUrl = await handleUpload(thumbnail);
 
     const newItem = new Lesson({
-      name,
-      description,
-      video,
-      lessonVolume,
-      quizz,
+      lessonCode: lessonCode,
+      name: name,
+      description: description,
+      video: videoUrl,
+      thumbnail: thumbnailUrl,
+      lessonVolumne: lessonVolume,
+      courseId: courseId,
     });
 
     const result = await newItem.save();
+
+    let belongedCourse = await Course.findOne({
+      _id: courseId,
+    });
+
+    if (belongedCourse) {
+      const newLessons = belongedCourse["lessons"].concat(
+        mongoose.Types.ObjectId(courseId)
+      );
+
+      await Course.updateOne(
+        {
+          _id: courseId,
+        },
+        {
+          lessons: newLessons,
+        }
+      );
+    }
 
     if (result) {
       return res.status(201).json({
         success: true,
         message: "Create a new lesson successfully!",
+        data: result,
       });
     } else {
       throw new Error("Failed to create a new lesson!");
@@ -176,17 +215,19 @@ const updateById = async (req, res) => {
 
 const handleUpload = async (files) => {
   if (files) {
-    const { path } = files[0]
-    const newPath = await cloudinary.uploader.upload(path, {
-      resource_type: 'auto',
-    }).catch(error => {
-      throw Error(error.message)
-    })
-    fs.unlinkSync(path)
+    const { path } = files[0];
+    const newPath = await cloudinary.uploader
+      .upload(path, {
+        resource_type: "auto",
+      })
+      .catch((error) => {
+        throw Error(error.message);
+      });
+    fs.unlinkSync(path);
     return newPath.url;
   }
-  return '';
-}
+  return "";
+};
 
 const updateFieldLesson = async (req, res) => {
   const lessonId = req.params.id;
@@ -210,26 +251,28 @@ const updateFieldLesson = async (req, res) => {
       //exchange file
       const thumbnailUrl = await handleUpload(thumbnail);
       const videoUrl = await handleUpload(video);
-      
-      if (thumbnailUrl !== '') {
-        doc.thumbnail = thumbnailUrl
+
+      if (thumbnailUrl !== "") {
+        doc.thumbnail = thumbnailUrl;
       }
 
-      if (videoUrl !== '') {
+      if (videoUrl !== "") {
         doc.video = videoUrl;
       }
 
-      doc.save()
+      doc
+        .save()
         .then((result) => {
           res.status(200).send(result);
-        }).catch(err => {
-          res.status(500).json({ error: "Save err - " + err.message });
         })
-    })
+        .catch((err) => {
+          res.status(500).json({ error: "Save err - " + err.message });
+        });
+    });
   } catch (err) {
     res.status(500).json({ error: err.message });
   }
-}
+};
 
 const deleteById = async (req, res) => {
   try {
@@ -270,4 +313,5 @@ module.exports = {
   updateById,
   updateFieldLesson,
   deleteById,
+  addQuizToLesson
 };

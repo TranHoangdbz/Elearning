@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/rendering.dart';
 import 'package:get/get.dart';
+import 'package:uit_elearning/routes/routes.dart';
 
 import '../../../constants/text_styles.dart';
 import '../../../data/models/teacher.dart';
@@ -17,6 +18,9 @@ class CourseItem extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     num noLessons = course.lessons.length;
+    num courseVolume = course.lessons.fold(
+        0, (previousValue, element) => previousValue + element.lessonVolume);
+
     return Material(
       elevation: 4,
       borderRadius: BorderRadius.circular(20),
@@ -50,7 +54,8 @@ class CourseItem extends StatelessWidget {
                       child: Column(
                         crossAxisAlignment: CrossAxisAlignment.start,
                         children: [
-                          CourseTeacher(teacher: course.teacher),
+                          if (course.teacher != null)
+                            CourseTeacher(teacher: course.teacher!),
                           const SizedBox(
                             height: 8,
                           ),
@@ -65,7 +70,7 @@ class CourseItem extends StatelessWidget {
                           Row(
                             children: [
                               Text(
-                                '1 hours 12 mins',
+                                '$courseVolume minute${courseVolume > 1 ? 's' : ''}',
                                 style: TextStyles.textStylePrimaryColor12w300,
                               ),
                               const SizedBox(

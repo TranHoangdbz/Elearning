@@ -30,7 +30,7 @@ helper.getNewPassword = async(email) => {
     } catch (e) {
         return {
             status: 'fail',
-            mes: "Server error"
+            mes: e.response.data.message
         }
     }
 }

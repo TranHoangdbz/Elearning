@@ -2,6 +2,7 @@ import 'dart:convert';
 import 'package:dio/dio.dart';
 import 'package:flutter_facebook_auth/flutter_facebook_auth.dart';
 import 'package:google_sign_in/google_sign_in.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 import 'package:uit_elearning/constants/app_strings.dart';
 import 'package:web_socket_channel/io.dart';
 
@@ -185,10 +186,12 @@ class AuthenticationProvider {
         };
         onResponse(data);
       } on DioError {
-        login(
+        await login(
             email: userData['email'],
             password: userData['id'],
             onResponse: onResponse);
+        SharedPreferences prefs = await SharedPreferences.getInstance();
+        await prefs.setString('userHash', userData['id']);
       } on Exception {
         Map<String, dynamic> data = {
           'error': true,
@@ -242,7 +245,10 @@ class AuthenticationProvider {
         };
         onResponse(data);
       } on DioError {
-        login(email: user.email, password: user.id, onResponse: onResponse);
+        await login(
+            email: user.email, password: user.id, onResponse: onResponse);
+        SharedPreferences prefs = await SharedPreferences.getInstance();
+        await prefs.setString('userHash', user.id);
       } on Exception {
         Map<String, dynamic> data = {
           'error': true,

@@ -11,7 +11,7 @@ class Course extends BaseModel {
   final String demoVideo;
   final String? category;
   final String description;
-  final Teacher teacher;
+  final Teacher? teacher;
   final List<Discussion>? discussion;
   final List<Rating>? rating;
   final List<Lesson> lessons;
@@ -44,7 +44,7 @@ class Course extends BaseModel {
         "demoVideo": demoVideo,
         "category": category,
         "description": description,
-        "teacher": teacher.toJson(),
+        "teacher": teacher == null ? null : teacher!.toJson(),
         "discussion": discussion == null
             ? null
             : List<dynamic>.from(discussion!.map((x) => x.toJson())),
@@ -59,15 +59,14 @@ class Course extends BaseModel {
 
   factory Course.fromJson(Map<String, dynamic> data) => Course(
         id: data["_id"],
-        courseCode: data["courseCode"],
-        courseImage: data["courseImage"],
-        courseName: data["courseName"],
+        courseCode: data["courseCode"] ?? '',
+        courseImage: data["courseImage"] ?? '',
+        courseName: data["courseName"] ?? '',
         demoVideo: data["demoVideo"] ?? '',
-        category: data["category"] == null ? "No Category" : data["category"],
-        description: data["description"] == null
-            ? "No Description"
-            : data["description"],
-        teacher: Teacher.fromJson(data["teacher"]),
+        category: data["category"] ?? "No Category",
+        description: data["description"] ?? "No Description",
+        teacher:
+            data["teacher"] == null ? null : Teacher.fromJson(data["teacher"]),
         discussion: data["discussion"] == null
             ? null
             : List<Discussion>.from(
@@ -77,7 +76,7 @@ class Course extends BaseModel {
             : List<Rating>.from(data["rating"].map((x) => Rating.fromJson(x))),
         lessons:
             List<Lesson>.from(data["lessons"].map((x) => Lesson.fromJson(x))),
-        isActive: data["isActive"] == null ? null : data["isActive"],
-        v: data["__v"] == null ? null : data["__v"],
+        isActive: data["isActive"],
+        v: data["__v"],
       );
 }

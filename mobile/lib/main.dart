@@ -17,11 +17,13 @@ class MyApp extends StatelessWidget {
   Widget build(BuildContext context) {
     return ScreenUtilInit(
       minTextAdapt: true,
-      child: GetMaterialApp(
-        initialRoute: Routes.home,
-        getPages: Pages.pages,
-        defaultTransition: Transition.cupertino,
-      ),
+      builder: (BuildContext context, Widget? child) {
+        return GetMaterialApp(
+          initialRoute: Routes.splash,
+          getPages: Pages.pages,
+          defaultTransition: Transition.cupertino,
+        );
+      },
     );
   }
 }

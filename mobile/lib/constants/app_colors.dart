@@ -9,9 +9,16 @@ class AppColors {
   static const Color secondaryColorLight = Color(0xffBF8DF1);
   static const Color secondaryColor = Color(0xff8E32C7);
   static const Color backgroundColor = Color(0xffffffff);
+  static const Color backgroundColorLight = Color(0xffecedef);
   static const Color onBackgroundColor = Color(0xff000000);
+  static const Color onBackgroundColorLight = Color(0xff110E0E);
   static const Color redColor = Color(0xffA90000);
+  static const Color blueColor = Color(0xff437DEC);
   static const Color greenColor = Color(0xff00C734);
+  static const Color greenColorDark = Color(0xff006319);
   static const Color disabledColor = Color(0xffE4E4E4);
   static const Color onDisabledColor = Color(0xffA4A4A4);
+
+  // Specific Components
+  static const Color lockIconColor = Color(0xff979899);
 }

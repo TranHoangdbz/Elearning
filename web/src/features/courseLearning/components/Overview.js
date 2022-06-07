@@ -1,25 +1,50 @@
 import React from 'react';
 import { Rating, Avatar } from '@mui/material'
-import ThumbUpOutlinedIcon from '@mui/icons-material/ThumbUpOutlined';
-import ForumOutlinedIcon from '@mui/icons-material/ForumOutlined';
 import CommentCard from './CommentCard';
+import {useDispatch, useSelector} from 'react-redux';
+import {useRef } from "react";
+import URL_API from '../../../services/API/config';
+import AjaxHelper from '../../../services/index';
+import {setCurrentCourse} from '../courseLearningSlice.js';
+
 function Overview(props) {
+    const dispatch = useDispatch();
     const [value, setValue] = React.useState(0);
+    const currentCourse = useSelector((state) => {return state.courseLearning.currentCourse});
+    const currentUserInfo = useSelector((state) => {return state.courseLearning.currentUserInfo});
+    console.log("currentUserInfo", currentUserInfo);
+
+    const cmtContentRef = useRef(null);
+
+    const addNewComment = async() => {
+        var dataToAdd = {
+            parrentCommentID: "",
+            content: cmtContentRef.current.value,
+            userID: currentUserInfo._id,
+            courseID: currentCourse._id
+        }
+        // console.log("dataToAdd", dataToAdd);
+
+        await AjaxHelper.post(URL_API.URL_SYSTEM_V1 + '/discussions/comment/', dataToAdd)
+            .then(res => {
+                dispatch(setCurrentCourse(res.data.currentCourse));
+                cmtContentRef.current.value="";
+            })
+            .catch(err => {
+            })
+    }
+
     return (
         <div>
             <div style={{ fontFamily: "'Montserrat', san-serif" }} className='description'>
-                Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.
-                Eget aliquet nibh praesent tristique magna. Enim praesent elementum facilisis leo vel fringilla est ullamcorper eget.
-                Platea dictumst quisque sagittis purus sit amet. Aliquet eget sit amet tellus cras. Egestas maecenas pharetra convallis posuere.
-                Dolor sit amet consectetur adipiscing elit duis tristique sollicitudin. Lacus vel facilisis volutpat est velit egestas.
-                At varius vel pharetra vel. Viverra nam libero justo laoreet.
+                {currentCourse.description}
             </div>
             <div style={{ fontFamily: "'Montserrat', san-serif" }} className='quantity-discussions'>
-                2 Discussions
+                {currentCourse.discussion ? currentCourse.discussion.length : "0"} Discussions
             </div>
             <div className='model-rating'>
                 <div className='custom'>
-                    <div style={{ fontFamily: "'Montserrat', san-serif" }} className='title'>Finish 70% the lessions of this course to rate it</div>
+                    <div style={{ fontFamily: "'Montserrat', san-serif" }} className='title'>Finish 100% the lessions of this course to rate it</div>
                     <Rating
                         sx={{ margin: '15px 0' }}
                         name="simple-controlled"
@@ -36,14 +61,45 @@ function Overview(props) {
             </div>
             <div className='chat'>
                 <div className='enter-chat'>
-                    <Avatar sx={{ marginRight: '12px' }} height={36} width={36} alt="Remy Sharp" src="https://kenh14cdn.com/thumb_w/660/203336854389633024/2021/7/9/photo-1-16257989599561090737937.jpeg" />
-                    <input className='chat-input' type={'text'}></input>
-                    <div className='btn-send'>Send</div>
+                    <Avatar 
+                        sx={{ marginRight: '12px' }} 
+                        height={36} width={36} 
+                        alt="Remy Sharp" 
+                        src={currentUserInfo ? currentUserInfo.profilePicture : ""}
+                    />
+                    <input 
+                        className='chat-input' 
+                        type={'text'}
+                        ref = {cmtContentRef} 
+                    >
+                        
+                    </input>
+                    <div 
+                        className='btn-send'
+                        onClick={()=>{
+                            // dispatch(addComment({data:"ok"}));
+                            // console.log(currentCourse);
+                            addNewComment();
+                        }}
+                    >
+                        Send
+                    </div>
                 </div>
+                {/* <button
+                    onClick={()=>{
+                        dispatch(addComment({data:"ok"}));
+                    }}  
+                >
+                    Nguyễn Công Phi
+                </button> */}
                 <div className='chat-user'>
-                    <CommentCard componentChild={false}></CommentCard>
-                    <CommentCard componentChild={<CommentCard componentChild={<CommentCard></CommentCard>}></CommentCard>}></CommentCard>
-                    <CommentCard componentChild={<CommentCard></CommentCard>}></CommentCard>
+                    {
+                        currentCourse && currentCourse.discussion
+                        ?   currentCourse.discussion.map((value, index, key) => {
+                                return <CommentCard comment={value}></CommentCard>
+                            })
+                        : (null)
+                    }
                 </div>
             </div>
         </div>

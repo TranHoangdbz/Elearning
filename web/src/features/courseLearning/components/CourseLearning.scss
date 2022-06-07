@@ -246,6 +246,23 @@
             align-items: center;
             padding-top: 22px;
             padding-bottom: 22px;
+            
+        }
+
+        .result-container{
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            text-align: center;
+            .title{
+                margin-top: 20px;
+            }
+            .btn-redo {
+                margin-top: 20px;
+                font-size: 14px;
+                width: 80px;
+                margin-bottom: 10px;
+            }
         }
 
         .dot {
@@ -348,12 +365,11 @@
                 top: 50%;
                 left: 50%;
                 transform: translateY(-50%);
-                color: rgba(0, 0, 0, 0.36);
-                ;
+                color: #555;
             }
         }
 
-        .unclock.course {
+        .unlock.course {
             background-color: #040E53;
             color: white;
             cursor: pointer;
@@ -363,8 +379,82 @@
             }
         }
 
-        .unclock.course:hover {
+        .unlock.course:hover {
+            opacity: .8;
+        }
+
+        .unlock.course.unactive {
+            color: #040E53;
+            background-color: #e5e5e5;
+            cursor: pointer;
+
+            .layout-lock {
+                display: none;
+            }
+        }
+
+        .unlock.course:hover.unactive {
             opacity: .8;
         }
     }
+}
+
+.css-1uf8f5m-MuiFormControlLabel-root .MuiFormControlLabel-label {
+    font-size: 14px;
+}
+
+.chat-user-model__content {
+    position: relative;
+    .manage-container{
+        position: absolute;
+        right: 0;
+        top: -44px;
+        text-align: right;
+        
+        font-size: 12px;
+        .icon-more{
+            border-radius: 100%;
+            &:hover{
+                cursor: pointer;
+                background-color: #e3efef;
+            }
+        }
+        .manage-item-container{
+            box-shadow: rgba(0, 0, 0, 0.15) 1.95px 1.95px 2.6px;
+            width: 140px;
+            border-radius: 8px;
+            .manage-item{
+                padding: 4px 10px;
+                &:hover{
+                    background-color: #ebebeb;
+                    cursor: pointer;
+                }
+            }
+        }
+        
+    }
+}
+
+.like-cmt-button{
+    &:hover{
+        opacity: 0.5;
+    }
+}
+
+.enter-chat-1{
+    margin-left: 0;
+    .user-avatar {
+        margin-left: -49px;
+    }
+    
+    .btn-send.btn-cancel{
+        margin-right: 12px;
+        color: #040E53 !important;
+        background-color: #F4F4F4 !important;
+    }
+
+}
+
+.chat-input{
+    width: calc(100% - 120px)!important;
 }

@@ -5,17 +5,31 @@ const courseSchema = new mongoose.Schema({
   //   type: String,
   //   required: true,
   // },
+  courseCode: {
+    type: String,
+    unique: true,
+  },
   courseName: {
     type: String,
     required: true,
+    unique: true,
   },
   courseImage: {
     type: String,
-    required: true,
+  },
+  demoVideo: {
+    type: String,
+  },
+  category: {
+    type: String,
   },
   description: {
     type: String,
-    required: true,
+    // required: true,
+  },
+  teacher: {
+    type: mongoose.Schema.Types.ObjectId,
+    ref: "teacher",
   },
   teacher: {
     type: mongoose.Schema.Types.ObjectId,
@@ -29,6 +43,10 @@ const courseSchema = new mongoose.Schema({
   ],
   discussion: [],
   rating: [],
+  isActive: {
+    type: Boolean,
+    default: true,
+  }
 });
 
 module.exports = mongoose.model("Course", courseSchema);
