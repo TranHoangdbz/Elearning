@@ -11,14 +11,15 @@ import {
     setCurrentCourse, 
     changeCurrentLessonIndex,
     setCurrentUserInfo,
-    setUserLessonIndex
+    setUserLessonIndex,
+    setCurrentUser
 } from '../courseLearningSlice.js';
 
 function CourseLearning() {
 
 
     const dispatch = useDispatch();
-
+    dispatch(setCurrentUser(localStorage.getItem('userID')))
     const url = window.location.pathname;
     const path = url.split("/").filter((x) => x);
     // console.log("path", path);
@@ -127,7 +128,6 @@ function CourseLearning() {
     }
 
     // const currentLearnIndex = 0;
-
     
 
     return (

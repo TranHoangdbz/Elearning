@@ -5,7 +5,7 @@ const courseLearningSlice = createSlice({
     initialState: {
         currentCourse : {},
         currentLessonIndex : 0,
-        currentUserID: "6295e8c34ed17bd09c765d2e",
+        currentUserID: "629ccdc9938877ffa6e5f132",
         currentUserInfo: {},
         userLessonIndex: 0,
     },
@@ -22,6 +22,9 @@ const courseLearningSlice = createSlice({
         },
         setUserLessonIndex: (state, action) => {
             state.userLessonIndex = action.payload;
+        },
+        setCurrentUser: (state, action) => {
+            state.currentUserID = action.payload;
         }
     }
 })
@@ -31,7 +34,9 @@ export const {
     setCurrentCourse,
     changeCurrentLessonIndex,
     setCurrentUserInfo,
-    setUserLessonIndex
+    setUserLessonIndex,
+    setUserProgress,
+    setCurrentUser
 } = courseLearningSlice.actions;
 
 export default courseLearningSlice.reducer

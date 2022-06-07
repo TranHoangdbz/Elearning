@@ -13,4 +13,6 @@ router.post('/comment/dislike', discussionController.unlikeComment);
 router.put('/comment', discussionController.editComment)
 
 router.post('/quizz-passed', discussionController.passTheQuizz);
+
+router.post('/rating', discussionController.ratingCourse);
 module.exports = router;    

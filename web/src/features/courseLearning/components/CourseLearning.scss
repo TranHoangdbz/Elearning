@@ -248,7 +248,47 @@
             padding-bottom: 22px;
             
         }
+        .modal-warning{
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            .heading{
+                margin-top: 20px;
+                font-size: 14px;
+                text-align: center;
+            }
+            .bt-refine{
+                margin-top: 10px;
+                width: 72px;
+                margin-bottom: 20px;
+            }
+        }
 
+        .show-result {
+            text-align: center;
+            display: flex;
+            justify-content: space-evenly;
+            flex-direction: column;
+            align-items: center;
+            .title{
+                margin-top: 20px;
+                text-align: center !important;
+            }
+            .btn-container{
+                display: flex;
+                .btn-redo {
+                    margin-top: 10px;
+                    font-size: 14px;
+                    width: 80px;
+                    margin-bottom: 10px;
+                    margin-right: 40px;
+                }
+                .btn-next{
+                    width: 124px;
+                }
+            }
+            
+        }
         .result-container{
             display: flex;
             flex-direction: column;
@@ -275,6 +315,15 @@
 
         .dot.active{
             background: #352020;
+        }
+
+        .answer-container{
+            position: relative;
+            .icon-check{
+                position: absolute;
+                left: -17px;
+                top: 10px;
+            }
         }
     }
 
