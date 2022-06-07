@@ -1,5 +1,5 @@
 import { Box, Button, InputBase, Stack, Typography } from "@mui/material";
-import { useNavigate } from "react-router-dom";
+import { useNavigate ,Link } from "react-router-dom";
 import styles from "./enhancedTableToolbar.module.scss";
 
 function EnhancedTableToolbar() {
@@ -9,15 +9,14 @@ function EnhancedTableToolbar() {
     <Box>
       <Stack direction="row" justifyContent="space-between">
         <Typography variant="h5">Course List</Typography>
-        <Button
-          className={`${styles.button}`}
-          variant="contained"
-          onClick={() => {
-            navigate("/coursesmanager/addcourse");
-          }}
-        >
-          Add new course
-        </Button>
+        <Link to="/coursesmanager/addcourse">
+          <Button
+            className={`${styles.button}`}
+            variant="contained"
+          > 
+            Add new course
+          </Button>
+        </Link>
       </Stack>
       <Stack
         direction="row"

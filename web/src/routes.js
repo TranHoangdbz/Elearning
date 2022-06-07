@@ -22,9 +22,11 @@ export const SIGN_IN = "/sign-in";
 export const SIGN_UP = "/sign-up";
 export const DEMO = '/demo';
 export const RESET_PASSWORD = "/reset-password";
-export const EDIT_COURSES = "/edit-courses";
+export const EDIT_LESSON = "/edit-courses";
 export const VIEW_LESSON = "/coursesmanager/lessondetail/:courseId/:lessonId";
-export const ADD_LESSON = "/coursesmanager/addcourse";
+
+export const ADD_COURSE = "/coursesmanager/addcourse";
+
 
 const publicRoute = [
     {
@@ -74,12 +76,8 @@ const teacherRoute = [
         path: RESET_PASSWORD,
         name: "Reset password",
         element: <ResetPasswordPage />,
-    },
-    {
-        path: EDIT_COURSES,
-        name: "Edit courses",
-        element: <EditCourses/>
     }
+    
 ];
 
 const adminRoute = [
@@ -100,10 +98,15 @@ const adminRoute = [
     },
   
     {
-        path: ADD_LESSON,
+        path: ADD_COURSE,
         name: "AddCourse",
         element: <AddCourse />
     },
+    {
+        path: EDIT_LESSON,
+        name: "Edit lesson",
+        element: <EditCourses/>
+    }
 ];
 
 const routes = {
