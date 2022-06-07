@@ -53,7 +53,9 @@ class SignUpController extends GetxController {
         RegExp(r"^[a-zA-Z0-9.a-zA-Z0-9.!#$%&'*+-/=?^_`{|}~]+@[a-zA-Z0-9]+\.[a-zA-Z]+")
                 .hasMatch(email) &&
             email.isNotEmpty;
-    bool isPasswordValid = password.length >= 8;
+    bool isPasswordValid = RegExp(
+            r"^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[@$!%*?&])[A-Za-z\d@$!%*?&]{8,}$")
+        .hasMatch(password);
     bool isConfirmPasswordValid =
         confirmPassword.length >= 8 && confirmPassword.compareTo(password) == 0;
 
@@ -66,7 +68,8 @@ class SignUpController extends GetxController {
     if (isPasswordValid) {
       passwordErrorText.value = null;
     } else {
-      passwordErrorText.value = "Password is invalid";
+      passwordErrorText.value =
+          "Must a password have minimum 8 characters,\nat least one uppercase letter, one lowercase letter,\none number and one special character";
     }
 
     if (isConfirmPasswordValid) {
