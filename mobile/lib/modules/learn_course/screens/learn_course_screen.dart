@@ -10,6 +10,7 @@ import 'package:uit_elearning/data/models/lesson.dart';
 import 'package:uit_elearning/global_widgets/custom_icon_button.dart';
 import 'package:uit_elearning/global_widgets/video_player_wiget.dart';
 import 'package:uit_elearning/modules/disscussion/screens/disscussion_screen.dart';
+import 'package:uit_elearning/modules/do_quizz/screens/quizz_screen.dart';
 import 'package:uit_elearning/modules/learn_course/controllers/learning_course_controller.dart';
 import 'package:uit_elearning/modules/lessons/screens/lessons_screen.dart';
 import 'package:uit_elearning/modules/my_courses/screens/my_courses_screen.dart';
@@ -117,7 +118,7 @@ class LearnCourseScreen extends StatelessWidget {
                               text: 'Lessons',
                             ),
                             Tab(
-                              text: 'Quizzes',
+                              text: 'Quizz',
                             ),
                             Tab(
                               text: 'Disscussion',
@@ -132,7 +133,9 @@ class LearnCourseScreen extends StatelessWidget {
               body: TabBarView(
                 children: [
                   LessonsScreen(course),
-                  MyCoursesScreen(),
+                  QuizzScreen(
+                    lessons: course.lessons,
+                  ),
                   DisscussionScreen(course),
                 ],
               ),

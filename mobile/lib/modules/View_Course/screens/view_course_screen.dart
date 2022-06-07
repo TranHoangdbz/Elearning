@@ -184,13 +184,14 @@ class ViewcourseScreen extends StatelessWidget {
               child: CustomElevatedButton(
                 label: "REGISTER",
                 onPressed: () {
-                  Navigator.push(
-                      context,
-                      MaterialPageRoute(
-                          builder: (context) => LearnCourseScreen(
-                                course: course,
-                                lesson: course.lessons.first,
-                              )));
+                  if (course.lessons.isNotEmpty)
+                    Navigator.push(
+                        context,
+                        MaterialPageRoute(
+                            builder: (context) => LearnCourseScreen(
+                                  course: course,
+                                  lesson: course.lessons.first,
+                                )));
                 },
                 primary: Colors.indigo,
                 onPrimary: Colors.white,
