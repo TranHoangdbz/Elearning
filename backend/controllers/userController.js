@@ -152,7 +152,9 @@ const userController = {
         }
     },
     resetPassword: async (req, res) => {
-        const user = req.user;
+        const _id = req._id;
+        const user = await User.findOne({_id}).exec()
+
         const { password, newPassword } = req.body;
 
         try {
