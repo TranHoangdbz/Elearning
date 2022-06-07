@@ -1,5 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
+import 'package:uit_elearning/modules/View_Course/controller/view_courses_controller.dart';
+import 'package:uit_elearning/modules/View_Course/screens/view_course_screen.dart';
 
 import '../../../constants/text_styles.dart';
 import 'course_item.dart';
@@ -57,26 +59,28 @@ class CourseList extends StatelessWidget {
         ),
         SizedBox(
           height: 280,
-          child: courses.isEmpty
-              ? const SizedBox(
-                  height: 18,
-                  child: Center(
-                    child: Text('Empty'),
-                  ),
-                )
-              : ListView.separated(
-                  controller: ScrollController(),
-                  shrinkWrap: true,
-                  physics: const ClampingScrollPhysics(),
-                  padding: const EdgeInsets.only(left: 24, bottom: 28),
-                  scrollDirection: Axis.horizontal,
-                  itemCount: courses.length,
-                  itemBuilder: (context, index) =>
-                      CourseItem(course: courses[index]),
-                  separatorBuilder: (context, index) => const SizedBox(
-                    width: 40,
-                  ),
-                ),
+          child: ListView.separated(
+            controller: ScrollController(),
+            shrinkWrap: true,
+            physics: const ClampingScrollPhysics(),
+            padding: const EdgeInsets.only(left: 24, bottom: 28),
+            scrollDirection: Axis.horizontal,
+            itemCount: courses.length,
+            itemBuilder: (context, index) => CourseItem(
+              course: courses[index],
+              function: () {
+                Navigator.push(
+                    context,
+                    MaterialPageRoute(
+                        builder: (context) => ViewcourseScreen(
+                              course: courses[index],
+                            )));
+              },
+            ),
+            separatorBuilder: (context, index) => const SizedBox(
+              width: 40,
+            ),
+          ),
         )
       ],
     );

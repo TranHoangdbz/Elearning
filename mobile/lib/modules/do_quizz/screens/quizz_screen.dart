@@ -11,11 +11,17 @@ import 'package:uit_elearning/modules/do_quizz/screens/do_quizz_screen.dart';
 import 'package:uit_elearning/modules/do_quizz/widgets/quizz_tile.dart';
 
 class QuizzScreen extends StatelessWidget {
-  const QuizzScreen({Key? key}) : super(key: key);
+  final List<Lesson>? lessons;
+  const QuizzScreen({Key? key, this.lessons}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
+    Get.put(QuizzController());
     final _controller = Get.find<QuizzController>();
+
+    if (lessons != null) {
+      _controller.initLessons(lessons!);
+    }
 
     return Material(
       color: AppColors.backgroundColor,

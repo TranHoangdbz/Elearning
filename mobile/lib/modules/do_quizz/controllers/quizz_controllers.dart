@@ -23,10 +23,17 @@ class QuizzController extends GetxController {
     checked.value = false;
     checkAnswers = {};
     quizAnswers = <String, List<int>>{};
-    lessons = Get.arguments;
-    quizList.value = [];
-    updateQuizList();
+    if (Get.arguments != null) {
+      lessons = Get.arguments;
+      quizList.value = [];
+      updateQuizList();
+    }
     super.onInit();
+  }
+
+  initLessons(List<Lesson> lessons) {
+    this.lessons = lessons;
+    update();
   }
 
   onSelected(int index) async {

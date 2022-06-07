@@ -18,7 +18,8 @@ app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({ extended: true }));
 
 mongoose.connect(
-  "mongodb+srv://admin:admin@uit-elearning.uqfe4.mongodb.net/sample?retryWrites=true&w=majority"
+  // "mongodb+srv://admin:admin@uit-elearning.uqfe4.mongodb.net/sample?retryWrites=true&w=majority"
+  process.env.DATABASE_URL
 );
 const db = mongoose.connection;
 

@@ -1,6 +1,7 @@
 import 'package:uit_elearning/data/models/passed.dart';
 
 import 'base_model.dart';
+import 'passed.dart';
 
 class Lesson extends BaseModel {
   String description;
