@@ -104,8 +104,8 @@ const Routers = () => {
               )
             );
           })}
-        {user &&
-          (user.role === "user" || user.role === "admin") &&
+        {/* {user &&
+          (user.role === "user" || user.role === "admin") && */
           routes.teacherRoute.map((route, idx) => {
             return (
               route.element && (

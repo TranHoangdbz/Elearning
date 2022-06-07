@@ -24,7 +24,7 @@ export const DEMO = '/demo';
 export const RESET_PASSWORD = "/reset-password";
 export const EDIT_COURSES = "/edit-courses";
 export const VIEW_LESSON = "/coursesmanager/lessondetail/:courseId/:lessonId";
-export const ADD_LESSON = "/coursesmanager/addlesson";
+export const ADD_LESSON = "/coursesmanager/addcourse";
 
 const publicRoute = [
     {
