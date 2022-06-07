@@ -94,8 +94,9 @@ const Routers = () => {
               )
             );
           })}
-        {user &&
-          (user.role === "user" || user.role === "admin") &&
+        {
+        // user &&
+        //   (user.role === "user" || user.role === "admin") &&
           routes.studentRoute.map((route, idx) => {
             return (
               route.element && (
@@ -122,6 +123,11 @@ const Routers = () => {
               )
             );
           })}
+          <Route
+          path='*'
+          name="HomeCourse"
+          element={<Navigate to="homeCourseList" />}
+        />
       </Routes>
     </React.Suspense>
   );

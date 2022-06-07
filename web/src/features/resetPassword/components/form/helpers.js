@@ -6,9 +6,21 @@ import URL_API from "../../../../services/API/config";
 
 const helper = {};
 
-helper.isValidPassword = (email) => {
-    if (email.length >= 8) {
-        return true;
+helper.isUnValidPassword = (password) => {
+    if (password.length < 8) {
+        return "Password must be at least 8 characters."
+    }
+    if (!password.match(/[A-Z]/g)) {
+        return "Password must contain uppercase characters."
+    }
+    if (!password.match(/[a-z]/g)) {
+        return "Password must contain lowercase characters."
+    }
+    if (!password.match(/[0-9]/g)) {
+        return "Password must contain number."
+    }
+    if (!password.match(/[!@#$%^&*\-]/g)) {
+        return "Password must contain at least one symbol characters in !@#$%^&*- ."
     }
     return false;
 };

@@ -63,10 +63,11 @@ User.methods.generateAuthToken = async function () {
 };
 User.methods.generateRandomPassword = async () => {
     return passGenerator.generate({
-        length: 8,
+        length: 12,
         lowercase: true,
         uppercase: true,
-        numbers: true
+        numbers: true,
+        symbols: "#?!@$%^&*-",
     })
 }
 

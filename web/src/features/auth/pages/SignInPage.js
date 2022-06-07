@@ -165,7 +165,7 @@ function SignInPage() {
               Login
             </Button>
             <Link
-              href="/reset-password"
+              href="/forgot-password"
               underline="none"
               style={forgotPasswordStyle}
             >
