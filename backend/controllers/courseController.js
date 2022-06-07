@@ -1,9 +1,15 @@
 const mongoose = require("mongoose");
 const Course = require("../models/course");
+const Teacher = require("../models/teacher");
+const cloudinary = require("../middleware/cloudinary");
+const fs = require("fs");
 
 const getAll = async (req, res) => {
   try {
-    const results = await Course.find({}).lean().populate("lessons").populate("teacher");
+    const results = await Course.find({})
+      .lean()
+      .populate("lessons")
+      .populate("teacher");
 
     return res.status(200).json({
       success: true,
@@ -18,13 +24,14 @@ const getAll = async (req, res) => {
   }
 };
 
-
 const getById = async (req, res) => {
   try {
     const id = mongoose.Types.ObjectId(req?.params?.id);
     const result = await Course.findOne({
       _id: id,
-    }).populate("lessons").populate("teacher")
+    })
+      .populate("lessons")
+      .populate("teacher");
 
     if (result) {
       return res.status(200).json({
@@ -94,6 +101,45 @@ const create = async (req, res) => {
   }
 };
 
+const createCourse = async (req, res) => {
+  try {
+    const thumbnail = req.files.thumbnail;
+    const video = req.files.video;
+    const { courseName, description, teacherId } = req.body;
+
+    const teacher = await Teacher.find({}).limit(1).lean();
+    const lastCourse = await Course.find({}).sort({ _id: -1 }).limit(1).lean();
+
+    const courseCodeIndex = lastCourse[0].courseCode.substring(6); //COURSE1 => 1
+
+    let course = await Course.create({
+      courseName,
+      description,
+
+      teacher: teacher[0]._id,
+      courseCode: `COURSE${Number(courseCodeIndex) + 1}`,
+    });
+
+    const courseImage = await handleUpload(thumbnail);
+    const demoVideo = await handleUpload(video);
+    course.courseImage = courseImage;
+    course.demoVideo = demoVideo;
+
+    course.save().then((result) => {
+      res.status(200).json({
+        success: true,
+        course: result,
+        message: "Course created!",
+      });
+    });
+  } catch (error) {
+    console.log(error);
+    res
+      .status(500)
+      .json({ success: false, error: "Failed to create the course!" });
+  }
+};
+
 const updateById = async (req, res) => {
   try {
     const id = mongoose.Types.ObjectId(req?.params?.id);
@@ -102,7 +148,7 @@ const updateById = async (req, res) => {
     });
 
     if (result) {
-      const { courseName, courseImage, description, lessons } = req.body;
+      const { courseName, courseImage, description, lessons, isActive } = req.body;
 
       let errors = {};
 
@@ -135,6 +181,7 @@ const updateById = async (req, res) => {
           courseImage,
           description,
           lessons,
+          isActive
         }
       );
 
@@ -188,10 +235,76 @@ const deleteById = async (req, res) => {
   }
 };
 
+const handleUpload = async (files) => {
+  if (files) {
+    const { path } = files[0];
+    const newPath = await cloudinary.uploader
+      .upload(path, {
+        resource_type: "auto",
+      })
+      .catch((error) => {
+        throw Error(error.message);
+      });
+    fs.unlinkSync(path);
+    return newPath.url;
+  }
+  return "";
+};
+
+const updateFieldCourse = async (req, res) => {
+  try {
+    const courseID = req.params.id;
+    const courseImage = req.files.thumbnail;
+    const demoVideo = req.files.video;
+    const { courseName, category, description, teacher } = req.body;
+    const course = await Course.findById(courseID);
+    if (!course)
+      return res
+        .status(404)
+        .json({ success: false, message: "This course does not exists" });
+
+    if (courseName) course.courseName = courseName;
+    course.description = description || "";
+    if (teacher) {
+      const existTeacher = await Teacher.findById(teacher);
+      if (!existTeacher)
+        return res
+          .status(404)
+          .json({ success: false, message: "This teacher does not exists!" });
+      else course.teacher = existTeacher._id;
+    }
+
+    const thumbnailUrl = await handleUpload(courseImage);
+    const videoUrl = await handleUpload(demoVideo);
+
+    if (thumbnailUrl !== "") {
+      course.courseImage = thumbnailUrl;
+    }
+
+    if (videoUrl !== "") {
+      course.demoVideo = videoUrl;
+    }
+
+    const savedCourse = await course.save();
+    res.status(200).json({
+      success: true,
+      course: savedCourse,
+      message: "Update the course successfully!",
+    });
+  } catch (error) {
+    console.log(error);
+    res
+      .status(500)
+      .json({ success: false, error: "Failed to update the course!" });
+  }
+};
+
 module.exports = {
   getAll,
   getById,
   create,
+  createCourse,
   updateById,
   deleteById,
+  updateFieldCourse,
 };

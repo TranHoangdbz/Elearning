@@ -1,8 +1,16 @@
 import React from "react";
+import { useNavigate } from "react-router-dom";
 
 import styles from "./heading.module.scss";
 
-function heading() {
+import {SIGN_UP} from '../../../../routes'
+
+
+
+function Heading() {
+
+    const navigate = useNavigate()
+
     return (
         <React.Fragment>
             <div className={`${styles.heading}`}>
@@ -16,11 +24,11 @@ function heading() {
 
                 <div className={`${styles.rightGroup}`}>
                     <p className={`${styles.rightGroupText}`}>Don't have accout?</p>
-                    <button className={`${styles.rightGroupButton}`}>Sign Up</button>
+                    <button onClick={() => navigate(SIGN_UP)} className={`${styles.rightGroupButton}`}>Sign Up</button>
                 </div>
             </div>
         </React.Fragment>
     );
 }
 
-export default heading;
+export default Heading;

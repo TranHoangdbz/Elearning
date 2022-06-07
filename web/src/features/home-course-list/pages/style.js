@@ -27,18 +27,15 @@ const style = {
         boxShadow: '0px 0px 3.93162px 0.982906px rgba(0, 0, 0, 0.25)',
     },
     card: {
-        width: '250px',
-        height: '280px',
+        width: '260px',
+        minHeight: '280px',
+        height: 'auto',
         // minHeight: '250px',
         borderRadius: '20px'
     },
     avatar: {
-        height: '37.88px',
-        width: "37.88px",
-        left: '0%',
-        right: '74.75%',
-        marginTop: '3%',
-        bottom: '22.22%'
+        height: '25px',
+        width: "25px",
     },
     teacherFullName: {
         marginTop: '5%',
@@ -64,7 +61,10 @@ const style = {
         fontSize: '12px',
         lineHeight: '15px',
         color: ' #000000',
-        marginTop: '-5px'
+        marginTop: '-5px',
+        maxHeight: '45px',
+        paddingRight: "6%",
+        paddingLeft: "6%"
     },
     countCourseVolume: {
         fontFamily: 'Montserrat',

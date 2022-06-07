@@ -8,17 +8,11 @@ import {
   Typography,
   Link,
   IconButton,
-  Avatar
+  Avatar,
 } from "@mui/material";
 
-const logo = require("../../assets/images/logo.png");
+const logo = require("../../../assets/images/logo.png");
 
-const navbarStyle = {
-  height: 40,
-  marginTop: 18,
-  marginLeft: 48,
-  marginRight: 48,
-};
 const navbarTitleStyle = {
   fontSize: 19,
   fontWeight: 800,
@@ -50,7 +44,7 @@ const navbarButtonStyle = {
   fontSize: 16,
 };
 
-function AuthPageLayout({ children, isSignIn }) {
+function AuthPageLayout({ children, isSignIn, hideNavBar = false }) {
   return (
     <Box
       sx={{
@@ -90,50 +84,60 @@ function AuthPageLayout({ children, isSignIn }) {
 
       <Container maxWidth="xl" sx={{ height: "100%" }}>
         {/* navbar begin */}
-        <Box sx={{ flexGrow: 1 }}>
-          <AppBar
-            position="static"
-            sx={{ backgroundColor: "white", boxShadow: 0 }}
-          >
-            <Toolbar>
-              <Box
-                sx={{
-                  display: "flex",
-                  flexDirection: "row",
-                  alignItems: "center",
-                }}
-              >
-                <IconButton href="/">
-                  <Avatar src={logo} alt="logo" sx={{width: 33, height: 31}} variant="square"/>
-                </IconButton>
+        {!hideNavBar && (
+          <Box sx={{ flexGrow: 1 }}>
+            <AppBar
+              position="static"
+              sx={{ backgroundColor: "white", boxShadow: 0 }}
+            >
+              <Toolbar>
                 <Box
                   sx={{
                     display: "flex",
-                    flexDirection: "column",
-                    alignItems: "flex-start",
-                    justifyContent: "center",
-                    marginLeft: "7px",
+                    flexDirection: "row",
+                    alignItems: "center",
                   }}
-                  
                 >
-                  <Link underline="none" sx={navbarTitleStyle} href="/">
-                    ProCourse
-                  </Link>
-                  <Link underline="none" sx={navbarSubtitleStyle} href="/">
-                    Curiosity is the key
-                  </Link>
+                  <IconButton href="/">
+                    <Avatar
+                      src={logo}
+                      alt="logo"
+                      sx={{ width: 33, height: 31 }}
+                      variant="square"
+                    />
+                  </IconButton>
+                  <Box
+                    sx={{
+                      display: "flex",
+                      flexDirection: "column",
+                      alignItems: "flex-start",
+                      justifyContent: "center",
+                      marginLeft: "7px",
+                    }}
+                  >
+                    <Link underline="none" sx={navbarTitleStyle} href="/">
+                      ProCourse
+                    </Link>
+                    <Link underline="none" sx={navbarSubtitleStyle} href="/">
+                      Curiosity is the key
+                    </Link>
+                  </Box>
                 </Box>
-              </Box>
-              <Box sx={{ flexGrow: 1 }} />
-              <Typography component="p" sx={navbarRightTextStyle}>
-                {isSignIn ? "Do you have an account?" : "Have an account?"}
-              </Typography>
-              <Button sx={navbarButtonStyle} variant="contained" href={isSignIn ? "/signup" : "/signin"}>
-                {isSignIn ? "Sign Up" : "Sign In"}
-              </Button>
-            </Toolbar>
-          </AppBar>
-        </Box>
+                <Box sx={{ flexGrow: 1 }} />
+                <Typography component="p" sx={navbarRightTextStyle}>
+                  {isSignIn ? "Do you have an account?" : "Have an account?"}
+                </Typography>
+                <Button
+                  sx={navbarButtonStyle}
+                  variant="contained"
+                  href={isSignIn ? "/sign-up" : "/sign-in"}
+                >
+                  {isSignIn ? "Sign Up" : "Sign In"}
+                </Button>
+              </Toolbar>
+            </AppBar>
+          </Box>
+        )}
         {/* navbar-left end */}
       </Container>
       {children}

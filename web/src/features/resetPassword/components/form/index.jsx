@@ -40,7 +40,8 @@ function Form() {
 
     // validate
     const handleBlur = () => {
-        if (helpers.isValidPassword(inputPassword)) {
+        var message
+        if (!(message = helpers.isUnValidPassword(inputPassword))) {
             setPasswordClass(
                 passwordClass.filter(
                     (element) => element !== styles.formInputInvalid
@@ -60,7 +61,7 @@ function Form() {
                 });
             } else {
                 setValidatePassword({
-                    mes: "This password is invalid.",
+                    mes: message,
                     isValid: false,
                 });
             }
@@ -69,7 +70,8 @@ function Form() {
         }
     };
     const handleCurrentBlur = () => {
-        if (helpers.isValidPassword(inputCurrentPassword)) {
+        var message
+        if ( !(message = helpers.isUnValidPassword(inputCurrentPassword))) {
             setCurrentPasswordClass(
                 currentPasswordClass.filter(
                     (element) => element !== styles.formInputInvalid
@@ -92,7 +94,7 @@ function Form() {
                 });
             } else {
                 setValidateCurrentPassword({
-                    mes: "This password is invalid.",
+                    mes: message,
                     isValid: false,
                 });
             }

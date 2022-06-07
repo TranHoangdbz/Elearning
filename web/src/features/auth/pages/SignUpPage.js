@@ -1,11 +1,11 @@
-import React from "react";
+import React, { useState } from "react";
 import { Card, Box, Button } from "@mui/material";
 import { useFormik } from "formik";
 import * as yup from "yup";
 import AuthPageLayout from "./AuthPageLayout";
-import CTextField from "./components/CTextField";
-import { register } from "./auth";
-import { saveToken } from "./localStorage";
+import CTextField from "../components/CTextField";
+import { register } from "../auth";
+import Toast from "../components/Toast";
 
 const cardStyle = {
   boxShadow: "0px 4px 8px rgba(0, 0, 0, 0.25)",
@@ -46,6 +46,11 @@ const initialValues = {
 const phoneRegExp =
   /^((\\+[1-9]{1,4}[ \\-]*)|(\\([0-9]{2,3}\\)[ \\-]*)|([0-9]{2,4})[ \\-]*)*?[0-9]{3,4}?[ \\-]*[0-9]{3,4}?$/;
 
+const atLeastOneUpperCaseLetter = "(?=.*?[A-Z])";
+const atLeastOneLowerCaseLetter = "(?=.*?[a-z])";
+const atLeastOneDigit = "(?=.*?[0-9])";
+const atLeastOneSpicialLetter = "(?=.*?[#?!@$%^&*-])";
+
 const validationSchema = yup.object({
   email: yup
     .string("Enter your email")
@@ -61,6 +66,19 @@ const validationSchema = yup.object({
   password: yup
     .string("Enter your password")
     .min(8, "Password should be of minimum 8 characters length")
+    .matches(
+      atLeastOneUpperCaseLetter,
+      "At least one upper case English letter"
+    )
+    .matches(
+      atLeastOneLowerCaseLetter,
+      "At least one lower case English letter"
+    )
+    .matches(atLeastOneDigit, "At least one digit")
+    .matches(
+      atLeastOneSpicialLetter,
+      "At least one special character # ? ! @ $ % ^ & * -"
+    )
     .required("Password is required"),
   confirmPassword: yup
     .string()
@@ -74,6 +92,10 @@ const validationSchema = yup.object({
 });
 
 function SignUpPage() {
+  const [open, setOpen] = useState(false);
+  const [message, setMessage] = useState(null);
+  const [isError, setIsError] = useState(false);
+
   const formik = useFormik({
     initialValues,
     validationSchema: validationSchema,
@@ -81,16 +103,27 @@ function SignUpPage() {
       const { email, fullName, phoneNumber, password } = values;
       register(email, fullName, phoneNumber, password)
         .then((result) => {
-          alert("Check your email to verify account");
+          setOpen(true);
+          setIsError(false);
+          setMessage("Check your email to verify account");
         })
-        .catch(({ response }) => alert(response.data.msg));
-      // console.log({ email, fullName, phoneNumber, password });
+        .catch(({ response }) => {
+          setOpen(true);
+          setIsError(true);
+          setMessage(response.data.msg);
+        });
     },
   });
 
   return (
     <AuthPageLayout isSignIn={false}>
-      <Box mx="auto" marginTop="10px" marginBottom="86px">
+      <Box mx="auto" marginTop="10px" marginBottom="86px" position="relative">
+        <Toast
+          open={open}
+          setOpen={setOpen}
+          isError={isError}
+          message={message}
+        />
         <Card sx={cardStyle}>
           <p style={cardTitleStyle}>Get's Go!</p>
           <form
