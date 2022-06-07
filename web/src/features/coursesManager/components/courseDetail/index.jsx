@@ -148,7 +148,9 @@ function CourseDetail() {
     currentCourse.lessons.forEach((item) => {
       lessons.push(item);
     });
-    dispatch(setActiveCourse({ ...currentCourse, lessons: lessons, isActive: true }));
+    dispatch(
+      setActiveCourse({ ...currentCourse, lessons: lessons, isActive: true })
+    );
     handleCloseConfirmDialog();
     window.location.reload();
   };
@@ -175,7 +177,7 @@ function CourseDetail() {
     setOpenConfirm(false);
   };
   // Open edit popup
-  const [openEditPopup,setOpenEditPopup] = React.useState(false);
+  const [openEditPopup, setOpenEditPopup] = React.useState(false);
   const handleOpenEditPopup = () => {
     setOpenEditPopup(true);
   };
@@ -207,14 +209,16 @@ function CourseDetail() {
             Courses list
           </Button>
           <Box>
-            <Button
-              className={`${styles.button}`}
-              variant="text"
-              startIcon={<Edit />}
-              onClick = {()=>handleOpenEditPopup()}
-            >
-              Edit
-            </Button>
+            {currentCourse.isActive ? (
+              <Button
+                className={`${styles.button}`}
+                variant="text"
+                startIcon={<Edit />}
+                onClick={() => handleOpenEditPopup()}
+              >
+                Edit
+              </Button>
+            ) : null}
             {currentCourse.isActive ? (
               <Button
                 className={`${styles.button}`}
@@ -259,13 +263,15 @@ function CourseDetail() {
             </Typography>
             <Typography>{`${currentCourse.lessons.length} lessons`}</Typography>
           </Stack>
-          <Button
-            className={`${styles.addbutton}`}
-            variant="contained"
-            onClick={() => setShow(!show)}
-          >
-            Add new lesson
-          </Button>
+          {currentCourse.isActive ? (
+            <Button
+              className={`${styles.addbutton}`}
+              variant="contained"
+              onClick={() => setShow(!show)}
+            >
+              Add new lesson
+            </Button>
+          ) : null}
         </Stack>
         <Stack direction="row" spacing="12px">
           <div className={`${styles.demo}`}>
@@ -317,7 +323,7 @@ function CourseDetail() {
                           aria-haspopup="true"
                           aria-expanded={open ? "true" : undefined}
                           onClick={(e) => {
-                            handleClick(e, item._id)
+                            handleClick(e, item._id);
                             setCurrentItem(item);
                           }}
                         >
@@ -341,24 +347,36 @@ function CourseDetail() {
                         elevation={1}
                       >
                         <MenuItem
+                          disabled={currentCourse.isActive ? false : true}
                           onClick={() => {
                             handleViewLesson(currentCourse._id, id);
                           }}
-                        >View</MenuItem>
-                        <Link
-                          to="/edit-courses"
-                          state={{
-                            _id: item._id,
-                            name: item.name,
-                            description: item.description,
-                            thumbnail: item.thumbnail,
-                            course_url: item.video,
-                            course_url2: location.pathname,
-                      }}
-                      >
-                          <MenuItem onClick={handleClose}>Edit</MenuItem>
-                        </Link>
+                        >
+                          View
+                        </MenuItem>
+                        {currentCourse.isActive ? (
+                          <Link
+                            to="/edit-courses"
+                            state={{
+                              _id: item._id,
+                              name: item.name,
+                              description: item.description,
+                              thumbnail: item.thumbnail,
+                              course_url: item.video,
+                              course_url2: location.pathname,
+                            }}
+                          >
+                            <MenuItem onClick={handleClose}>Edit</MenuItem>
+                          </Link>
+                        ) : (
+                          <MenuItem
+                            disabled={currentCourse.isActive ? false : true}
+                          >
+                            Edits
+                          </MenuItem>
+                        )}
                         <MenuItem
+                          disabled={currentCourse.isActive ? false : true}
                           onClick={(e) => {
                             setOpenConfirm(true);
                           }}
@@ -414,19 +432,21 @@ function CourseDetail() {
           </div>
         </div>
       </Dialog>
-      <Dialog
-        open={openEditPopup}
-        fullScreen
-      >
-        
-        <button className={`${styles.header__right__}`} onClick={()=>handleCloseEditPopup()} > <CancelOutlinedIcon color="secondary" fontSize="large" /> </button>
-        <EditCourse 
-          _id = { currentCourse._id}
-          name= {currentCourse.courseName}
-          description = {currentCourse.description}
-          thumbnail = {currentCourse.courseImage}
-          course_url = { currentCourse.demoVideo}
-          course_url2={location.pathname} 
+      <Dialog open={openEditPopup} fullScreen>
+        <button
+          className={`${styles.header__right__}`}
+          onClick={() => handleCloseEditPopup()}
+        >
+          {" "}
+          <CancelOutlinedIcon color="secondary" fontSize="large" />{" "}
+        </button>
+        <EditCourse
+          _id={currentCourse._id}
+          name={currentCourse.courseName}
+          description={currentCourse.description}
+          thumbnail={currentCourse.courseImage}
+          course_url={currentCourse.demoVideo}
+          course_url2={location.pathname}
         />
       </Dialog>
       <AddLessonModal
@@ -450,11 +470,15 @@ function CourseDetail() {
         aria-describedby="alert-dialog-description"
       >
         <DialogTitle id="alert-dialog-title">
-          {currentCourse.isActive ? "Confirm delete course?" : "Confirm reverse course?"}
+          {currentCourse.isActive
+            ? "Confirm delete course?"
+            : "Confirm reverse course?"}
         </DialogTitle>
         <DialogContent>
           <DialogContentText id="alert-dialog-description">
-            {currentCourse.isActive ? "After delete, the course will be set to be inactive." : "After reverse, the course will be set to be active."}
+            {currentCourse.isActive
+              ? "After delete, the course will be set to be inactive."
+              : "After reverse, the course will be set to be active."}
           </DialogContentText>
         </DialogContent>
         <DialogActions>
@@ -462,7 +486,9 @@ function CourseDetail() {
           <Button
             className={`${styles.confirmbutton}`}
             variant="contained"
-            onClick={currentCourse.isActive ? handleDeleteCourse : handleReverseCourse}
+            onClick={
+              currentCourse.isActive ? handleDeleteCourse : handleReverseCourse
+            }
             autoFocus
           >
             OK
