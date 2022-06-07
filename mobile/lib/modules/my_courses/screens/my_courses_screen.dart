@@ -86,9 +86,7 @@ class MyCoursesScreen extends GetView<MyCoursesController> {
                   ),
                   const Spacer(),
                   IconButton(
-                    onPressed: () {
-                      Get.toNamed(Routes.quizz);
-                    },
+                    onPressed: () {},
                     icon: const Icon(Icons.settings),
                   )
                 ],

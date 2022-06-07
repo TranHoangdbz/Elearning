@@ -25,17 +25,29 @@ class QuizzScreen extends StatelessWidget {
             if (snapshot.hasData) {
               _controller.updateQuizList();
               return ListView(
+                physics: const BouncingScrollPhysics(
+                  parent: AlwaysScrollableScrollPhysics(),
+                ),
                 children: [
-                  Text(
-                    'Attention',
-                    style: TextStyles.textStyleOnBackgroundColor18w700,
+                  const SizedBox(
+                    height: 4,
+                  ),
+                  Padding(
+                    padding: const EdgeInsets.only(left: 24.0, right: 16),
+                    child: Text(
+                      'Attention',
+                      style: TextStyles.textStyleOnBackgroundColor18w700,
+                    ),
                   ),
                   const SizedBox(
                     height: 4,
                   ),
-                  Text(
-                    'Score a lession’s quizz with an accuracy of 100% to unlock the next lession.',
-                    style: TextStyles.textStyleOnBackgroundColor12w500,
+                  Padding(
+                    padding: const EdgeInsets.only(left: 24.0, right: 16),
+                    child: Text(
+                      'Score a lession’s quizz with an accuracy of 100% to unlock the next lession.',
+                      style: TextStyles.textStyleOnBackgroundColor12w500,
+                    ),
                   ),
                   const SizedBox(
                     height: 16,

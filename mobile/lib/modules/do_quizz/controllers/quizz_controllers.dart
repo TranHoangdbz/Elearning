@@ -168,13 +168,15 @@ class QuizzController extends GetxController {
 
   updateQuizList() {
     quizList.clear();
-    for (int i = 0; i < lessons[selectedIndex.value].quizz.length; i++) {
-      Quiz? result = QuizzService.instance
-          .getQuizById(lessons[selectedIndex.value].quizz[i]);
-      if (result != null) {
-        quizList.add(
-          result,
-        );
+    if (lessons.isNotEmpty) {
+      for (int i = 0; i < lessons[selectedIndex.value].quizz.length; i++) {
+        Quiz? result = QuizzService.instance
+            .getQuizById(lessons[selectedIndex.value].quizz[i]);
+        if (result != null) {
+          quizList.add(
+            result,
+          );
+        }
       }
     }
   }
