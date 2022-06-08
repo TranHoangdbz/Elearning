@@ -83,8 +83,10 @@ class AuthenticationService {
     Get.offNamed(Routes.auth);
   }
 
-  resetPassword(String dest) {
+  resetPassword(String dest) async {
     _authProvider.resetPassword(dest: dest, onResponse: sendResetPassowrd);
+    SharedPreferences prefs = await SharedPreferences.getInstance();
+    await prefs.setString('emailResetPassword', dest);
   }
 
   changePassword(
@@ -114,6 +116,11 @@ class AuthenticationService {
         } else {
           SharedPreferences prefs = await SharedPreferences.getInstance();
           await prefs.setString('userHash', newPassword);
+          final String? emailResetPassword =
+              prefs.getString('emailResetPassword');
+          if (emailResetPassword != null) {
+            prefs.remove('emailResetPassword');
+          }
           await showDialog(
             context: Get.context!,
             builder: (context) {
@@ -136,7 +143,7 @@ class AuthenticationService {
 
   Future sendResetPassowrd(Map<String, dynamic> data) async {
     if (data["error"]) {
-      showDialog(
+      await showDialog(
         context: Get.context!,
         builder: (context) {
           return CustomDialog(
@@ -149,6 +156,8 @@ class AuthenticationService {
           );
         },
       );
+      SharedPreferences prefs = await SharedPreferences.getInstance();
+      await prefs.remove('emailResetPassword');
     } else {
       showDialog(
         context: Get.context!,
