@@ -305,4 +305,50 @@ class AuthenticationProvider {
       }
     }
   }
+
+  changePassword({
+    required String token,
+    required String password,
+    required String newPassword,
+    required Function(Map<String, dynamic>) onResponse,
+  }) async {
+    try {
+      Map<String, dynamic> header = {
+        'procources-access-token': token,
+      };
+      Map<String, dynamic> req = {
+        'password': password,
+        'newPassword': newPassword,
+      };
+      final response = await Dio().put(
+        '${AppStrings.connectString}/api/users/reset-password',
+        data: req,
+        options: Options(headers: header),
+      );
+      Map<String, dynamic> data = {
+        'error': false,
+        'message': 'Successfully change password',
+        'result': response.data,
+      };
+      onResponse(data);
+    } on DioError catch (e) {
+      try {
+        Map<String, dynamic> data = {
+          'error': true,
+          'message': e.response!.data['msg'] ??
+              e.response!.data['message'] ??
+              e.response!.data['mes'],
+          'result': null,
+        };
+        onResponse(data);
+      } catch (e) {
+        Map<String, dynamic> data = {
+          'error': true,
+          'message': 'Change password failed with unknown error',
+          'result': null,
+        };
+        onResponse(data);
+      }
+    }
+  }
 }

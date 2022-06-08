@@ -6,6 +6,7 @@ import 'package:uit_elearning/constants/app_colors.dart';
 import 'package:uit_elearning/data/models/user.dart';
 import 'package:uit_elearning/data/providers/auth_provider.dart';
 import 'package:uit_elearning/global_widgets/custom_dialog.dart';
+import 'package:uit_elearning/modules/profile/controllers/change_password_controller.dart';
 import 'package:uit_elearning/routes/routes.dart';
 
 class AuthenticationService {
@@ -86,6 +87,53 @@ class AuthenticationService {
     _authProvider.resetPassword(dest: dest, onResponse: sendResetPassowrd);
   }
 
+  changePassword(
+    String token,
+    String password,
+    String newPassword,
+  ) {
+    _authProvider.changePassword(
+      token: token,
+      password: password,
+      newPassword: newPassword,
+      onResponse: (data) async {
+        if (data["error"]) {
+          showDialog(
+            context: Get.context!,
+            builder: (context) {
+              return CustomDialog(
+                content: data["message"],
+                icon: const Icon(
+                  Icons.error,
+                  color: AppColors.redColor,
+                  size: 48,
+                ),
+              );
+            },
+          );
+        } else {
+          SharedPreferences prefs = await SharedPreferences.getInstance();
+          await prefs.setString('userHash', newPassword);
+          await showDialog(
+            context: Get.context!,
+            builder: (context) {
+              return CustomDialog(
+                content: data["message"],
+                icon: const Icon(
+                  Icons.check_circle_rounded,
+                  color: AppColors.greenColor,
+                  size: 48,
+                ),
+              );
+            },
+          );
+          Get.back();
+          Get.delete<ChangePasswordController>();
+        }
+      },
+    );
+  }
+
   Future sendResetPassowrd(Map<String, dynamic> data) async {
     if (data["error"]) {
       showDialog(
@@ -125,6 +173,7 @@ class AuthenticationService {
       if (currentUser!.verified) {
         SharedPreferences prefs = await SharedPreferences.getInstance();
         await prefs.setBool('authenticated', true);
+        await prefs.setString('token', data['result']['token'] ?? '');
         await prefs.setString('userEmail', currentUser!.email);
         await prefs.setString('userFullName', currentUser!.fullName ?? '');
         await prefs.setString(
