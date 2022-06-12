@@ -32,6 +32,21 @@ import AddLessonModal from "../addLessonModal";
 import styles from "./courseDetail.module.scss";
 import CancelOutlinedIcon from "@mui/icons-material/CancelOutlined";
 import EditCourse from "../editCourse/EditCourse";
+import EditCourses from '../../../edit-del-courses/pages/EditCourses'
+
+const style = {
+  position: 'absolute',
+  top: '50%',
+  left: '50%',
+  transform: 'translate(-50%, -50%)',
+  width: '80%',
+  bgcolor: 'background.paper',
+  border: 'none',
+  boxShadow: 24,
+  p: 2,
+  overflow: 'hidden'
+};
+
 function CourseDetail() {
   const dispatch = useDispatch();
   const navigate = useNavigate();
@@ -176,22 +191,67 @@ function CourseDetail() {
     dispatch(deleteLessonById(currentItem?._id));
     setOpenConfirm(false);
   };
-  // Open edit popup
-  const [openEditPopup, setOpenEditPopup] = React.useState(false);
-  const handleOpenEditPopup = () => {
-    setOpenEditPopup(true);
+  // Open edit modal
+  const [openEditModal, setOpenEditModal] = React.useState(false);
+  const handleOpenEditModal = () => {
+    setOpenEditModal(true);
   };
 
-  const handleCloseEditPopup = () => {
-    setOpenEditPopup(false);
+  const handleCloseEditModal = () => {
+    setOpenEditModal(false);
   };
   const handleViewLesson = (courseId, lessonId) => {
     navigate("/coursesmanager/lessondetail/" + courseId + "/" + lessonId);
     handleClose();
   };
 
+  const [openEditLesson, setOpenEditLesson] = React.useState(false);
+  const [currentLesson, setCurrentLesson] = React.useState();
+  const handleEditLesson = (e, item) => {
+    e.preventDefault()
+    setCurrentLesson(item)
+    setOpenEditLesson(true)
+    handleClose()
+  }
+
   return (
     <Paper className={`${styles.coursedetail}`} elevation={3}>
+      <Modal
+        open={openEditModal}
+        aria-labelledby="modal-add-title"
+        aria-describedby="modal-add-description"
+        onClose={() => {
+          setOpenEditModal(false);
+        }}
+      >
+        <Box sx={style}>
+          <EditCourse
+            setOpenModal={setOpenEditModal}
+            _id={currentCourse._id}
+            name={currentCourse.courseName}
+            description={currentCourse.description}
+            thumbnail={currentCourse.courseImage}
+            course_url={currentCourse.demoVideo}
+            course_url2={location.pathname}
+          />
+        </Box>
+      </Modal>
+      <Modal
+        open={openEditLesson}
+        aria-labelledby="modal-add-title"
+        aria-describedby="modal-add-description"
+        onClose={() => {
+          setOpenEditLesson(false);
+        }}
+      >
+        <Box sx={style}>
+          <EditCourses
+            setOpenModal={setOpenEditLesson}
+            lesson={currentLesson}
+          />
+        </Box>
+      </Modal>
+
       <Stack direction="column" spacing="8px">
         <Stack
           direction="row"
@@ -210,14 +270,14 @@ function CourseDetail() {
           </Button>
           <Box>
             {currentCourse.isActive ? (
-              <Button
-                className={`${styles.button}`}
-                variant="text"
-                startIcon={<Edit />}
-                onClick={() => handleOpenEditPopup()}
-              >
-                Edit
-              </Button>
+            <Button
+              className={`${styles.button}`}
+              variant="text"
+              startIcon={<Edit />}
+              onClick={() => handleOpenEditModal()}
+            >
+              Edit
+            </Button>
             ) : null}
             {currentCourse.isActive ? (
               <Button
@@ -311,9 +371,8 @@ function CourseDetail() {
                             {`${index + 1}. ${item.name}`}
                           </Typography>
                           <Typography>
-                            {`${getVideoDuration(`video_${item._id}`).minute}:${
-                              getVideoDuration(`video_${item._id}`).second
-                            }`}
+                            {`${getVideoDuration(`video_${item._id}`).minute}:${getVideoDuration(`video_${item._id}`).second
+                              }`}
                           </Typography>
                         </Stack>
                         <IconButton
@@ -355,19 +414,11 @@ function CourseDetail() {
                           View
                         </MenuItem>
                         {currentCourse.isActive ? (
-                          <Link
-                            to="/edit-courses"
-                            state={{
-                              _id: item._id,
-                              name: item.name,
-                              description: item.description,
-                              thumbnail: item.thumbnail,
-                              course_url: item.video,
-                              course_url2: location.pathname,
-                            }}
-                          >
-                            <MenuItem onClick={handleClose}>Edit</MenuItem>
-                          </Link>
+                        <MenuItem onClick={(e) => {
+                          handleEditLesson(e, item)
+                        }}>
+                          Edit
+                        </MenuItem>
                         ) : (
                           <MenuItem
                             disabled={currentCourse.isActive ? false : true}
@@ -431,23 +482,6 @@ function CourseDetail() {
             </div>
           </div>
         </div>
-      </Dialog>
-      <Dialog open={openEditPopup} fullScreen>
-        <button
-          className={`${styles.header__right__}`}
-          onClick={() => handleCloseEditPopup()}
-        >
-          {" "}
-          <CancelOutlinedIcon color="secondary" fontSize="large" />{" "}
-        </button>
-        <EditCourse
-          _id={currentCourse._id}
-          name={currentCourse.courseName}
-          description={currentCourse.description}
-          thumbnail={currentCourse.courseImage}
-          course_url={currentCourse.demoVideo}
-          course_url2={location.pathname}
-        />
       </Dialog>
       <AddLessonModal
         open={show}

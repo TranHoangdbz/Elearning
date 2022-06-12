@@ -2,8 +2,8 @@ import React, { useRef, useState } from 'react';
 import './addcourse__.css';
 import CancelOutlinedIcon from '@mui/icons-material/CancelOutlined';
 import {
-    TextField, FormControl, Select, InputLabel, DialogContent , DialogContentText,
-    MenuItem, LinearProgress, Dialog , DialogActions , DialogTitle, Button
+    TextField, FormControl, Select, InputLabel, DialogContent, DialogContentText,
+    MenuItem, LinearProgress, Dialog, DialogActions, DialogTitle, Button
 } from '@mui/material';
 import axios, { CancelToken, isCancel } from "axios";
 import API from '../../../../services/API/config';
@@ -16,14 +16,16 @@ const AddCourse = (props) => {
     const [description, setDescription] = useState('')
     // mở thông báo
     const [popup, setPopup] = React.useState(false);
-    const [popupFalse,setPopupFalse] = React.useState(false);
+    const [popupFalse, setPopupFalse] = React.useState(false);
+    const { setOpenModal } = props
+
     const handlepopupFalseOpen = () => {
         setPopupFalse(true);
-      };
-    
-      const handlepopupFalseClose = () => {
+    };
+
+    const handlepopupFalseClose = () => {
         setPopupFalse(false);
-      };
+    };
     // Change image
     const inputAvatarRef = useRef(null);
     const [thumbnail, setThumbnail] = useState()
@@ -43,8 +45,9 @@ const AddCourse = (props) => {
         uploadFile(thumbnail, video);
         if (uploadPercentage === 0) {
             setPopup(false);
+            setOpenModal(false);
         }
-        
+
     }
 
     const imageChange = (event) => {
@@ -92,7 +95,7 @@ const AddCourse = (props) => {
                     setUploadPercentage(percent);
                 }
             },
-            
+
         };
 
 
@@ -121,115 +124,113 @@ const AddCourse = (props) => {
     };
 
     return (
-        
-            <div className="editLesson-inner">
-                
-                <div className="edit__header">
-                    <h2 className='header__center'>Add course</h2>
-                </div>
-                <div className="edit__body">
-                    <p className="title">Name</p>
-                    <TextField
-                        value={name}
-                        onChange={(e) => setName(e.target.value)}
-                        error={nameErr}
-                        id="outlined-size-small"
-                        size="small"
-                        inputProps={{ style: { fontSize: 14 } }}
-                        FormHelperTextProps={{ style: { fontSize: 12 } }}
-                        helperText={nameErr}
-                        style = {{width: 400}}
-                    />
-                    <p className="title">Description</p>
-                    <TextField
-                        value={description}
-                        onChange={(e) => setDescription(e.target.value)}
-                        name="Lesson description"
-                        fullWidth
-                        multiline={true}
-                        rows={6}
-                        id="outlined-size-small"
-                        size="small"
-                        inputProps={{ style: { fontSize: 14 } }}
-                        
-                    />
 
-                    <div className="editcourse__video">
-                        <div className="video_components">
-                            <div className="video_header">
-                                <p className="title">Thumbnail</p>
-                                <label htmlFor="fileThumbnail" className="btnn_select" >Select Image </label>
-                                <input ref={inputAvatarRef} type='file' id='fileThumbnail' onChange={imageChange} style={{ display: 'none' }} />
-                            </div>
+        <div className="editLesson-inner">
 
-                            <div className="video_body">
+            <div className="edit__header">
+                <h2 className='header__center'>Add course</h2>
+            </div>
+            <div className="edit__body">
+                <p className="title">Name</p>
+                <TextField
+                    value={name}
+                    onChange={(e) => setName(e.target.value)}
+                    error={nameErr}
+                    id="outlined-size-small"
+                    size="small"
+                    inputProps={{ style: { fontSize: 14 } }}
+                    FormHelperTextProps={{ style: { fontSize: 12 } }}
+                    helperText={nameErr}
+                    style={{ width: 400 }}
+                />
+                <p className="title">Description</p>
+                <TextField
+                    value={description}
+                    onChange={(e) => setDescription(e.target.value)}
+                    name="Lesson description"
+                    fullWidth
+                    multiline={true}
+                    rows={6}
+                    id="outlined-size-small"
+                    size="small"
+                    inputProps={{ style: { fontSize: 14 } }}
 
-                                <img src={thumbnail ? URL.createObjectURL(thumbnail) : null} style={{ height: 280 }} />
-                            </div>
+                />
+
+                <div className="editcourse__video">
+                    <div className="video_components">
+                        <div className="video_header">
+                            <p className="title">Thumbnail</p>
+                            <label htmlFor="fileThumbnail" className="btnn_select" >Select Image </label>
+                            <input ref={inputAvatarRef} type='file' id='fileThumbnail' onChange={imageChange} style={{ display: 'none' }} />
                         </div>
-                        <div className="video_components">
-                            <div className="video_header">
-                                <p className="title">Video</p>
-                                <label className="btnn_select" htmlFor="fileVideo"  >Select Video </label>
 
-                                <input type='file' id='fileVideo' onChange={videoChange} style={{ display: 'none' }} />
-                            </div>
-                            <div className="video_body">
+                        <div className="video_body">
+
+                            <img src={thumbnail ? URL.createObjectURL(thumbnail) : null} style={{ height: 280 }} />
+                        </div>
+                    </div>
+                    <div className="video_components">
+                        <div className="video_header">
+                            <p className="title">Video</p>
+                            <label className="btnn_select" htmlFor="fileVideo"  >Select Video </label>
+
+                            <input type='file' id='fileVideo' onChange={videoChange} style={{ display: 'none' }} />
+                        </div>
+                        <div className="video_body">
 
 
-                                <video src={video ? URL.createObjectURL(video) : null} style={{ height: 280 }} controls />
-                            </div>
-
+                            <video src={video ? URL.createObjectURL(video) : null} style={{ height: 280 }} controls />
                         </div>
 
                     </div>
-                    <button className="btn_save"
-                        onClick={checkVaildate}
-                    >
-                        Save all
-                    </button>
-                    
-                    <Link to="/coursesmanager/courseslist">
-                        <button className="btn_cancel">
-                            Cancel
-                        </button>
-                    </Link>
-                </div>
-                <Dialog open={popup} >
-                    <DialogTitle style={{fontSize: 18}} id="alert-dialog-title">
-                    {"Confirm action"}
-                    </DialogTitle>
-                    <DialogContent>
-                        <DialogContentText style={{fontSize: 16}} id="alert-dialog-description">
-                        This is confirm message we will pass into the model
-                        </DialogContentText>
-                    </DialogContent>
-                    <DialogActions>
-                        <Button variant="contained" color="error" style={{fontSize: 12}} onClick={() => setPopup(false)}>Cancel</Button>
-                        <Button variant="contained" style={{fontSize: 12}} onClick={() => handleSave()}>Save</Button>
-                    </DialogActions>
-                </Dialog>
-                <Dialog
-                    open={popupFalse}
-                    onClose={handlepopupFalseClose}
-                    aria-labelledby="alert-dialog-title"
-                    aria-describedby="alert-dialog-description"
-                >
-                    <DialogTitle style={{fontSize: 18}} id="alert-dialog-title">
-                    {"Your create course have false. Please check your index"}
-                    </DialogTitle>
-                    <DialogContent>
-                    <DialogContentText style={{fontSize: 16}} id="alert-dialog-description">
-                    Some reason you maybe have: Your course name has been created, your courses description is null, etc...
-                    </DialogContentText>
-                    </DialogContent>
-                    <DialogActions>
-                    <Button style={{fontSize: 16}} onClick={handlepopupFalseClose}>OK</Button>
-                    </DialogActions>
-                </Dialog>
 
+                </div>
+                <button className="btn_save"
+                    onClick={checkVaildate}
+                >
+                    Save all
+                </button>
+
+                <button className="btn_cancel" onClick={() => setOpenModal(false)}>
+                    Cancel
+                </button>
             </div>
-        
+            <Dialog open={popup} >
+                <DialogTitle style={{ fontSize: 18 }} id="alert-dialog-title">
+                    {"Confirm action"}
+                </DialogTitle>
+                <DialogContent>
+                    <DialogContentText style={{ fontSize: 16 }} id="alert-dialog-description">
+                        This is confirm message we will pass into the model
+                    </DialogContentText>
+                </DialogContent>
+                <DialogActions>
+                    <Button variant="contained" color="error" style={{ fontSize: 12 }} onClick={() => setPopup(false)}>Cancel</Button>
+                    <Button variant="contained" style={{ fontSize: 12 }} onClick={() => handleSave()}>Save</Button>
+                </DialogActions>
+            </Dialog>
+            <Dialog
+                open={popupFalse}
+                onClose={handlepopupFalseClose}
+                aria-labelledby="alert-dialog-title"
+                aria-describedby="alert-dialog-description"
+            >
+                <DialogTitle style={{ fontSize: 18 }} id="alert-dialog-title">
+                    {"Your create course have false. Please check your index"}
+                </DialogTitle>
+                <DialogContent>
+                    <DialogContentText style={{ fontSize: 16 }} id="alert-dialog-description">
+                        Some reason you maybe have: Your course name has been created, your courses description is null, etc...
+                    </DialogContentText>
+                </DialogContent>
+                <DialogActions>
+                    <Button style={{ fontSize: 16 }} onClick={handlepopupFalseClose}>OK</Button>
+                </DialogActions>
+            </Dialog>
+
+        </div>
+
     );
 }
 
