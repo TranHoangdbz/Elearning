@@ -1,8 +1,9 @@
 import API from "../../services";
+import URL from '../../services/API/config'
 import { getToken } from "./localStorage";
 
 export const register = async (email, fullName, phoneNumber, password) => {
-  const result = API.post("http://localhost:32/api/users/register", {
+  const result = API.post(URL.URL_REGISTER, {
     email,
     fullName,
     phoneNumber,
@@ -12,7 +13,7 @@ export const register = async (email, fullName, phoneNumber, password) => {
 };
 
 export const signin = async (email, password) => {
-  const result = API.post("http://localhost:32/api/users/login", {
+  const result = API.post(URL.URL_LOGIN, {
     email,
     password,
   });
@@ -29,14 +30,14 @@ export const callTest = async () => {
 
 export const verify = async (id) => {
   console.log(id);
-  const result = await API.get(`http://localhost:32/api/users/verify?id=${id}`);
+  const result = await API.get(URL.URL_VERIFY + `?id=${id}`);
   return result;
 };
 
 export const getCurrentUser = async () => {
   const token = getToken();
   const result = await API.get(
-    "http://localhost:32/api/users//current-user",
+    URL.URL_CURRENT_USERS,
     null,
     { headers: { "procources-access-token": `${token}` } }
   );

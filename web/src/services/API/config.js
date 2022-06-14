@@ -1,8 +1,15 @@
 // gateway
-const URL_SYSTEM_V1 = "http://localhost:32/api";
+const URL_SYSTEM_V1 = "https://procourse.herokuapp.com/api";
+const URL_AUTH_GG = "https://procourse.herokuapp.com";
+// const URL_SYSTEM_V1 = "http://localhost:32/api";
+// const URL_AUTH_GG = "http://localhost:32";
 
 export default {
-  URL_AUTH: URL_SYSTEM_V1 + "/login",
+  URL_AUTH_GG,
+  URL_CURRENT_USERS: URL_SYSTEM_V1 + "/users/current-user",
+  URL_VERIFY: URL_SYSTEM_V1 + "/users/verify",
+  URL_REGISTER: URL_SYSTEM_V1 + "/users/register",
+  URL_AUTH: URL_SYSTEM_V1 + "/users/login",
   URL_RESET_PASSWORD: URL_SYSTEM_V1 + "/users/reset-password",
   URL_GET_ALL_COURSES: URL_SYSTEM_V1 + "/courses/",
   URL_GET_COURSES: URL_SYSTEM_V1 + "/courses/",

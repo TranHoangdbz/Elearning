@@ -12,6 +12,7 @@ import Toast from "../components/Toast";
 import { useDispatch } from "react-redux";
 import { setUser } from "../authSlice";
 import { setCurrentUser } from "../../courseLearning/courseLearningSlice";
+import URL from '../../../services/API/config'
 const google = require("../../../assets/images/google.png");
 
 const cardStyle = {
@@ -114,7 +115,8 @@ function SignInPage() {
 
   const signinWithGoogle = async () => {
     const newWindow = window.open(
-      "http://localhost:32/auth/google",
+      URL.URL_AUTH_GG + 
+      "/auth/google",
       "_blank",
       "width=500,height=600"
     );
