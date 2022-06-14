@@ -72,7 +72,7 @@ function Quizz(props) {
                                                         !props.yourChoice[index][0] ? null :
                                                         <div className="icon-check">
                                                             {
-                                                                currentLesson.quizz[activeStep].answer.includes('0') ?
+                                                                currentLesson.quizz[activeStep].answer.includes('0') || currentLesson.quizz[activeStep].answer.includes(0)?
                                                                     <AiOutlineCheck/>
                                                                 :
                                                                 <MdCancel color='#A20103' size={14} style={{marginLeft: '-2px'}}/>
@@ -98,7 +98,7 @@ function Quizz(props) {
                                                         !props.yourChoice[index][1] ? null :
                                                         <div className="icon-check">
                                                             {
-                                                                currentLesson.quizz[activeStep].answer.includes('1') ?
+                                                                currentLesson.quizz[activeStep].answer.includes('1') || currentLesson.quizz[activeStep].answer.includes(1) ?
                                                                     <AiOutlineCheck/>
                                                                 :
                                                                 <MdCancel color='#A20103' size={14} style={{marginLeft: '-2px'}}/>
@@ -124,7 +124,7 @@ function Quizz(props) {
                                                         !props.yourChoice[index][2] ? null :
                                                         <div className="icon-check">
                                                             {
-                                                                currentLesson.quizz[activeStep].answer.includes('2') ?
+                                                                currentLesson.quizz[activeStep].answer.includes('2') || currentLesson.quizz[activeStep].answer.includes(2)?
                                                                     <AiOutlineCheck/>
                                                                 :
                                                                 <MdCancel color='#A20103' size={14} style={{marginLeft: '-2px'}}/>
@@ -149,7 +149,7 @@ function Quizz(props) {
                                                         !props.yourChoice[index][3] ? null :
                                                         <div className="icon-check">
                                                             {
-                                                                currentLesson.quizz[activeStep].answer.includes('3') ?
+                                                                currentLesson.quizz[activeStep].answer.includes('3') || currentLesson.quizz[activeStep].answer.includes(3)?
                                                                     <AiOutlineCheck/>
                                                                 :
                                                                 <MdCancel color='#A20103' size={14} style={{marginLeft: '-2px'}}/>
