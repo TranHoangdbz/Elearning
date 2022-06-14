@@ -43,6 +43,14 @@ class CourseItem extends StatelessWidget {
                       child: Image.network(
                         course.courseImage,
                         fit: BoxFit.cover,
+                        errorBuilder: (context, error, stackTrace) =>
+                            const Center(
+                          child: Icon(
+                            Icons.error,
+                            color: AppColors.redColor,
+                            size: 48,
+                          ),
+                        ),
                       ),
                     ),
                   ),

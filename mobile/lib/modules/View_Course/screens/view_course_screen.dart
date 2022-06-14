@@ -4,6 +4,7 @@ import 'package:flutter/material.dart';
 import 'package:get/get_core/src/get_main.dart';
 import 'package:get/get_instance/src/extension_instance.dart';
 import 'package:get/get_navigation/src/extension_navigation.dart';
+import 'package:uit_elearning/constants/app_colors.dart';
 import 'package:uit_elearning/data/models/course.dart';
 import 'package:uit_elearning/modules/learn_course/screens/learn_course_screen.dart';
 import 'package:uit_elearning/routes/routes.dart';
@@ -38,6 +39,13 @@ class ViewcourseScreen extends StatelessWidget {
                 child: Image.network(
                   course.courseImage,
                   fit: BoxFit.cover,
+                  errorBuilder: (context, error, stackTrace) => const Center(
+                    child: Icon(
+                      Icons.error,
+                      color: AppColors.redColor,
+                      size: 48,
+                    ),
+                  ),
                 ),
               ),
             ),

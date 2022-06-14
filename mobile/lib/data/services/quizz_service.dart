@@ -51,8 +51,8 @@ class QuizzService {
           return const CustomDialog(
             content: 'Something wrong occurs',
             icon: Icon(
-              Icons.check_circle_rounded,
-              color: AppColors.greenColor,
+              Icons.error,
+              color: AppColors.redColor,
               size: 48,
             ),
           );
