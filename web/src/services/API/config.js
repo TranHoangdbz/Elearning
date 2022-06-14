@@ -9,7 +9,7 @@ export default {
   URL_CURRENT_USERS: URL_SYSTEM_V1 + "/users/current-user",
   URL_VERIFY: URL_SYSTEM_V1 + "/users/verify",
   URL_REGISTER: URL_SYSTEM_V1 + "/users/register",
-  URL_AUTH: URL_SYSTEM_V1 + "/users/login",
+  URL_LOGIN: URL_SYSTEM_V1 + "/users/login",
   URL_RESET_PASSWORD: URL_SYSTEM_V1 + "/users/reset-password",
   URL_GET_ALL_COURSES: URL_SYSTEM_V1 + "/courses/",
   URL_GET_COURSES: URL_SYSTEM_V1 + "/courses/",

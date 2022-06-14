@@ -11,6 +11,7 @@ const auth = {
       jwt.verify(token, process.env.JWT_KEY, (err, data) => {
         if (err) return res.status(500).json({ msg: err });
         req._id = data._id;
+        console.log(data);
         next();
       });
     } catch (err) {
