@@ -1,0 +1,171 @@
+.editLesson {
+    width: 100%;
+    height: auto;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+.editLesson-inner {
+    position: relative;
+    width: 100%;
+    height: auto;
+    max-width: 1400px;
+    background-color: #fff;
+}
+
+.header__right {
+    display: flex;
+    margin-left: auto;
+    margin-right: 0;
+    border: none;
+    background-color: #fff;
+}
+
+.edit__header .header__center {
+    text-align: center;
+    font-size: 80;
+}
+
+.editLesson .editLesson-inner .edit__body .title {
+    margin-top: 10px;
+    margin-bottom: 10px;
+    font-weight: 600;
+    font-size: larger;
+}
+
+.edit__body .editcourse__video {
+    display: flex;
+    justify-content: space-between;
+}
+
+.edit__body .editcourse__video .video_components {
+    flex: 1;
+}
+
+.video_components~.video_components {
+    margin-left: 20px;
+}
+
+.edit__body .editcourse__video .video_components .video_header {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    margin-top: 10px;
+}
+
+.edit__body .editcourse__video .video_components .video_header .btnn_select {
+    padding: 10px;
+    font-size: 16px;
+    color: #fff;
+    background-color: #1A5276;
+    border-radius: 10px;
+    border-style: none;
+    cursor: pointer;
+    box-shadow: 2px 2px 3px #99A3A4;
+}
+
+.edit__body .editcourse__video .video_components .video_body {
+    margin-top: 10px;
+    background-color: #99A3A4;
+    height: 280px;
+    border-radius: 10px;
+    border-style: none;
+    justify-content: center;
+    align-items: center;
+    display: flex;
+
+}
+
+.edit__body .btn_save {
+    margin-top: 20px;
+    float: right;
+    padding: 10px;
+    font-size: 16px;
+    color: #fff;
+    background-color: #1A5276;
+    border-radius: 10px;
+    border-style: none;
+    box-shadow: 2px 2px 2px #99A3A4;
+    cursor: pointer;
+}
+
+.editLesson .editLesson-inner .nopopup {
+    display: none;
+    visibility: hidden;
+}
+
+.overlay {
+    width: 100vw;
+    height: 100vh;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    position: fixed;
+    background-color: #BFC9CA;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+.overlay .popup {
+    position: absolute;
+    padding: 20px;
+    width: 100%;
+    max-width: 400px;
+    background-color: #fff;
+    border-radius: 20px;
+}
+
+.overlay .popup .header {
+    display: flex;
+
+}
+
+.overlay .popup .header__title {
+    font-size: 60;
+    font-weight: 700;
+    justify-content: start;
+}
+
+.overlay .popup .header__right {
+
+    justify-content: end;
+}
+
+.overlay .popup .footer {
+    display: flex;
+    justify-content: space-between;
+}
+
+.overlay .popup .footer__left {
+    justify-content: start;
+}
+
+.overlay .popup .footer__right {
+
+    justify-content: end;
+}
+
+.overlay .popup .footer__right {
+
+    justify-content: end;
+}
+
+.overlay .popup .footer__right .btn__cancel {
+    font-size: 16;
+    font-weight: 800;
+    border: none;
+    background-color: #fff;
+    padding: 10px;
+}
+
+.overlay .popup .footer__right .btn__ok {
+    font-size: 16;
+    font-weight: 800;
+    background-color: #34495E;
+    border-radius: 8px;
+    color: #fff;
+    padding: 10px;
+}

@@ -1,0 +1,131 @@
+.heading {
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
+    align-items: center;
+    padding: 0px;
+
+    position: absolute;
+    width: 100%px;
+    height: 40px;
+    left: 48px;
+    right: 48px;
+    top: 18px;
+
+    button {
+        &:hover {
+            opacity: 0.9;
+        }
+    }
+}
+
+.leftGroup {
+    width: 143.12px;
+    height: 30.86px;
+
+    &:hover {
+        cursor: pointer;
+    }
+
+    /* Inside auto layout */
+    .logo {
+        background-color: var(--primaryColor);
+        background-size: cover;
+        background-image: url("data:image/svg+xml,%3Csvg%20width%3D%2233%22%20height%3D%2232%22%20viewBox%3D%220%200%2033%2032%22%20fill%3D%22none%22%20xmlns%3D%22http%3A%2F%2Fwww.w3.org%2F2000%2Fsvg%22%3E%0A%3Cpath%20d%3D%22M0%205.71225C0%202.87136%202.303%200.568359%205.14389%200.568359H27.777C30.6179%200.568359%2032.9209%202.87136%2032.9209%205.71224V26.2878C32.9209%2029.1287%2030.6179%2031.4317%2027.777%2031.4317H5.14389C2.303%2031.4317%200%2029.1287%200%2026.2878V5.71225Z%22%20fill%3D%22%23040E53%22%2F%3E%0A%3Cpath%20d%3D%22M16.2032%208.28418L24.2217%2020.2437H8.18468L16.2032%208.28418Z%22%20fill%3D%22%23040E53%22%2F%3E%0A%3Cpath%20d%3D%22M8.011%2011.4876L16.0462%208.23947L8.29194%2020.15L8.011%2011.4876Z%22%20fill%3D%22white%22%2F%3E%0A%3Cpath%20d%3D%22M24.2365%2011.6436L24.0303%2020.3885L16.1398%208.3332L24.2365%2011.6436Z%22%20fill%3D%22white%22%2F%3E%0A%3Cpath%20d%3D%22M16.2989%2025.3379L8.22906%2020.4307L24.3016%2020.322L16.2989%2025.3379Z%22%20fill%3D%22white%22%2F%3E%0A%3C%2Fsvg%3E%0A");
+
+        position: absolute;
+        width: 32.92px;
+        height: 30.86px;
+        left: 0px;
+        top: 4.57px;
+
+        border-radius: 6px;
+    }
+    .name {
+        position: absolute;
+        width: 103px;
+        height: 23px;
+        left: 40.12px;
+        top: 4.57px;
+
+        font-style: normal;
+        font-weight: 800;
+        font-size: 18.518px;
+        line-height: 23px;
+        /* identical to box height */
+
+        color: var(--primaryColor);
+    }
+    .description {
+        position: absolute;
+        width: 80.76px;
+        height: 10px;
+        left: 40.12px;
+        top: 25.14px;
+
+        font-style: normal;
+        font-weight: 600;
+        font-size: 8.23022px;
+        line-height: 10px;
+        /* identical to box height */
+
+        color: var(--primaryColor);
+    }
+}
+
+.rightGroup {
+    display: flex;
+    flex-direction: row;
+    justify-content: center;
+    align-items: center;
+    padding: 0px;
+    gap: 12px;
+
+    width: 257px;
+    height: 40px;
+
+    /* Inside auto layout */
+
+    flex: none;
+    order: 1;
+    flex-grow: 0;
+
+    .rightGroupText {
+        /* Don’t have accout? */
+
+        width: 159px;
+        height: 20px;
+
+        font-style: normal;
+        font-weight: 600;
+        font-size: 16px;
+        line-height: 20px;
+        /* identical to box height */
+
+        color: var(--textColor);
+
+        /* Inside auto layout */
+
+        flex: none;
+        order: 0;
+        flex-grow: 0;
+
+        cursor: pointer;
+    }
+    .rightGroupButton {
+        width: 86px;
+        height: 40px;
+
+        background: var(--primaryColor);
+        box-shadow: 0px 0px 4px rgba(0, 0, 0, 0.25);
+        border-radius: 5px;
+        border: 0px;
+
+        color: var(--onPrimaryColor);
+        font-weight: 700;
+        font-size: 16px;
+        line-height: 20px;
+
+        cursor: pointer;
+    }
+}
